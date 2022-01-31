@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     [Header("Animations")] [SerializeField] Animator animator;
     [SerializeField] float animationSmoothTime = 0.1f; // the lower the value, the faster is the transition
     [SerializeField] float animationPlayTransition = 0.15f;
+    [SerializeField] Transform aimTarget;
+    [SerializeField] float aimDistance = 1f;
     int moveXAnimationParameterId;
     int moveZAnimationParameterId;
     int jumpAnimation;
@@ -59,6 +61,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        UpdatePlayerRig();
         Move();
         Jump();
     }
@@ -140,5 +144,10 @@ public class PlayerController : MonoBehaviour
             bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
             bulletController.hit = false;
         }
+    }
+
+    private void UpdatePlayerRig()
+    {
+        aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
     }
 }
