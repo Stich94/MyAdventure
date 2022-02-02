@@ -20,10 +20,11 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] Camera cam;
     public bool IsAiming { get { return isAiming; } }
     InputAction aimAction;
-    PlayerController thirdPersonController;
+    PlayerController playerController;
 
     private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
         // virtualCamera = GetComponent<CinemachineVirtualCamera>();
         aimAction = playerInput.actions["Aim"];
     }
@@ -47,6 +48,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         isAiming = true;
         virtualCamera.Priority += priorityBoostAmount;
         aimCanvas.enabled = true;
+
         thirdPersonCanvas.enabled = false;
     }
 
@@ -55,16 +57,35 @@ public class ThirdPersonShooterController : MonoBehaviour
         isAiming = false;
         virtualCamera.Priority -= priorityBoostAmount;
         aimCanvas.enabled = false;
+
         thirdPersonCanvas.enabled = true;
     }
 
     private void Update()
     {
+        // rotate the player
+        Vector3 mouseWorldPosition = Vector3.zero;
+        // hipoint in center of screen
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = cam.ScreenPointToRay(screenCenterPoint);
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, aimColliderMask))
         {
             debugTransform.position = hit.point;
+            mouseWorldPosition = hit.point;
+        }
+        if (isAiming)
+        {
+            playerController.SetSensitivity(aimSensitivity);
+            playerController.SetRotateOnMove(false);
+            Vector3 worldAimTarget = mouseWorldPosition;
+            worldAimTarget.y = transform.position.y;
+            Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
+            transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+        }
+        else
+        {
+            playerController.SetSensitivity(normalSensitivity);
+            playerController.SetRotateOnMove(true);
         }
     }
 

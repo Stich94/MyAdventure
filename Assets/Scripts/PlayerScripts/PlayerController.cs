@@ -12,6 +12,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpHeight = 1.0f;
     [SerializeField] float gravityValue = -9.81f;
     [SerializeField] float rotationSpeed = 5f;
+
+    // Camera
+    [Header("Look Around")] float cinemachineTargetYaw;
+    [SerializeField] float cameraRotationSensitivity = 1.0f;
+    [SerializeField] float CameraAngleOverride = 0.0f;
+    float cinemachineTargetPItch;
+    float lookTreshold = 0.01f;
+    bool rotateOnMove = true;
+
+    // Combat
     [Header("Combat")] [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform barrelTransform;
     [SerializeField] Transform bulletParent;
@@ -28,6 +38,7 @@ public class PlayerController : MonoBehaviour
     InputAction jumpAction;
     InputAction shootAction;
     InputAction sprintActon;
+    InputAction lookAction;
 
     // Animator
     [Header("Animations")] [SerializeField] Animator animator;
@@ -49,6 +60,7 @@ public class PlayerController : MonoBehaviour
         cameraTransform = Camera.main.transform;
         // access the controls
         moveAction = playerInput.actions["Move"];
+        lookAction = playerInput.actions["Look"];
         jumpAction = playerInput.actions["Jump"];
         shootAction = playerInput.actions["Shoot"];
         sprintActon = playerInput.actions["Sprint"];
@@ -59,15 +71,19 @@ public class PlayerController : MonoBehaviour
         jumpAnimation = Animator.StringToHash("Pistol Jump");
         moveXAnimationParameterId = Animator.StringToHash("MoveX");
         moveZAnimationParameterId = Animator.StringToHash("MoveZ");
-
     }
 
     private void Update()
     {
-        UpdatePlayerRig();
+        // UpdatePlayerRig();
         Move();
         // RotatePlayer();
         Jump();
+    }
+
+    private void LateUpdate()
+    {
+        CameraRotation();
     }
 
     private void Move()
@@ -96,6 +112,7 @@ public class PlayerController : MonoBehaviour
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
         controller.Move(move * Time.deltaTime * targetSpeed);
+
         //Blend Strafe Animations - normal
         // animator.SetFloat(moveXAnimationParameterId, input.x);
         // animator.SetFloat(moveZAnimationParameterId, input.y);
@@ -107,9 +124,16 @@ public class PlayerController : MonoBehaviour
         // RotatePlayer();
         //TODO - Temp disabled Player Rotation
         // // Rotate Player towards aim/camera direction
-        float targetAngle = cameraTransform.eulerAngles.y; // this returns the cameras current y rotation
-        Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        if (rotateOnMove)
+        {
+            // if (move != Vector2.zero)
+            // {
+            //TODO - rotate player when move
+            // }
+            // float targetAngle = cameraTransform.eulerAngles.y; // this returns the cameras current y rotation
+            // Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
+            // transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
     }
 
     private void Jump()
@@ -159,13 +183,46 @@ public class PlayerController : MonoBehaviour
         aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
     }
 
-    private void SetCursorState(bool newState)
+    private void SetCursorState(bool _newState)
     {
-        Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.lockState = _newState ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
     // public void SetSensitivity(float _newSensitivity)
     // {
     //     sensitivity = _newSensitivity;
     // }
+    private void CameraRotation()
+    {
+
+        Vector2 lookInput = lookAction.ReadValue<Vector2>();
+        if (lookInput.sqrMagnitude >= lookTreshold)
+        {
+            cinemachineTargetYaw += lookInput.x * Time.deltaTime * cameraRotationSensitivity;
+            cinemachineTargetPItch += lookInput.y * Time.deltaTime * cameraRotationSensitivity;
+        }
+
+        cinemachineTargetYaw = ClampAngle(cinemachineTargetYaw, float.MinValue, float.MaxValue);
+        cinemachineTargetPItch = ClampAngle(cinemachineTargetPItch, float.MinValue, float.MaxValue);
+
+        cameraTransform.transform.rotation = Quaternion.Euler(cinemachineTargetPItch + CameraAngleOverride, cinemachineTargetYaw, 0.0f);
+
+    }
+
+    private static float ClampAngle(float _lAngle, float _lMinValue, float _lMaxValue)
+    {
+        if (_lAngle < -360f) _lAngle += 360f;
+        if (_lAngle > 360f) _lAngle -= 360f;
+        return Mathf.Clamp(_lAngle, _lMinValue, _lMaxValue);
+    }
+
+    public void SetSensitivity(float _newSensitivity)
+    {
+        cameraRotationSensitivity = _newSensitivity;
+    }
+
+    public void SetRotateOnMove(bool _newRotateOnMove)
+    {
+        rotateOnMove = _newRotateOnMove;
+    }
 }
