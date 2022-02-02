@@ -157,7 +157,7 @@ public class EnemyAI : MonoBehaviour
     {
         playerIsInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
 
-        if (!playerIsInSightRange && !playerIsInSightRange) Patrouling();
+        if (!canSeePlayer && !playerIsInSightRange) Patrouling();
         if (playerIsInSightRange && !playerIsInAttackRange) ChasePlayer();
         if (playerIsInAttackRange && playerIsInSightRange) AttackPlayer();
 
@@ -178,7 +178,7 @@ public class EnemyAI : MonoBehaviour
 
     protected void FoVCheck()
     {
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, attackRange, targetMask);
+        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, sightRange, targetMask);
 
         if (rangeChecks.Length != 0)
         {

@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float playerSpeed = 2.0f;
+    [SerializeField] float sprintSpeed = 5.0f;
     [SerializeField] float jumpHeight = 1.0f;
     [SerializeField] float gravityValue = -9.81f;
     [SerializeField] float rotationSpeed = 5f;
@@ -16,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform bulletParent;
     [SerializeField] float bulletMissDistance = 25f;
     bool groundedPlayer;
-
+    bool sprint = false;
     Transform cameraTransform;
     PlayerInput playerInput;
     CharacterController controller;
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     InputAction moveAction;
     InputAction jumpAction;
     InputAction shootAction;
+    InputAction sprintActon;
 
     // Animator
     [Header("Animations")] [SerializeField] Animator animator;
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         shootAction = playerInput.actions["Shoot"];
+        sprintActon = playerInput.actions["Sprint"];
         Cursor.lockState = CursorLockMode.Locked;
 
         //Animations
@@ -61,15 +64,20 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
         UpdatePlayerRig();
         Move();
+        // RotatePlayer();
         Jump();
     }
 
     private void Move()
     {
         groundedPlayer = controller.isGrounded;
+        // Check if the player is sprint
+
+
+        float sprintInput = sprintActon.ReadValue<float>();
+        float targetSpeed = sprintInput >= 1 ? targetSpeed = sprintSpeed : targetSpeed = playerSpeed;
 
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -87,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        controller.Move(move * Time.deltaTime * targetSpeed);
         //Blend Strafe Animations - normal
         // animator.SetFloat(moveXAnimationParameterId, input.x);
         // animator.SetFloat(moveZAnimationParameterId, input.y);
@@ -96,12 +104,12 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
-
+        // RotatePlayer();
         //TODO - Temp disabled Player Rotation
-        // Rotate Player towards ami/camera direction
-        // float targetAngle = cameraTransform.eulerAngles.y; // this returns the cameras current y rotation
-        // Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
-        // transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        // // Rotate Player towards aim/camera direction
+        float targetAngle = cameraTransform.eulerAngles.y; // this returns the cameras current y rotation
+        Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     private void Jump()
@@ -150,4 +158,14 @@ public class PlayerController : MonoBehaviour
     {
         aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
     }
+
+    private void SetCursorState(bool newState)
+    {
+        Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+    }
+
+    // public void SetSensitivity(float _newSensitivity)
+    // {
+    //     sensitivity = _newSensitivity;
+    // }
 }

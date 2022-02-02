@@ -9,9 +9,12 @@ public class SwitchVCam : MonoBehaviour
     [SerializeField] int priorityBoostAmount = 10;
     [SerializeField] Canvas thirdPersonCanvas;
     [SerializeField] Canvas aimCanvas;
+    [SerializeField] bool isAiming = false;
 
     CinemachineVirtualCamera virtualCamera;
     InputAction aimAction;
+
+    public bool IsAiming { get { return isAiming; } }
 
     private void Awake()
     {
@@ -35,6 +38,7 @@ public class SwitchVCam : MonoBehaviour
 
     private void StartAim()
     {
+        isAiming = true;
         virtualCamera.Priority += priorityBoostAmount;
         aimCanvas.enabled = true;
         thirdPersonCanvas.enabled = false;
