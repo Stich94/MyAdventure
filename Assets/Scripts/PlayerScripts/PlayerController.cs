@@ -12,11 +12,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpHeight = 1.0f;
     [SerializeField] float gravityValue = -9.81f;
     [SerializeField] float rotationSpeed = 5f;
+    [SerializeField] float targetRotation = 0.0f;
+    [SerializeField] float RotationSmoothTime = 0.12f;
+    [SerializeField] float SpeedChangeRate = 10.0f;
+    float rotationVelocity;
+    float targetSpeed;
+    float speed;
 
     // Camera
-    [Header("Look Around")] float cinemachineTargetYaw;
+    [Header("Camera")] float cinemachineTargetYaw;
+    [SerializeField] GameObject cinemaCameraTarget;
     [SerializeField] float cameraRotationSensitivity = 1.0f;
     [SerializeField] float CameraAngleOverride = 0.0f;
+    [SerializeField] float bottomClamp = -30f;
+    [SerializeField] float topClamp = 70f;
     float cinemachineTargetPItch;
     float lookTreshold = 0.01f;
     bool rotateOnMove = true;
@@ -49,6 +58,7 @@ public class PlayerController : MonoBehaviour
     int moveXAnimationParameterId;
     int moveZAnimationParameterId;
     int jumpAnimation;
+    float animationBlend;
 
     Vector2 currentAnimationBlendVector;
     Vector2 animationVelcity;
@@ -77,6 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         // UpdatePlayerRig();
         Move();
+        // NewMove();
         // RotatePlayer();
         Jump();
     }
@@ -95,6 +106,7 @@ public class PlayerController : MonoBehaviour
         float sprintInput = sprintActon.ReadValue<float>();
         float targetSpeed = sprintInput >= 1 ? targetSpeed = sprintSpeed : targetSpeed = playerSpeed;
 
+
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
@@ -102,6 +114,7 @@ public class PlayerController : MonoBehaviour
 
 
         Vector2 input = moveAction.ReadValue<Vector2>();
+        if (input == Vector2.zero) targetSpeed = 0.0f;
 
         // Vector3 move = new Vector3(input.x, 0, input.y); // this is the movement, without smoothing the animations
         // - smooth Animations and movement together
@@ -111,30 +124,31 @@ public class PlayerController : MonoBehaviour
 
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
-        controller.Move(move * Time.deltaTime * targetSpeed);
+        // controller.Move(move * Time.deltaTime * targetSpeed);
 
-        //Blend Strafe Animations - normal
-        // animator.SetFloat(moveXAnimationParameterId, input.x);
-        // animator.SetFloat(moveZAnimationParameterId, input.y);
+        //TODO - Temp disabled Player Rotation
+
+        Vector3 inputDirection = new Vector3(input.x, 0, input.y).normalized;
+
+        if (input != Vector2.zero)
+        {
+            targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, RotationSmoothTime);
+
+            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+        }
+
+        Vector3 targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
+
+        controller.Move(targetDirection.normalized * (targetSpeed * Time.deltaTime) + new Vector3(0.0f, playerVelocity.y, 0.0f) * Time.deltaTime);
+        // controller.Move(move * Time.deltaTime * targetSpeed);
 
         // - smooth Animation with movement together
         animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
-        // RotatePlayer();
-        //TODO - Temp disabled Player Rotation
-        // // Rotate Player towards aim/camera direction
-        if (rotateOnMove)
-        {
-            // if (move != Vector2.zero)
-            // {
-            //TODO - rotate player when move
-            // }
-            // float targetAngle = cameraTransform.eulerAngles.y; // this returns the cameras current y rotation
-            // Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
-            // transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
     }
+
 
     private void Jump()
     {
@@ -201,12 +215,10 @@ public class PlayerController : MonoBehaviour
             cinemachineTargetYaw += lookInput.x * Time.deltaTime * cameraRotationSensitivity;
             cinemachineTargetPItch += lookInput.y * Time.deltaTime * cameraRotationSensitivity;
         }
-
         cinemachineTargetYaw = ClampAngle(cinemachineTargetYaw, float.MinValue, float.MaxValue);
-        cinemachineTargetPItch = ClampAngle(cinemachineTargetPItch, float.MinValue, float.MaxValue);
+        cinemachineTargetPItch = ClampAngle(cinemachineTargetPItch, bottomClamp, topClamp);
 
-        cameraTransform.transform.rotation = Quaternion.Euler(cinemachineTargetPItch + CameraAngleOverride, cinemachineTargetYaw, 0.0f);
-
+        cinemaCameraTarget.transform.rotation = Quaternion.Euler(cinemachineTargetPItch + CameraAngleOverride, cinemachineTargetYaw, 0.0f);
     }
 
     private static float ClampAngle(float _lAngle, float _lMinValue, float _lMaxValue)

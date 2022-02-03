@@ -11,7 +11,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] int priorityBoostAmount = 10;
     [SerializeField] Canvas thirdPersonCanvas;
     [SerializeField] Canvas aimCanvas;
-    [SerializeField] float normalSensitivity = 1f;
+    [SerializeField] float normalSensitivity = 5f;
     [SerializeField] float aimSensitivity = 0.5f;
     [SerializeField] CinemachineVirtualCamera virtualCamera;
     [SerializeField] LayerMask aimColliderMask;
