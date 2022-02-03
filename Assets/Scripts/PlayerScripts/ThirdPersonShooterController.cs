@@ -8,25 +8,34 @@ public class ThirdPersonShooterController : MonoBehaviour
 {
     //TODO - when aiming reduce movementSpeed
     [SerializeField] PlayerInput playerInput;
+    [SerializeField] float aimMovementSpeed = 2f;
     [SerializeField] int priorityBoostAmount = 10;
     [SerializeField] Canvas thirdPersonCanvas;
     [SerializeField] Canvas aimCanvas;
     [SerializeField] float normalSensitivity = 5f;
     [SerializeField] float aimSensitivity = 0.5f;
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    [SerializeField] CinemachineVirtualCamera aimVirtualCamera;
     [SerializeField] LayerMask aimColliderMask;
-    [SerializeField] Transform debugTransform;
     [SerializeField] bool isAiming = false;
     [SerializeField] Camera cam;
     public bool IsAiming { get { return isAiming; } }
     InputAction aimAction;
+    InputAction shootAction;
     PlayerController playerController;
+    [SerializeField] Transform bulletPrefab;
+    [SerializeField] Transform bulletSpawnPoint;
+    Vector3 mouseWorldPosition;
+    Transform hitTransform;
+    Animator animator;
+
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
         // virtualCamera = GetComponent<CinemachineVirtualCamera>();
         aimAction = playerInput.actions["Aim"];
+        shootAction = playerInput.actions["Shoot"];
+        animator = GetComponent<Animator>();
     }
 
     // add the events
@@ -34,6 +43,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     {
         aimAction.performed += _ => StartAim();
         aimAction.canceled += _ => CancelAim();
+        shootAction.performed += _ => ShootGun();
     }
 
     // unsubscribe from this events
@@ -41,13 +51,15 @@ public class ThirdPersonShooterController : MonoBehaviour
     {
         aimAction.performed += _ => StartAim();
         aimAction.canceled -= _ => CancelAim();
+        shootAction.performed -= _ => ShootGun();
     }
 
     private void StartAim()
     {
         isAiming = true;
-        virtualCamera.Priority += priorityBoostAmount;
-        aimCanvas.enabled = true;
+        aimVirtualCamera.gameObject.SetActive(true);
+        aimVirtualCamera.Priority += priorityBoostAmount;
+        // aimCanvas.enabled = true;
 
         thirdPersonCanvas.enabled = false;
     }
@@ -55,38 +67,83 @@ public class ThirdPersonShooterController : MonoBehaviour
     private void CancelAim()
     {
         isAiming = false;
-        virtualCamera.Priority -= priorityBoostAmount;
-        aimCanvas.enabled = false;
+        aimVirtualCamera.Priority -= priorityBoostAmount;
+        aimVirtualCamera.gameObject.SetActive(false);
+        // aimCanvas.enabled = false;
 
-        thirdPersonCanvas.enabled = true;
+        // thirdPersonCanvas.enabled = true;
     }
 
     private void Update()
     {
         // rotate the player
-        Vector3 mouseWorldPosition = Vector3.zero;
+        mouseWorldPosition = Vector3.zero;
         // hipoint in center of screen
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = cam.ScreenPointToRay(screenCenterPoint);
+        hitTransform = null;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, aimColliderMask))
         {
-            debugTransform.position = hit.point;
             mouseWorldPosition = hit.point;
+            hitTransform = hit.transform;
         }
         if (isAiming)
         {
+            playerController.TargetSpeed = aimMovementSpeed;
             playerController.SetSensitivity(aimSensitivity);
             playerController.SetRotateOnMove(false);
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
             Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+
         }
         else
         {
             playerController.SetSensitivity(normalSensitivity);
             playerController.SetRotateOnMove(true);
+            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
         }
     }
 
+    private void ShootGun()
+    {
+        // Raycast Hit Method
+        if (hitTransform != null)
+        {
+            if (hitTransform.GetComponent<IDamageAble>() != null)
+            {
+                // hit target
+                // Instantiate vfxHit green
+            }
+            else
+            {
+                // hit something else
+                // instantiate vfx Hit red
+            }
+        }
+        // instantiate real projectiles
+        Vector3 aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
+        Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(aimDir, Vector3.up)); // was Vector3.up - before change
+        // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        #region - shoot with raycast - disabled
+        //     RaycastHit hit;
+        //     GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        //     BulletController bulletController = bullet.GetComponent<BulletController>();
+        //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+        //     {
+        //         bulletController.target = hit.point;
+        //         bulletController.hit = true;
+        //     }
+        //     else
+        //     {
+        //         bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
+        //         bulletController.hit = false;
+        //     }
+        // }
+        #endregion
+
+    }
 }
+

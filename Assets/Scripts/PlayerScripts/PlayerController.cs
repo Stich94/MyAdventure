@@ -15,8 +15,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float targetRotation = 0.0f;
     [SerializeField] float RotationSmoothTime = 0.12f;
     [SerializeField] float SpeedChangeRate = 10.0f;
+
+    [SerializeField] ThirdPersonShooterController aimController;
     float rotationVelocity;
     float targetSpeed;
+
+    public float TargetSpeed { get { return targetSpeed; } set { targetSpeed = value; } }
     float speed;
 
     // Camera
@@ -29,23 +33,17 @@ public class PlayerController : MonoBehaviour
     float cinemachineTargetPItch;
     float lookTreshold = 0.01f;
     bool rotateOnMove = true;
-
-    // Combat
-    [Header("Combat")] [SerializeField] GameObject bulletPrefab;
-    [SerializeField] Transform barrelTransform;
-    [SerializeField] Transform bulletParent;
-    [SerializeField] float bulletMissDistance = 25f;
     bool groundedPlayer;
     bool sprint = false;
+
     Transform cameraTransform;
+
+    //controls
     PlayerInput playerInput;
     CharacterController controller;
     Vector3 playerVelocity;
-
-    //controls
     InputAction moveAction;
     InputAction jumpAction;
-    InputAction shootAction;
     InputAction sprintActon;
     InputAction lookAction;
 
@@ -59,20 +57,19 @@ public class PlayerController : MonoBehaviour
     int moveZAnimationParameterId;
     int jumpAnimation;
     float animationBlend;
-
     Vector2 currentAnimationBlendVector;
     Vector2 animationVelcity;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        aimController = GetComponent<ThirdPersonShooterController>();
         playerInput = GetComponent<PlayerInput>();
         cameraTransform = Camera.main.transform;
         // access the controls
         moveAction = playerInput.actions["Move"];
         lookAction = playerInput.actions["Look"];
         jumpAction = playerInput.actions["Jump"];
-        shootAction = playerInput.actions["Shoot"];
         sprintActon = playerInput.actions["Sprint"];
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -111,7 +108,10 @@ public class PlayerController : MonoBehaviour
         {
             playerVelocity.y = 0f;
         }
-
+        if (aimController.IsAiming)
+        {
+            targetSpeed = 2f;
+        }
 
         Vector2 input = moveAction.ReadValue<Vector2>();
         if (input == Vector2.zero) targetSpeed = 0.0f;
@@ -124,24 +124,28 @@ public class PlayerController : MonoBehaviour
 
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
-        // controller.Move(move * Time.deltaTime * targetSpeed);
-
-        //TODO - Temp disabled Player Rotation
 
         Vector3 inputDirection = new Vector3(input.x, 0, input.y).normalized;
 
+        // Player Rotation
         if (input != Vector2.zero)
         {
             targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, RotationSmoothTime);
 
-            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            // rotate only when moving
+            if (rotateOnMove)
+            {
+                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                // Debug.Log("rotation value" + rotation);
+
+            }
         }
 
+        // Move Player always on Global Coordinates
         Vector3 targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
 
         controller.Move(targetDirection.normalized * (targetSpeed * Time.deltaTime) + new Vector3(0.0f, playerVelocity.y, 0.0f) * Time.deltaTime);
-        // controller.Move(move * Time.deltaTime * targetSpeed);
 
         // - smooth Animation with movement together
         animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
@@ -165,32 +169,6 @@ public class PlayerController : MonoBehaviour
     }
 
     // add shot event to player 
-    private void OnEnable()
-    {
-        shootAction.performed += _ => ShootGun();
-    }
-
-    private void OnDisable()
-    {
-        shootAction.performed -= _ => ShootGun();
-    }
-
-    private void ShootGun()
-    {
-        RaycastHit hit;
-        GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity, bulletParent);
-        BulletController bulletController = bullet.GetComponent<BulletController>();
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-        {
-            bulletController.target = hit.point;
-            bulletController.hit = true;
-        }
-        else
-        {
-            bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-            bulletController.hit = false;
-        }
-    }
 
     private void UpdatePlayerRig()
     {
