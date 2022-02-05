@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.InputSystem;
+using UnityEngine.Animations.Rigging;
 
 public class ThirdPersonShooterController : MonoBehaviour
 {
@@ -27,6 +28,15 @@ public class ThirdPersonShooterController : MonoBehaviour
     Vector3 mouseWorldPosition;
     Transform hitTransform;
     Animator animator;
+
+    [Header("Rig Settings")]
+
+    [SerializeField] Rig bodyRigLayer;
+    [SerializeField] float bodyRigValue = 0f;
+    [SerializeField] float bodyduration = 0.3f; // how long it takes before we aim
+    [SerializeField] Rig aimRigLayer;
+    [SerializeField] float aimRigValue = 0f;
+    [SerializeField] float aimDuration = 0.3f;
 
 
     private void Awake()
@@ -89,6 +99,8 @@ public class ThirdPersonShooterController : MonoBehaviour
         }
         if (isAiming)
         {
+            aimRigLayer.weight += Time.deltaTime / aimDuration;
+            bodyRigLayer.weight = 1f;
             playerController.TargetSpeed = aimMovementSpeed;
             playerController.SetSensitivity(aimSensitivity);
             playerController.SetRotateOnMove(false);
@@ -101,6 +113,8 @@ public class ThirdPersonShooterController : MonoBehaviour
         }
         else
         {
+            aimRigLayer.weight -= Time.deltaTime / aimDuration;
+            bodyRigLayer.weight = 0f;
             playerController.SetSensitivity(normalSensitivity);
             playerController.SetRotateOnMove(true);
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
