@@ -38,13 +38,16 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] float aimRigValue = 0f;
     [SerializeField] float aimDuration = 0.3f;
 
+    [Header("Current Active Player Weapon")]
+    [SerializeField] RayCastWeapon activeWeapon;
+
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
         // virtualCamera = GetComponent<CinemachineVirtualCamera>();
         aimAction = playerInput.actions["Aim"];
-        shootAction = playerInput.actions["Shoot"];
+        // shootAction = playerInput.actions["Shoot"];
         animator = GetComponent<Animator>();
     }
 
@@ -52,16 +55,16 @@ public class ThirdPersonShooterController : MonoBehaviour
     private void OnEnable()
     {
         aimAction.performed += _ => StartAim();
+        // shootAction.performed += _ => ShootGun();
         aimAction.canceled += _ => CancelAim();
-        shootAction.performed += _ => ShootGun();
     }
 
     // unsubscribe from this events
     private void OnDisable()
     {
         aimAction.performed += _ => StartAim();
+        // shootAction.performed -= _ => ShootGun();
         aimAction.canceled -= _ => CancelAim();
-        shootAction.performed -= _ => ShootGun();
     }
 
     private void StartAim()
@@ -71,7 +74,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         aimVirtualCamera.Priority += priorityBoostAmount;
         // aimCanvas.enabled = true;
 
-        thirdPersonCanvas.enabled = false;
+        // thirdPersonCanvas.enabled = false;
     }
 
     private void CancelAim()
@@ -86,6 +89,7 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private void Update()
     {
+        RayCastWeapon myWeapon = GetComponentInChildren<RayCastWeapon>();
         // rotate the player
         mouseWorldPosition = Vector3.zero;
         // hipoint in center of screen
@@ -123,40 +127,42 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private void ShootGun()
     {
-        // Raycast Hit Method
-        if (hitTransform != null)
-        {
-            if (hitTransform.GetComponent<IDamageAble>() != null)
-            {
-                // hit target
-                // Instantiate vfxHit green
-            }
-            else
-            {
-                // hit something else
-                // instantiate vfx Hit red
-            }
-        }
-        // instantiate real projectiles
-        Vector3 aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
-        Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(aimDir, Vector3.up)); // was Vector3.up - before change
-        // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        #region - shoot with raycast - disabled
-        //     RaycastHit hit;
-        //     GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        //     BulletController bulletController = bullet.GetComponent<BulletController>();
-        //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+
+        Debug.Log("is shooting");
+        // // Raycast Hit Method
+        // if (hitTransform != null)
+        // {
+        //     if (hitTransform.GetComponent<IDamageAble>() != null)
         //     {
-        //         bulletController.target = hit.point;
-        //         bulletController.hit = true;
+        //         // hit target
+        //         // Instantiate vfxHit green
         //     }
         //     else
         //     {
-        //         bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-        //         bulletController.hit = false;
+        //         // hit something else
+        //         // instantiate vfx Hit red
         //     }
         // }
-        #endregion
+        // // instantiate real projectiles
+        // Vector3 aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
+        // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(aimDir, Vector3.up)); // was Vector3.up - before change
+        // // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        // #region - shoot with raycast - disabled
+        // //     RaycastHit hit;
+        // //     GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        // //     BulletController bulletController = bullet.GetComponent<BulletController>();
+        // //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+        // //     {
+        // //         bulletController.target = hit.point;
+        // //         bulletController.hit = true;
+        // //     }
+        // //     else
+        // //     {
+        // //         bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
+        // //         bulletController.hit = false;
+        // //     }
+        // // }
+        // #endregion
 
     }
 }
