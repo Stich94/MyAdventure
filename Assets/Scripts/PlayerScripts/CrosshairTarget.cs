@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CrosshairTarget : MonoBehaviour
 {
-    Camera mainCam;
+    [SerializeField] Camera mainCam;
     Ray ray;
     RaycastHit hit;
 
@@ -17,7 +17,7 @@ public class CrosshairTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        HitInfo();
     }
 
     private void HitInfo()

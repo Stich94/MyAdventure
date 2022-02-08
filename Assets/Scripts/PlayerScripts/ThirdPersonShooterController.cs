@@ -89,18 +89,17 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private void Update()
     {
-        RayCastWeapon myWeapon = GetComponentInChildren<RayCastWeapon>();
         // rotate the player
-        mouseWorldPosition = Vector3.zero;
-        // hipoint in center of screen
-        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        Ray ray = cam.ScreenPointToRay(screenCenterPoint);
-        hitTransform = null;
-        if (Physics.Raycast(ray, out RaycastHit hit, 999f, aimColliderMask))
-        {
-            mouseWorldPosition = hit.point;
-            hitTransform = hit.transform;
-        }
+        // mouseWorldPosition = Vector3.zero;
+        // // hipoint in center of screen
+        // Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        // Ray ray = cam.ScreenPointToRay(screenCenterPoint);
+        // hitTransform = null;
+        // if (Physics.Raycast(ray, out RaycastHit hit, 999f, aimColliderMask))
+        // {
+        //     mouseWorldPosition = hit.point;
+        //     hitTransform = hit.transform;
+        // }
         if (isAiming)
         {
             aimRigLayer.weight += Time.deltaTime / aimDuration;
@@ -108,10 +107,10 @@ public class ThirdPersonShooterController : MonoBehaviour
             playerController.TargetSpeed = aimMovementSpeed;
             playerController.SetSensitivity(aimSensitivity);
             playerController.SetRotateOnMove(false);
-            Vector3 worldAimTarget = mouseWorldPosition;
-            worldAimTarget.y = transform.position.y;
-            Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-            transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+            // Vector3 worldAimTarget = mouseWorldPosition;
+            // worldAimTarget.y = transform.position.y;
+            // Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
+            // transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
 
         }
@@ -148,20 +147,20 @@ public class ThirdPersonShooterController : MonoBehaviour
         // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(aimDir, Vector3.up)); // was Vector3.up - before change
         // // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         // #region - shoot with raycast - disabled
-        // //     RaycastHit hit;
-        // //     GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        // //     BulletController bulletController = bullet.GetComponent<BulletController>();
-        // //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-        // //     {
-        // //         bulletController.target = hit.point;
-        // //         bulletController.hit = true;
-        // //     }
-        // //     else
-        // //     {
-        // //         bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-        // //         bulletController.hit = false;
-        // //     }
-        // // }
+        //     RaycastHit hit;
+        //     GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        //     BulletController bulletController = bullet.GetComponent<BulletController>();
+        //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+        //     {
+        //         bulletController.target = hit.point;
+        //         bulletController.hit = true;
+        //     }
+        //     else
+        //     {
+        //         bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
+        //         bulletController.hit = false;
+        //     }
+        // }
         // #endregion
 
     }

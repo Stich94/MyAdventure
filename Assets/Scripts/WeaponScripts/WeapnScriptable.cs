@@ -20,6 +20,7 @@ public class WeapnScriptable : ScriptableObject
     public float damage;
     public int magazineSize;
     public int currentMagazineSize;
+    public float fireRate;
 
     [SerializeField] VisualEffect fireEffect;
     [SerializeField] ParticleSystem muzzleFlash;
