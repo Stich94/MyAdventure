@@ -21,6 +21,8 @@ public class WeapnScriptable : ScriptableObject
     public int magazineSize;
     public int currentMagazineSize;
     public float fireRate;
+    public float reloadTime;
+    WaitForSeconds reloadWait;
 
     [SerializeField] VisualEffect fireEffect;
     [SerializeField] ParticleSystem muzzleFlash;
