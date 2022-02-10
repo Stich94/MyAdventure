@@ -17,6 +17,6 @@ MonoBehaviour:
   magazineSize: 20
   currentMagazineSize: 20
   fireRate: 25
-  reloadTime: 1.5
+  reloadTime: 2
   fireEffect: {fileID: 0}
   muzzleFlash: {fileID: 6751515043672141325, guid: 698215bae8f208a4691bffb56e899ab9, type: 3}

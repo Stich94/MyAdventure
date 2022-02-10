@@ -8,6 +8,7 @@ using UnityEngine.VFX;
 public class RayCastWeapon : MonoBehaviour
 {
     [SerializeField] protected PlayerInput playerInput;
+    [SerializeField] protected ThirdPersonShooterController thirdPersonShootController;
     [SerializeField] protected WeapnScriptable weapon;
     [SerializeField] protected Transform raycastOrigin;
     [SerializeField] protected Transform raycastDestination;
@@ -15,6 +16,8 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] LayerMask targetLayer;
     [SerializeField] LayerMask aimLayerMask;
     [SerializeField] bool isFiring = false;
+    [SerializeField] bool isReloading = false; // just for Debug
+
 
     [Header("VFX")]
     [SerializeField] ParticleSystem muzzleFlash;
@@ -26,15 +29,17 @@ public class RayCastWeapon : MonoBehaviour
 
     // get Weaponspecs from the Scriptable
     protected float maxMagazineAmmo;
-    protected float currentMagazineAmmo;
+    [SerializeField] protected float currentMagazineAmmo;
     protected float fireRate = 5f;
     protected float reloadTime;
     WaitForSeconds reloadWait;
     WaitForSeconds nextShotWaitTime;
     Coroutine fireRoutine;
+
     protected virtual void Awake()
     {
         shootAction = playerInput.actions["Shoot"];
+        thirdPersonShootController = GetComponentInParent<ThirdPersonShooterController>();
         SetWeaponStats();
         // nextShotWaitTime = new WaitForSeconds(1 / fireRate);
         // shootAction.started += _ => StartFiring();
@@ -56,16 +61,27 @@ public class RayCastWeapon : MonoBehaviour
         // playerControlInstance.Player.Shoot.performed -= Shoot;
         // playerControlInstance.Player.Disable();
         // shootAction.performed -= _ => ShootGun();
-        // shootAction.performed -= _ => StartFiring();
-        shootAction.canceled += _ => StopFiring();
+        shootAction.performed -= _ => StartFiring();
+        // shootAction.canceled += _ => StopFiring();
     }
 
     protected virtual void StartFiring()
     {
-        Debug.Log(shootAction.ReadValue<float>());
+        // Debug.Log(shootAction.ReadValue<float>());
+        if (thirdPersonShootController.IsAiming)
+        {
+            if (CanShoot() && !isReloading)
+            {
+                FireBullet();
 
-        // FireBullet();
-        fireRoutine = StartCoroutine(Shoot());
+            }
+            else
+            {
+                StartCoroutine(Reload());
+            }
+        }
+
+        // fireRoutine = StartCoroutine(Shoot());
         // StartCoroutine(Shoot());
 
     }
@@ -108,10 +124,12 @@ public class RayCastWeapon : MonoBehaviour
             {
                 // impact effect
                 Instantiate(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                // StartCoroutine(ImpactDelay(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal)));
             }
             if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
             {
                 //TODO - hit gets damaged
+                StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
                 // take Damage
             }
 
@@ -122,6 +140,15 @@ public class RayCastWeapon : MonoBehaviour
             Debug.Log("Nothing hit");
         }
     }
+
+    // protected void FireBullet()
+    // {
+    //     Vector3 velocity = (raycastDestination.position - raycastOrigin.position).normalized; // bullet speed required
+    //     Projectile projectile = projectilePrefab.Init(raycastOrigin.position, velocity);
+    //     projectiles.Add(projectile);
+    // }
+
+
     protected bool CanShoot()
     {
         bool hasEnoughAmmo = currentMagazineAmmo > 0;
@@ -136,10 +163,11 @@ public class RayCastWeapon : MonoBehaviour
             // has full ammo in magazine
             yield return null;
         }
-
+        isReloading = true;
         Debug.Log("Is reloading");
         yield return reloadWait;
         currentMagazineAmmo = maxMagazineAmmo;
+        isReloading = false;
         Debug.Log("Finished reloading");
     }
 
@@ -161,6 +189,20 @@ public class RayCastWeapon : MonoBehaviour
             StartCoroutine(Reload());
         }
     }
+
+    private IEnumerator HitDelay(IDamageAble _target)
+    {
+        yield return new WaitForSeconds(0.5f);
+        _target.TakeDamage(2.5f);
+    }
+
+    private IEnumerator ImpactDelay(GameObject _bulletHolePrefab, Vector3 _hitPos, Quaternion _rotaion)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Instantiate(_bulletHolePrefab, _hitPos, _rotaion);
+    }
+
+
 
 
 

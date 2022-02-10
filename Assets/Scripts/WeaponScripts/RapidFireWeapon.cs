@@ -46,7 +46,7 @@ public class RapidFireWeapon : RayCastWeapon
         //     yield return rapidFireWait;
         // }
 
-        if (CanShoot())
+        if (CanShoot() && thirdPersonShootController.IsAiming)
         {
             FireBullet();
             while (CanShoot())
