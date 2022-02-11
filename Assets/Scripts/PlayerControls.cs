@@ -125,10 +125,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ff0b7714-3db8-4a3e-941f-cf5214aa1736"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""49a0e06f-250f-4ac1-a86d-3717e309f9ca"",
+                    ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=15,y=15)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,
