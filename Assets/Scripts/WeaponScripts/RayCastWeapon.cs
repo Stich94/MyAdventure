@@ -37,7 +37,7 @@ public class RayCastWeapon : MonoBehaviour
     protected float reloadTime;
     WaitForSeconds reloadWait;
     WaitForSeconds nextShotWaitTime;
-    Coroutine fireRoutine;
+    protected Coroutine fireRoutine;
 
     protected Vector3 aimDir;
 
@@ -93,8 +93,6 @@ public class RayCastWeapon : MonoBehaviour
                 StartCoroutine(Reload());
             }
         }
-        // fireRoutine = StartCoroutine(Shoot());
-        // StartCoroutine(Shoot());
 
     }
     protected virtual void StopFiring()

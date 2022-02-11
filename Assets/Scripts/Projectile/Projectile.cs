@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] string targetTag = "Enemy";
     [SerializeField] LayerMask targetLayer;
 
+    RagDoll ragdoll;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,14 +25,18 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject.CompareTag(targetTag))
         {
-            Destroy(this.gameObject);
+            BaseStats stat = other.gameObject.GetComponent<BaseStats>();
+            stat.TakeDamage(2f);
 
         }
+
+
     }
+
 
     protected virtual void Init()
     {
-        float speed = 200f;
+        float speed = 100f;
         rb.velocity = transform.forward * speed;
     }
     #endregion

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class RagDoll : MonoBehaviour
 {
-    Rigidbody[] rigidodies;
+    [SerializeField] Rigidbody[] rigidodies;
     Animator animator;
 
-    private void Start()
+    void Start()
     {
         rigidodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -25,6 +25,7 @@ public class RagDoll : MonoBehaviour
 
     public void ActivateRagdoll()
     {
+        Debug.Log("Ragdoll triggered");
         foreach (Rigidbody r in rigidodies)
         {
             r.isKinematic = false;
