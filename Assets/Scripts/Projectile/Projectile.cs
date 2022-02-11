@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void Init()
     {
-        float speed = 50f;
+        float speed = 200f;
         rb.velocity = transform.forward * speed;
     }
     #endregion

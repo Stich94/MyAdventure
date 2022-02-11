@@ -31,10 +31,15 @@ public class ThirdPersonShooterController : MonoBehaviour
     [Header("Rig Settings")]
     [SerializeField] Rig aimRigLayer;
     [SerializeField] float aimRigWeight = 0f;
-    [SerializeField] float aimDuration = 0.3f;
 
     [Header("Current Active Player Weapon")]
     [SerializeField] RayCastWeapon activeWeapon;
+
+    List<RayCastWeapon> allWeapons = new List<RayCastWeapon>();
+
+    [SerializeField] Vector3 aimDir; // just for Debug
+
+    public Vector3 AimDirection { get { return aimDir; } }
 
 
     void Awake()
@@ -46,10 +51,12 @@ public class ThirdPersonShooterController : MonoBehaviour
     }
 
     // add the events
+    #region - Events
     void OnEnable()
     {
         aimAction.performed += _ => StartAim();
-        shootAction.performed += _ => ShootGun();
+        // shootAction.performed += _ => ShootGun();
+        // shootAction.performed += _ => activeWeapon.StartFiring();
         aimAction.canceled += _ => CancelAim();
     }
 
@@ -57,7 +64,8 @@ public class ThirdPersonShooterController : MonoBehaviour
     void OnDisable()
     {
         aimAction.performed -= _ => StartAim();
-        shootAction.performed -= _ => ShootGun();
+        // shootAction.performed -= _ => ShootGun();
+        // shootAction.performed -= _ => activeWeapon.StartFiring();
         aimAction.canceled -= _ => CancelAim();
     }
 
@@ -82,6 +90,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         aimRigWeight = 0f;
 
     }
+    #endregion
 
     void Update()
     {
@@ -113,8 +122,11 @@ public class ThirdPersonShooterController : MonoBehaviour
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
 
 
+
             // // rotate the player towards aimDirection
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+
+            aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
         }
         else
         {
@@ -132,13 +144,11 @@ public class ThirdPersonShooterController : MonoBehaviour
         if (isAiming)
         {
             Debug.Log("is shooting");
-            Vector3 aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
+            // aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
             Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(aimDir, Vector3.up));
         }
 
-
-
-        // // Raycast Hit Method
+        // raycast method
         if (hitTransform != null)
         {
             if (hitTransform.GetComponent<IDamageAble>() != null)

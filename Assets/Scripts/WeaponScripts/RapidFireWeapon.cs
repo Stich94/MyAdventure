@@ -17,7 +17,7 @@ public class RapidFireWeapon : RayCastWeapon
 
     protected override void OnEnable()
     {
-        shootAction.performed += _ => StartRapidFiring();
+        shootAction.started += _ => StartRapidFiring();
     }
 
     protected override void OnDisable()
@@ -38,6 +38,11 @@ public class RapidFireWeapon : RayCastWeapon
         }
     }
 
+    public override void StartFiring()
+    {
+        base.StartFiring();
+    }
+
     protected IEnumerator RapidFire()
     {
         // while (true)
@@ -48,11 +53,11 @@ public class RapidFireWeapon : RayCastWeapon
 
         if (CanShoot() && thirdPersonShootController.IsAiming)
         {
-            FireBullet();
+            FireBullet(aimDir);
             while (CanShoot())
             {
                 yield return rapidFireWait;
-                FireBullet();
+                FireBullet(aimDir);
             }
             StartCoroutine(Reload());
         }
