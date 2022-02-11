@@ -19,10 +19,14 @@ public class ThirdPersonMovementController : MonoBehaviour
     [SerializeField] float groundedRadius = 0.28f;
 
     bool canJump = true;
+    bool rotateOnMove = true;
 
 
     [Header("Cinemachine Settings")]
     [SerializeField] GameObject cinemachineCameraTarget;
+    [SerializeField] float sensitivity = 1f;
+
+
     float TopClamp = 70.0f;
     float BottomClamp = -30.0f;
     float CameraAngleOverride = 0.0f;
@@ -232,15 +236,17 @@ public class ThirdPersonMovementController : MonoBehaviour
         // normalise input direction
         Vector3 inputDirection = new Vector3(moveInput.x, 0.0f, moveInput.y).normalized;
 
-        // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-        // if there is a move input rotate player when the player is moving
+        // handle target rotation
         if (moveInput != Vector2.zero)
         {
             targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + mainCamera.transform.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, playerRotationSmoothTime);
 
             // rotate to face input direction relative to camera position
-            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            if (rotateOnMove)
+            {
+                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            }
         }
 
 
@@ -279,4 +285,17 @@ public class ThirdPersonMovementController : MonoBehaviour
         if (_lAngle > 360f) _lAngle -= 360f;
         return Mathf.Clamp(_lAngle, _lfMin, _lfMax);
     }
+
+
+    public void SetSensitivity(float _newSensitivity)
+    {
+        sensitivity = _newSensitivity;
+    }
+
+    public void SetRotateOnMove(bool _newRotateOnMove)
+    {
+        rotateOnMove = _newRotateOnMove;
+    }
+
+
 }
