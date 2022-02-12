@@ -34,12 +34,15 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     [Header("Current Active Player Weapon")]
     [SerializeField] RayCastWeapon activeWeapon;
+    [SerializeField] bool toggleActiveWeapon = false; // only for Debug
 
-    List<RayCastWeapon> allWeapons = new List<RayCastWeapon>();
+    [SerializeField] List<GameObject> allWeapons = new List<GameObject>();
 
     [SerializeField] Vector3 aimDir; // just for Debug
 
     public Vector3 AimDirection { get { return aimDir; } }
+
+
 
 
     void Awake()
@@ -96,6 +99,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     {
         UpdatePlayerRotation();
         UpdateAimRig();
+        WeaponToggle();
     }
 
     void UpdatePlayerRotation()
@@ -137,6 +141,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         }
     }
 
+    // not used right not - just for testing
     void ShootGun()
     {
 
@@ -171,6 +176,32 @@ public class ThirdPersonShooterController : MonoBehaviour
         aimRigLayer.weight = Mathf.Lerp(aimRigLayer.weight, aimRigWeight, Time.deltaTime * 20f);
     }
 
+    // only for debug check
+    void WeaponToggle()
+    {
+        if (toggleActiveWeapon)
+        {
+            if (allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled == true)
+            {
+                allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = false;
+                allWeapons[0].gameObject.SetActive(false);
+                allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = true;
+                allWeapons[1].gameObject.SetActive(true);
+                toggleActiveWeapon = false;
+            }
+            else
+            {
+                allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = true;
+                allWeapons[0].gameObject.SetActive(true);
+                allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = false;
+                allWeapons[1].gameObject.SetActive(false);
+                toggleActiveWeapon = false;
+            }
+
+        }
+
+
+    }
 
 
 

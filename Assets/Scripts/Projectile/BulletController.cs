@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour, IBulletController
+public class BulletController : MonoBehaviour
 {
     [SerializeField] GameObject bulletDecal;
 

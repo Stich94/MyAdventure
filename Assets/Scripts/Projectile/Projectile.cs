@@ -21,12 +21,13 @@ public class Projectile : MonoBehaviour
         Init();
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag(targetTag))
         {
             BaseStats stat = other.gameObject.GetComponent<BaseStats>();
-            stat.TakeDamage(2f);
+            stat.TakeDamage(10f);
+            Destroy(this.gameObject);
 
         }
 
@@ -37,6 +38,7 @@ public class Projectile : MonoBehaviour
     protected virtual void Init()
     {
         float speed = 100f;
+        // rb.useGravity = false;
         rb.velocity = transform.forward * speed;
     }
     #endregion

@@ -7,6 +7,7 @@ public class StatsScrptableObject : ScriptableObject
 {
     public float damage;
     public float maxHp;
+    public float currentHp = 0f;
     public float attackSpeed;
     public float movementSpeed;
 }

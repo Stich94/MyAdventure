@@ -16,10 +16,10 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected Transform bulletSpawnPoint;
 
     [SerializeField] String environmentTag = "Environment";
-    [SerializeField] LayerMask targetLayer;
-    [SerializeField] LayerMask aimLayerMask;
-    [SerializeField] bool isFiring = false;
-    [SerializeField] bool isReloading = false; // just for Debug
+    [SerializeField] protected LayerMask targetLayer;
+    [SerializeField] protected LayerMask aimLayerMask;
+    [SerializeField] protected bool isFiring = false;
+    [SerializeField] protected bool isReloading = false; // just for Debug
 
 
     [Header("VFX")]
@@ -29,6 +29,7 @@ public class RayCastWeapon : MonoBehaviour
     Ray ray;
     RaycastHit hitInfo;
     protected InputAction shootAction;
+    protected InputAction reloadAction;
 
     // get Weaponspecs from the Scriptable
     protected int maxMagazineAmmo;
@@ -38,19 +39,23 @@ public class RayCastWeapon : MonoBehaviour
     WaitForSeconds reloadWait;
     WaitForSeconds nextShotWaitTime;
     protected Coroutine fireRoutine;
+    protected Coroutine reloadRoutine;
 
     protected Vector3 aimDir;
 
-    [SerializeField] UIManager playerHudManager;
+    [SerializeField] protected UIManager playerHudManager;
 
     protected virtual void Awake()
     {
         shootAction = playerInput.actions["Shoot"];
+        reloadAction = playerInput.actions["Reload"];
         thirdPersonShootController = GetComponentInParent<ThirdPersonShooterController>();
         SetWeaponStats();
+        reloadAction.performed += _ => StartReloading();
         // nextShotWaitTime = new WaitForSeconds(1 / fireRate);
         // shootAction.started += _ => StartFiring();
         // shootAction.canceled += _ => StopFiring();
+
     }
 
     // Subscribe to this event
@@ -59,7 +64,9 @@ public class RayCastWeapon : MonoBehaviour
         // playerControlInstance.Player.Shoot.performed += Shoot;
         // playerControlInstance.Player.Enable();
         // shootAction.performed += _ => ShootGun();
-        // shootAction.performed += _ => StartFiring();
+        shootAction.performed += _ => StartFiring();
+
+
     }
 
     // unregister from this event
@@ -68,13 +75,22 @@ public class RayCastWeapon : MonoBehaviour
         // playerControlInstance.Player.Shoot.performed -= Shoot;
         // playerControlInstance.Player.Disable();
         // shootAction.performed -= _ => ShootGun();
-        // shootAction.performed -= _ => StartFiring();
+        shootAction.performed -= _ => StartFiring();
         // shootAction.canceled += _ => StopFiring();
     }
 
     protected void Update()
     {
         aimDir = thirdPersonShootController.AimDirection;
+    }
+
+    protected void StartReloading()
+    {
+        if (!isReloading)
+        {
+            StartCoroutine(Reload());
+
+        }
     }
 
 
@@ -120,41 +136,43 @@ public class RayCastWeapon : MonoBehaviour
         // muzzleFlash.Emit(1);
         Debug.Log("Pew Pew");
 
-        Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
+        // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
         playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
 
-        // ray.origin = raycastOrigin.position;
-        // ray.direction = raycastDestination.position - raycastOrigin.position;
+        ray.origin = raycastOrigin.position;
+        ray.direction = raycastDestination.position - raycastOrigin.position;
 
-        // // pew pew effect
-        // TrailRenderer tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
-        // tracer.AddPosition(ray.origin);
+        // pew pew effect
+        TrailRenderer tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+        tracer.AddPosition(ray.origin);
 
-        // if (Physics.Raycast(ray, out hitInfo, 50f, aimLayerMask))
-        // {
-        //     // Debug.Log("Ray hit: " + hitInfo.collider.tag);
+        if (Physics.Raycast(ray, out hitInfo, 50f, aimLayerMask))
+        {
+            // Debug.Log("Ray hit: " + hitInfo.collider.tag);
 
-        //     // Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1.0f);
-        //     if (hitInfo.collider.CompareTag(environmentTag))
-        //     {
-        //         // impact effect
-        //         Instantiate(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-        //         // StartCoroutine(ImpactDelay(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal)));
-        //     }
-        //     if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
-        //     {
-        //         //TODO - hit gets damaged
-        //         StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
-        //         // take Damage
-        //     }
+            // Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1.0f);
+            if (hitInfo.collider.CompareTag(environmentTag))
+            {
+                // impact effect
+                Instantiate(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                // StartCoroutine(ImpactDelay(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal)));
+            }
+            if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
+            {
+                //TODO - hit gets damaged
+                // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
+                BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
+                otherStats.TakeDamage(10f);
+                // take Damage
+            }
 
-        //     tracer.transform.position = hitInfo.point;
-        // }
-        // else
-        // {
-        //     Debug.Log("Nothing hit");
-        // }
+            tracer.transform.position = hitInfo.point;
+        }
+        else
+        {
+            Debug.Log("Nothing hit");
+        }
     }
 
     // protected void FireBullet()
@@ -186,6 +204,7 @@ public class RayCastWeapon : MonoBehaviour
         isReloading = false;
         Debug.Log("Finished reloading");
         playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+
     }
 
 
