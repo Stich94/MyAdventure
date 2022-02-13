@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject.CompareTag(targetTag))
         {
-            BaseStats stat = other.gameObject.GetComponent<BaseStats>();
+            IDamageAble stat = other.gameObject.GetComponent<IDamageAble>();
             stat.TakeDamage(10f);
             Destroy(this.gameObject);
 

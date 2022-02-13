@@ -18,6 +18,10 @@ public class ThirdPersonMovementController : MonoBehaviour
     [SerializeField] float groundedOffset = -0.14f;
     [SerializeField] float groundedRadius = 0.28f;
 
+
+    static Transform playerPos;
+    public Transform GetPlayerPos { get; }
+
     bool canJump = true;
     bool rotateOnMove = true;
 
@@ -258,6 +262,8 @@ public class ThirdPersonMovementController : MonoBehaviour
         // update animator if using character
         animator.SetFloat(animSpeedID, animationBlend);
         animator.SetFloat(animMotionSpeedID, inputMagnitude);
+
+        playerPos = this.transform;
     }
 
 

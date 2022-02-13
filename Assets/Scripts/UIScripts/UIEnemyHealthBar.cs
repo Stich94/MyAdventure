@@ -5,34 +5,55 @@ using UnityEngine.UI;
 
 public class UIEnemyHealthBar : MonoBehaviour
 {
-    [SerializeField] Transform targetHead;
     [SerializeField] Camera mainCam;
-    [SerializeField] Vector3 offset;
-    [SerializeField] StatsScrptableObject stats;
-    [SerializeField] Image foregroundImage;
-    [SerializeField] Image backgroundImage;
+    [SerializeField] Slider slider;
+    [SerializeField] GameObject healthBarUI;
+    [SerializeField] float showCurrentHealth;
+
+    BaseStats baseStats;
 
 
+    void Start()
+    {
+        baseStats = GetComponent<BaseStats>();
+        slider.value = CalculateHealth();
+        mainCam = Camera.main;
 
+    }
+
+    void Update()
+    {
+        UpdateEnemyHealthBar();
+    }
 
     void LateUpdate()
     {
-        transform.position = mainCam.WorldToScreenPoint(targetHead.position + offset);
+        // transform.position = mainCam.WorldToScreenPoint(targetHead.position);
+        FaceCamera();
     }
 
-    void UpdateEnemyHealthBar()
+    public void UpdateEnemyHealthBar()
     {
+        showCurrentHealth = baseStats.CurrentHealth;
         // if health is below max show Healthbar
-        if (stats.currentHp <= stats.maxHp)
+        if (baseStats.CurrentHealth <= baseStats.MaxHealth)
         {
-            this.gameObject.SetActive(true);
+            healthBarUI.SetActive(true);
+            slider.value = CalculateHealth();
+        }
+        if (baseStats.CurrentHealth <= 0f)
+        {
+            healthBarUI.SetActive(false);
         }
     }
 
-    void SetHealthPercentage(float _percentage)
+    float CalculateHealth()
     {
-        float parentWidth = GetComponent<RectTransform>().rect.width;
-        float width = parentWidth * _percentage;
-        foregroundImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+        return baseStats.CurrentHealth / baseStats.MaxHealth;
+    }
+
+    void FaceCamera()
+    {
+        healthBarUI.transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
     }
 }

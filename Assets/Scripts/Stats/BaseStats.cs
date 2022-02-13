@@ -7,25 +7,22 @@ public class BaseStats : MonoBehaviour, IDamageAble
 {
     [SerializeField] StatsScrptableObject stats;
     [SerializeField] protected float maxHealth;
+    public float MaxHealth { get { return maxHealth; } }
     [SerializeField] protected float currentHealth;
+    public float CurrentHealth { get { return currentHealth; } }
     [SerializeField] protected float damage;
+    public float Damage { get { return damage; } }
     [SerializeField] protected float attackSpeed;
     [SerializeField] protected float movementSpeed;
-    [SerializeField] protected float blinkIntensity;
-    [SerializeField] protected float blinkDuration;
-
-    [SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
     float blinkTimer;
-
     NavMeshAgent agent;
-    RagDoll ragdoll;
 
+    AiAgent modifiedAiAgent;
     void Awake()
     {
         SetStats();
-        ragdoll = GetComponent<RagDoll>();
         agent = GetComponent<NavMeshAgent>();
-        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        modifiedAiAgent = GetComponent<AiAgent>();
     }
 
     protected virtual void Update()
@@ -59,39 +56,16 @@ public class BaseStats : MonoBehaviour, IDamageAble
         {
             Die();
         }
-        blinkTimer = blinkDuration;
+        // blinkTimer = blinkDuration;
+
         // ShowHitEffect();
     }
 
     public virtual void Die()
     {
-        agent.isStopped = true;
-        ragdoll.ActivateRagdoll();
+        AiDeathState deathState = modifiedAiAgent.GetAiStateMachine.GetState(AiStateId.Death) as AiDeathState;
+        modifiedAiAgent.GetAiStateMachine.ChangeState(AiStateId.Death);
         Destroy(this.gameObject, 8f);
-        // Destroy(this.gameObject, 8f);
     }
-
-
-    // not working - emission is always at 10
-    void ShowHitEffect()
-    {
-        float lerp = Mathf.Clamp01(blinkTimer / blinkTimer);
-        float intensity = (lerp * blinkIntensity) + 1.0f; // the + 1f is required, otherwise it will be black
-                                                          // float intensity = (lerp * blinkIntensity) + 1.0f; // the + 1f is required, otherwise it will be black
-        if (skinnedMeshRenderer != null)
-        {
-            skinnedMeshRenderer.material.color = Color.white * intensity;
-
-        }
-        else
-        {
-            Debug.LogWarning("No Skinned Material found on Enemy");
-        }
-
-    }
-
-
-
-
 
 }
