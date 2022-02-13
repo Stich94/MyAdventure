@@ -7,16 +7,9 @@ using UnityEngine.VFX;
 [CreateAssetMenu(menuName = "Weapon", fileName = "Weapon")]
 public class WeapnScriptable : ScriptableObject
 {
-    public enum EWeaponFireType
-    {
-        none,
-        sinlgeShot,
-        burst,
-        charge
-    }
-
     public event Action FireAction;
-    public EWeaponFireType weaponFireType = EWeaponFireType.none;
+    public bool isActive = false;
+
     public float damage;
     public int magazineSize;
     public int currentMagazineSize;
@@ -28,26 +21,26 @@ public class WeapnScriptable : ScriptableObject
     [SerializeField] ParticleSystem muzzleFlash;
 
 
-    private void OnEnable()
-    {
+    // private void OnEnable()
+    // {
 
-    }
+    // }
 
-    public void StartFiring()
-    {
+    // public void StartFiring()
+    // {
 
-        FireAction.Invoke();
-    }
+    //     FireAction.Invoke();
+    // }
 
-    public void Register(Action _action)
-    {
-        FireAction += _action;
-    }
+    // public void Register(Action _action)
+    // {
+    //     FireAction += _action;
+    // }
 
-    public void UnRegister(Action _action)
-    {
-        FireAction -= _action;
-    }
+    // public void UnRegister(Action _action)
+    // {
+    //     FireAction -= _action;
+    // }
 
     public void SingleBurtMode()
     {

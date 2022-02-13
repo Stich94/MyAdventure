@@ -12,11 +12,14 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected WeapnScriptable weapon;
     [SerializeField] protected Transform raycastOrigin;
     [SerializeField] protected Transform raycastDestination;
+    [SerializeField] protected GameObject bulletPrefab;
+    [SerializeField] protected Transform bulletSpawnPoint;
+
     [SerializeField] String environmentTag = "Environment";
-    [SerializeField] LayerMask targetLayer;
-    [SerializeField] LayerMask aimLayerMask;
-    [SerializeField] bool isFiring = false;
-    [SerializeField] bool isReloading = false; // just for Debug
+    [SerializeField] protected LayerMask targetLayer;
+    [SerializeField] protected LayerMask aimLayerMask;
+    [SerializeField] protected bool isFiring = false;
+    [SerializeField] protected bool isReloading = false; // just for Debug
 
 
     [Header("VFX")]
@@ -26,24 +29,33 @@ public class RayCastWeapon : MonoBehaviour
     Ray ray;
     RaycastHit hitInfo;
     protected InputAction shootAction;
+    protected InputAction reloadAction;
 
     // get Weaponspecs from the Scriptable
-    protected float maxMagazineAmmo;
-    [SerializeField] protected float currentMagazineAmmo;
+    protected int maxMagazineAmmo;
+    [SerializeField] protected int currentMagazineAmmo;
     protected float fireRate = 5f;
     protected float reloadTime;
     WaitForSeconds reloadWait;
     WaitForSeconds nextShotWaitTime;
-    Coroutine fireRoutine;
+    protected Coroutine fireRoutine;
+    protected Coroutine reloadRoutine;
+
+    protected Vector3 aimDir;
+
+    [SerializeField] protected UIManager playerHudManager;
 
     protected virtual void Awake()
     {
         shootAction = playerInput.actions["Shoot"];
+        reloadAction = playerInput.actions["Reload"];
         thirdPersonShootController = GetComponentInParent<ThirdPersonShooterController>();
         SetWeaponStats();
+        reloadAction.performed += _ => StartReloading();
         // nextShotWaitTime = new WaitForSeconds(1 / fireRate);
         // shootAction.started += _ => StartFiring();
         // shootAction.canceled += _ => StopFiring();
+
     }
 
     // Subscribe to this event
@@ -53,6 +65,8 @@ public class RayCastWeapon : MonoBehaviour
         // playerControlInstance.Player.Enable();
         // shootAction.performed += _ => ShootGun();
         shootAction.performed += _ => StartFiring();
+
+
     }
 
     // unregister from this event
@@ -65,14 +79,29 @@ public class RayCastWeapon : MonoBehaviour
         // shootAction.canceled += _ => StopFiring();
     }
 
-    protected virtual void StartFiring()
+    protected void Update()
+    {
+        aimDir = thirdPersonShootController.AimDirection;
+    }
+
+    protected void StartReloading()
+    {
+        if (!isReloading)
+        {
+            StartCoroutine(Reload());
+
+        }
+    }
+
+
+    public virtual void StartFiring()
     {
         // Debug.Log(shootAction.ReadValue<float>());
         if (thirdPersonShootController.IsAiming)
         {
             if (CanShoot() && !isReloading)
             {
-                FireBullet();
+                FireBullet(aimDir);
 
             }
             else
@@ -80,9 +109,6 @@ public class RayCastWeapon : MonoBehaviour
                 StartCoroutine(Reload());
             }
         }
-
-        // fireRoutine = StartCoroutine(Shoot());
-        // StartCoroutine(Shoot());
 
     }
     protected virtual void StopFiring()
@@ -102,12 +128,18 @@ public class RayCastWeapon : MonoBehaviour
         nextShotWaitTime = new WaitForSeconds(1f / fireRate);
     }
 
-    protected virtual void FireBullet()
+    protected virtual void FireBullet(Vector3 _aimDirection)
     {
+
         isFiring = true;
         currentMagazineAmmo--;
-        muzzleFlash.Emit(1);
+        // muzzleFlash.Emit(1);
         Debug.Log("Pew Pew");
+
+        // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
+
+        playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+
         ray.origin = raycastOrigin.position;
         ray.direction = raycastDestination.position - raycastOrigin.position;
 
@@ -129,7 +161,9 @@ public class RayCastWeapon : MonoBehaviour
             if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
             {
                 //TODO - hit gets damaged
-                StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
+                // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
+                BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
+                otherStats.TakeDamage(10f);
                 // take Damage
             }
 
@@ -169,6 +203,8 @@ public class RayCastWeapon : MonoBehaviour
         currentMagazineAmmo = maxMagazineAmmo;
         isReloading = false;
         Debug.Log("Finished reloading");
+        playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+
     }
 
 
@@ -176,11 +212,11 @@ public class RayCastWeapon : MonoBehaviour
     {
         if (CanShoot())
         {
-            FireBullet();
+            FireBullet(aimDir);
             while (CanShoot())
             {
                 yield return nextShotWaitTime;
-                FireBullet();
+                FireBullet(aimDir);
             }
             StartCoroutine(Reload());
         }

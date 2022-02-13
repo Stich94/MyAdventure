@@ -11,158 +11,199 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] PlayerInput playerInput;
     [SerializeField] float aimMovementSpeed = 2f;
     [SerializeField] int priorityBoostAmount = 10;
-    [SerializeField] Canvas thirdPersonCanvas;
-    [SerializeField] Canvas aimCanvas;
     [SerializeField] float normalSensitivity = 5f;
     [SerializeField] float aimSensitivity = 0.5f;
     [SerializeField] CinemachineVirtualCamera aimVirtualCamera;
-    [SerializeField] LayerMask aimColliderMask;
+    [SerializeField] LayerMask aimColliderMask = new LayerMask();
+    [SerializeField] Transform DebugTransform;
     [SerializeField] bool isAiming = false;
     [SerializeField] Camera cam;
     public bool IsAiming { get { return isAiming; } }
     InputAction aimAction;
     InputAction shootAction;
-    PlayerController playerController;
-    [SerializeField] Transform bulletPrefab;
+    ThirdPersonMovementController playerController;
+    [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform bulletSpawnPoint;
     Vector3 mouseWorldPosition;
     Transform hitTransform;
     Animator animator;
 
     [Header("Rig Settings")]
-
-    [SerializeField] Rig bodyRigLayer;
-    [SerializeField] float bodyRigValue = 0f;
-    [SerializeField] float bodyduration = 0.3f; // how long it takes before we aim
     [SerializeField] Rig aimRigLayer;
-    [SerializeField] float aimRigValue = 0f;
-    [SerializeField] float aimDuration = 0.3f;
+    [SerializeField] float aimRigWeight = 0f;
 
     [Header("Current Active Player Weapon")]
     [SerializeField] RayCastWeapon activeWeapon;
+    [SerializeField] bool toggleActiveWeapon = false; // only for Debug
+
+    [SerializeField] List<GameObject> allWeapons = new List<GameObject>();
+
+    [SerializeField] Vector3 aimDir; // just for Debug
+
+    public Vector3 AimDirection { get { return aimDir; } }
 
 
-    private void Awake()
+
+
+    void Awake()
     {
-        playerController = GetComponent<PlayerController>();
-        // virtualCamera = GetComponent<CinemachineVirtualCamera>();
+        playerController = GetComponent<ThirdPersonMovementController>();
         aimAction = playerInput.actions["Aim"];
-        // shootAction = playerInput.actions["Shoot"];
+        shootAction = playerInput.actions["Shoot"];
         animator = GetComponent<Animator>();
     }
 
     // add the events
-    private void OnEnable()
+    #region - Events
+    void OnEnable()
     {
         aimAction.performed += _ => StartAim();
         // shootAction.performed += _ => ShootGun();
+        // shootAction.performed += _ => activeWeapon.StartFiring();
         aimAction.canceled += _ => CancelAim();
     }
 
     // unsubscribe from this events
-    private void OnDisable()
+    void OnDisable()
     {
-        aimAction.performed += _ => StartAim();
+        aimAction.performed -= _ => StartAim();
         // shootAction.performed -= _ => ShootGun();
+        // shootAction.performed -= _ => activeWeapon.StartFiring();
         aimAction.canceled -= _ => CancelAim();
     }
 
-    private void StartAim()
+    void StartAim()
     {
         isAiming = true;
         aimVirtualCamera.gameObject.SetActive(true);
         aimVirtualCamera.Priority += priorityBoostAmount;
-        // aimCanvas.enabled = true;
 
-        // thirdPersonCanvas.enabled = false;
+        playerController.SetSensitivity(aimSensitivity);
+        aimRigWeight = 1f;
+
     }
 
-    private void CancelAim()
+    void CancelAim()
     {
         isAiming = false;
         aimVirtualCamera.Priority -= priorityBoostAmount;
         aimVirtualCamera.gameObject.SetActive(false);
-        // aimCanvas.enabled = false;
 
-        // thirdPersonCanvas.enabled = true;
+        playerController.SetSensitivity(normalSensitivity);
+        aimRigWeight = 0f;
+
+    }
+    #endregion
+
+    void Update()
+    {
+        UpdatePlayerRotation();
+        UpdateAimRig();
+        WeaponToggle();
     }
 
-    private void Update()
+    void UpdatePlayerRotation()
     {
-        // rotate the player
-        // mouseWorldPosition = Vector3.zero;
-        // // hipoint in center of screen
-        // Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        // Ray ray = cam.ScreenPointToRay(screenCenterPoint);
-        // hitTransform = null;
-        // if (Physics.Raycast(ray, out RaycastHit hit, 999f, aimColliderMask))
-        // {
-        //     mouseWorldPosition = hit.point;
-        //     hitTransform = hit.transform;
-        // }
-        if (isAiming)
+        mouseWorldPosition = Vector3.zero;
+
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+        hitTransform = null;
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderMask))
         {
-            aimRigLayer.weight += Time.deltaTime / aimDuration;
-            bodyRigLayer.weight = 1f;
-            playerController.TargetSpeed = aimMovementSpeed;
-            playerController.SetSensitivity(aimSensitivity);
+            DebugTransform.position = raycastHit.point;
+            mouseWorldPosition = raycastHit.point;
+            hitTransform = raycastHit.transform;
+        }
+
+        if (isAiming) // this must be calculated in update - event does not work for it
+        {
             playerController.SetRotateOnMove(false);
-            // Vector3 worldAimTarget = mouseWorldPosition;
-            // worldAimTarget.y = transform.position.y;
-            // Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-            // transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+            Vector3 worldAimTarget = mouseWorldPosition;
+            worldAimTarget.y = transform.position.y;
+            Vector3 aimDirection = (worldAimTarget - playerController.transform.position).normalized;
+
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
 
+
+
+            // // rotate the player towards aimDirection
+            transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+
+            aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
         }
         else
         {
-            aimRigLayer.weight -= Time.deltaTime / aimDuration;
-            bodyRigLayer.weight = 0f;
-            playerController.SetSensitivity(normalSensitivity);
             playerController.SetRotateOnMove(true);
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+
+
         }
     }
 
-    private void ShootGun()
+    // not used right not - just for testing
+    void ShootGun()
     {
 
-        Debug.Log("is shooting");
-        // // Raycast Hit Method
-        // if (hitTransform != null)
-        // {
-        //     if (hitTransform.GetComponent<IDamageAble>() != null)
-        //     {
-        //         // hit target
-        //         // Instantiate vfxHit green
-        //     }
-        //     else
-        //     {
-        //         // hit something else
-        //         // instantiate vfx Hit red
-        //     }
-        // }
-        // // instantiate real projectiles
-        // Vector3 aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
-        // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(aimDir, Vector3.up)); // was Vector3.up - before change
-        // // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        // #region - shoot with raycast - disabled
-        //     RaycastHit hit;
-        //     GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        //     BulletController bulletController = bullet.GetComponent<BulletController>();
-        //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-        //     {
-        //         bulletController.target = hit.point;
-        //         bulletController.hit = true;
-        //     }
-        //     else
-        //     {
-        //         bulletController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-        //         bulletController.hit = false;
-        //     }
-        // }
-        // #endregion
+        // instantiate real bullets
+        if (isAiming)
+        {
+            Debug.Log("is shooting");
+            // aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
+            Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(aimDir, Vector3.up));
+        }
+
+        // raycast method
+        if (hitTransform != null)
+        {
+            if (hitTransform.GetComponent<IDamageAble>() != null)
+            {
+                // hit target
+                // Instantiate vfxHit green
+                // Instantiate(vfxHit, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                // hit something else
+                // instantiate vfx Hit red
+            }
+        }
 
     }
+
+    void UpdateAimRig()
+    {
+        aimRigLayer.weight = Mathf.Lerp(aimRigLayer.weight, aimRigWeight, Time.deltaTime * 20f);
+    }
+
+    // only for debug check
+    void WeaponToggle()
+    {
+        if (toggleActiveWeapon)
+        {
+            if (allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled == true)
+            {
+                allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = false;
+                allWeapons[0].gameObject.SetActive(false);
+                allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = true;
+                allWeapons[1].gameObject.SetActive(true);
+                toggleActiveWeapon = false;
+            }
+            else
+            {
+                allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = true;
+                allWeapons[0].gameObject.SetActive(true);
+                allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = false;
+                allWeapons[1].gameObject.SetActive(false);
+                toggleActiveWeapon = false;
+            }
+
+        }
+
+
+    }
+
+
+
 }
 

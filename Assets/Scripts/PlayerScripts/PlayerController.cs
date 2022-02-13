@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float rotationSpeed = 5f;
     [SerializeField] float targetRotation = 0.0f;
     [SerializeField] float RotationSmoothTime = 0.12f;
-    [SerializeField] float SpeedChangeRate = 10.0f;
 
     [SerializeField] ThirdPersonShooterController aimController;
     float rotationVelocity;

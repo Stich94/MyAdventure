@@ -9,6 +9,9 @@ TagManager:
   - Wall
   - Ground
   - Environment
+  - Health
+  - Weapon
+  - Ammo
   layers:
   - Default
   - TransparentFX
@@ -21,7 +24,7 @@ TagManager:
   - Player
   - Enemy
   - Ground
-  - 
+  - PickUp
   - 
   - 
   - 
