@@ -8,6 +8,8 @@ using UnityEngine.VFX;
 public class WeapnScriptable : ScriptableObject
 {
     public event Action FireAction;
+    public string weaponName;
+    public int weaponId;
     public bool isActive = false;
 
     public float damage;
@@ -19,7 +21,6 @@ public class WeapnScriptable : ScriptableObject
 
     [SerializeField] VisualEffect fireEffect;
     [SerializeField] ParticleSystem muzzleFlash;
-
 
     // private void OnEnable()
     // {

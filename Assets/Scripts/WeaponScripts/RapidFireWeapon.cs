@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RapidFireWeapon : RayCastWeapon
 {
@@ -11,19 +12,22 @@ public class RapidFireWeapon : RayCastWeapon
     {
         base.Awake();
         rapidFireWait = new WaitForSeconds(1 / fireRate);
-        shootAction.started += _ => StartRapidFiring();
-        shootAction.canceled += _ => StopRapidFiring();
+        // shootAction.started += _ => StartRapidFiring();
+        // shootAction.canceled += _ => StopRapidFiring();
     }
 
     protected override void OnEnable()
     {
         // shootAction.started += _ => StartRapidFiring();
+        shootAction.started += _ => StartRapidFiring();
+        shootAction.canceled += _ => StopRapidFiring();
     }
 
     protected override void OnDisable()
     {
         // shootAction.canceled += _ => StopRapidFiring();
     }
+
 
     private void StartRapidFiring()
     {
@@ -34,7 +38,7 @@ public class RapidFireWeapon : RayCastWeapon
 
     }
 
-    private void StopRapidFiring()
+    public void StopRapidFiring()
     {
         if (fireRoutine != null)
         {
@@ -44,7 +48,10 @@ public class RapidFireWeapon : RayCastWeapon
 
     public override void StartFiring()
     {
-        base.StartFiring();
+        // if (thirdPersonShootController.IsAiming && !isReloading)
+        // {
+        //     fireRoutine = StartCoroutine(RapidFire());
+        // }
     }
 
     protected override void FireBullet(Vector3 _aimDirection)
@@ -56,7 +63,7 @@ public class RapidFireWeapon : RayCastWeapon
 
         Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
-        playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+        // playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
     }
 
     protected IEnumerator RapidFire()

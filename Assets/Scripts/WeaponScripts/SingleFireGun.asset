@@ -9,10 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9dd034d59cded14b9b7411de103cc0a, type: 3}
-  m_Name: Rifle
+  m_Script: {fileID: 11500000, guid: abf6b0c0e0664654eab743bedd6086ed, type: 3}
+  m_Name: SingleFireGun
   m_EditorClassIdentifier: 
-  WeaponName: Rifle
-  Damage: 10
-  MagazineSize: 30
-  currentMagazineSize: 0
+  weaponName: Bruzzler
+  weaponId: 2
+  isActive: 0
+  damage: 15
+  magazineSize: 10
+  currentMagazineSize: 10
+  fireRate: 10
+  reloadTime: 3
+  fireEffect: {fileID: 0}
+  muzzleFlash: {fileID: 0}

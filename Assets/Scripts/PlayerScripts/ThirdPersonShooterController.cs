@@ -24,6 +24,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     ThirdPersonMovementController playerController;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform bulletSpawnPoint;
+    public Transform BulletSpawnOrigin { get { return bulletSpawnPoint; } set { bulletSpawnPoint = value; } }
     Vector3 mouseWorldPosition;
     Transform hitTransform;
     Animator animator;
@@ -99,7 +100,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     {
         UpdatePlayerRotation();
         UpdateAimRig();
-        WeaponToggle();
+        // WeaponToggle();
     }
 
     void UpdatePlayerRotation()

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abf6b0c0e0664654eab743bedd6086ed, type: 3}
   m_Name: PlasmaRifle
   m_EditorClassIdentifier: 
-  weaponFireType: 2
+  weaponName: PlasmaGun
+  weaponId: 1
+  isActive: 0
   damage: 10
   magazineSize: 20
   currentMagazineSize: 20

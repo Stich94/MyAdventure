@@ -10,10 +10,14 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected PlayerInput playerInput;
     [SerializeField] protected ThirdPersonShooterController thirdPersonShootController;
     [SerializeField] protected WeapnScriptable weapon;
+    public string WeaponTitle { get { return weapon.weaponName; } }
+    public int WeaponId { get { return weapon.weaponId; } }
     [SerializeField] protected Transform raycastOrigin;
     [SerializeField] protected Transform raycastDestination;
+    public Transform RayCastDestination { get { return raycastDestination; } set { raycastDestination = value; } }
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] protected Transform bulletSpawnPoint;
+    public Transform GetBulletOriginPosition { get { return bulletSpawnPoint; } }
 
     [SerializeField] String environmentTag = "Environment";
     [SerializeField] protected LayerMask targetLayer;
@@ -26,15 +30,16 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] GameObject bulletHolePrefab;
     [SerializeField] TrailRenderer tracerEffect;
-    Ray ray;
-    RaycastHit hitInfo;
+    protected Ray ray;
+    protected RaycastHit hitInfo;
     protected InputAction shootAction;
     protected InputAction reloadAction;
 
     // get Weaponspecs from the Scriptable
     protected int maxMagazineAmmo;
+    [Header("Weapon Stats")]
     [SerializeField] protected int currentMagazineAmmo;
-    protected float fireRate = 5f;
+    [SerializeField] protected float fireRate = 5f;
     protected float reloadTime;
     WaitForSeconds reloadWait;
     WaitForSeconds nextShotWaitTime;
@@ -47,10 +52,11 @@ public class RayCastWeapon : MonoBehaviour
 
     protected virtual void Awake()
     {
+        playerInput = GetComponentInParent<PlayerInput>();
+        thirdPersonShootController = gameObject.GetComponentInParent<ThirdPersonShooterController>();
         shootAction = playerInput.actions["Shoot"];
         reloadAction = playerInput.actions["Reload"];
-        thirdPersonShootController = GetComponentInParent<ThirdPersonShooterController>();
-        SetWeaponStats();
+        SetWeaponStats(); // weaponstats must be in Awake, otherwise the firerate will not update
         reloadAction.performed += _ => StartReloading();
         // nextShotWaitTime = new WaitForSeconds(1 / fireRate);
         // shootAction.started += _ => StartFiring();
@@ -64,6 +70,8 @@ public class RayCastWeapon : MonoBehaviour
         // playerControlInstance.Player.Shoot.performed += Shoot;
         // playerControlInstance.Player.Enable();
         // shootAction.performed += _ => ShootGun();
+
+
         shootAction.performed += _ => StartFiring();
 
 
@@ -75,13 +83,15 @@ public class RayCastWeapon : MonoBehaviour
         // playerControlInstance.Player.Shoot.performed -= Shoot;
         // playerControlInstance.Player.Disable();
         // shootAction.performed -= _ => ShootGun();
-        shootAction.performed -= _ => StartFiring();
         // shootAction.canceled += _ => StopFiring();
-    }
 
+
+        shootAction.performed -= _ => StartFiring();
+    }
     protected void Update()
     {
         aimDir = thirdPersonShootController.AimDirection;
+        // Debug.Log(aimDir);
     }
 
     protected void StartReloading()
@@ -138,7 +148,7 @@ public class RayCastWeapon : MonoBehaviour
 
         // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
-        playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+        // playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
 
         ray.origin = raycastOrigin.position;
         ray.direction = raycastDestination.position - raycastOrigin.position;
@@ -203,7 +213,7 @@ public class RayCastWeapon : MonoBehaviour
         currentMagazineAmmo = maxMagazineAmmo;
         isReloading = false;
         Debug.Log("Finished reloading");
-        playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+        // playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
 
     }
 
@@ -237,6 +247,21 @@ public class RayCastWeapon : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Instantiate(_bulletHolePrefab, _hitPos, _rotaion);
     }
+
+    public void GetReferences()
+    {
+        playerInput = GetComponentInParent<PlayerInput>();
+        thirdPersonShootController = gameObject.GetComponentInParent<ThirdPersonShooterController>();
+        shootAction = playerInput.actions["Shoot"];
+        reloadAction = playerInput.actions["Reload"];
+    }
+
+
+    // void OnDestroy()
+    // {
+    //     shootAction.performed -= _ => StartFiring();
+    //     reloadAction.performed -= _ => StartReloading();
+    // }
 
 
 
