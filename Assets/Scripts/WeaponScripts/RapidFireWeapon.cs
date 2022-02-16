@@ -63,7 +63,7 @@ public class RapidFireWeapon : RayCastWeapon
 
         Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
-        // playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+        // playerHudManager?.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
     }
 
     protected IEnumerator RapidFire()

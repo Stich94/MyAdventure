@@ -30,16 +30,25 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] GameObject bulletHolePrefab;
     [SerializeField] TrailRenderer tracerEffect;
+
+
+    // Animator for reload Animation
+    [SerializeField] protected Animator animator;
+    protected int relaodAnimID;
     protected Ray ray;
     protected RaycastHit hitInfo;
     protected InputAction shootAction;
     protected InputAction reloadAction;
 
     // get Weaponspecs from the Scriptable
-    protected int maxMagazineAmmo;
+
+
     [Header("Weapon Stats")]
     [SerializeField] protected int currentMagazineAmmo;
     [SerializeField] protected float fireRate = 5f;
+    protected int maxMagazineAmmo;
+    // public int GetCurrentAmmo => weapon.currentMagazineSize;
+    // public int GetMaxMagazineSize => weapon.magazineSize;
     protected float reloadTime;
     WaitForSeconds reloadWait;
     WaitForSeconds nextShotWaitTime;
@@ -50,8 +59,11 @@ public class RayCastWeapon : MonoBehaviour
 
     [SerializeField] protected UIManager playerHudManager;
 
+
     protected virtual void Awake()
     {
+        animator = GetComponentInParent<Animator>();
+        relaodAnimID = Animator.StringToHash("Reload");
         playerInput = GetComponentInParent<PlayerInput>();
         thirdPersonShootController = gameObject.GetComponentInParent<ThirdPersonShooterController>();
         shootAction = playerInput.actions["Shoot"];
@@ -98,8 +110,10 @@ public class RayCastWeapon : MonoBehaviour
     {
         if (!isReloading)
         {
+            // animator.SetBool(relaodAnimID, true);
+            animator?.SetTrigger("Reload");
             StartCoroutine(Reload());
-
+            // animator.SetBool(relaodAnimID, false);
         }
     }
 
@@ -143,12 +157,14 @@ public class RayCastWeapon : MonoBehaviour
 
         isFiring = true;
         currentMagazineAmmo--;
+        weapon.currentMagazineSize -= 1;
         // muzzleFlash.Emit(1);
         Debug.Log("Pew Pew");
 
         // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
-        // playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+        playerHudManager?.UpdateWeaponAmmoUI();
+
 
         ray.origin = raycastOrigin.position;
         ray.direction = raycastDestination.position - raycastOrigin.position;
@@ -208,12 +224,15 @@ public class RayCastWeapon : MonoBehaviour
             yield return null;
         }
         isReloading = true;
+
+
         Debug.Log("Is reloading");
         yield return reloadWait;
         currentMagazineAmmo = maxMagazineAmmo;
+        weapon.currentMagazineSize = weapon.magazineSize;
         isReloading = false;
         Debug.Log("Finished reloading");
-        // playerHudManager.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+        playerHudManager?.UpdateWeaponAmmoUI();
 
     }
 
@@ -263,8 +282,8 @@ public class RayCastWeapon : MonoBehaviour
     //     reloadAction.performed -= _ => StartReloading();
     // }
 
-
-
-
-
+    public WeapnScriptable GetWeaponData()
+    {
+        return this.weapon;
+    }
 }

@@ -18,6 +18,7 @@ public class UIEnemyHealthBar : MonoBehaviour
         baseStats = GetComponent<BaseStats>();
         slider.value = CalculateHealth();
         mainCam = Camera.main;
+        healthBarUI.SetActive(false);
 
     }
 

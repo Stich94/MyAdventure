@@ -17,6 +17,8 @@ public class ActiveWeapon : MonoBehaviour
     ThirdPersonShooterController shootAimController;
     RayCastWeapon weapon;
 
+    [SerializeField] UIManager playerHud;
+
     private void Start()
     {
 
@@ -49,6 +51,7 @@ public class ActiveWeapon : MonoBehaviour
         {
             Destroy(weapon.gameObject);
         }
+        Debug.Log("Weapon Equipped");
         weapon = _newWeapon;
         weapon.RayCastDestination = crosshairTarget;
         weapon.transform.parent = weaponParent;
@@ -58,6 +61,8 @@ public class ActiveWeapon : MonoBehaviour
         shootAimController.BulletSpawnOrigin = _newWeapon.GetBulletOriginPosition;
         bulletSpawnPoint = _newWeapon.GetBulletOriginPosition;
         currentEquippedWeapon = weapon;
+        WeapnScriptable weaponData = weapon.GetWeaponData();
+        playerHud.SetActiveWeapon(weaponData);
 
     }
 
