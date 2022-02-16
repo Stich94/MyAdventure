@@ -2633,7 +2633,16 @@ MonoBehaviour:
   aimTransform: {fileID: 4134117006482877427}
   bone: {fileID: 2057806862415310481}
   iterations: 10
+  angleLimit: 90
+  distanceLimit: 1.5
   weight: 1
+  humanBones:
+  - bone: 7
+    weight: 0.2
+  - bone: 8
+    weight: 0.5
+  - bone: 54
+    weight: 1
 --- !u!95 &4134117006439896618
 Animator:
   serializedVersion: 3

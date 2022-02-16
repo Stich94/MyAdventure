@@ -19,6 +19,10 @@ public class AiAgent : MonoBehaviour
     public NavMeshAgent GetNavAgent { get { return navMeshAgent; } }
     RagDoll ragdoll;
 
+    AiWeapons aiWeapon;
+
+    public AiWeapons AiWeapon => aiWeapon;
+
     void Start()
     {
         if (playerPos == null)
@@ -32,6 +36,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.RegisterState(new AiChasePlayerState()); // create a new instance of our enemy state
         stateMachine.RegisterState(new AiDeathState());
         stateMachine.RegisterState(new AiIdleState());
+        stateMachine.RegisterState(new AiAttackPlayerState());
         stateMachine.ChangeState(initialState);
 
         // ragdoll.DisableRigidbody();
