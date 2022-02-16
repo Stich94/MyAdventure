@@ -7,6 +7,8 @@ public class ThirdPersonMovementController : MonoBehaviour
 {
     [SerializeField] float playerSpeed;
     [SerializeField] float sprintSpeed;
+    [SerializeField] bool isSprinting = false;
+    public bool IsSprinting => isSprinting;
     [SerializeField] float playerRotationSmoothTime;
     [SerializeField] float speedChangeRate;
     [SerializeField] float jumpHeight;
@@ -17,8 +19,6 @@ public class ThirdPersonMovementController : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundedOffset = -0.14f;
     [SerializeField] float groundedRadius = 0.28f;
-
-
     static Transform playerPos;
     public Transform GetPlayerPos { get; }
 
@@ -208,10 +208,9 @@ public class ThirdPersonMovementController : MonoBehaviour
         float sprintInput = sprintActon.ReadValue<float>();
         float targetSpeed = sprintInput >= 1 ? targetSpeed = sprintSpeed : targetSpeed = playerSpeed;
 
-        // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
+        // check if the player is sprinting
+        isSprinting = sprintInput >= 1 ? true : false;
 
-        // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-        // if there is no input, set the target speed to 0
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
         if (moveInput == Vector2.zero) targetSpeed = 0.0f;
 
@@ -221,11 +220,9 @@ public class ThirdPersonMovementController : MonoBehaviour
         float speedOffset = 0.1f;
         float inputMagnitude = 1f;
 
-        // accelerate or decelerate to target speed
         if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
         {
-            // creates curved result rather than a linear one giving a more organic speed change
-            // note T in Lerp is clamped, so we don't need to clamp our speed
+
             speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * speedChangeRate);
 
             // round speed to 3 decimal places

@@ -19,6 +19,10 @@ public class ActiveWeapon : MonoBehaviour
 
     [SerializeField] UIManager playerHud;
 
+    InputAction shootAction;
+
+
+
     private void Start()
     {
 
@@ -29,19 +33,6 @@ public class ActiveWeapon : MonoBehaviour
             Equip(existingWeapon);
         }
     }
-    // protected virtual void OnEnable()
-    // {
-    //     shootAction.performed += _ => weapon.StartFiring();
-
-
-    // }
-
-    // // unregister from this event
-    // protected virtual void OnDisable()
-    // {
-    //     shootAction.performed -= _ => weapon.StartFiring();
-    // }
-
 
 
     public void Equip(RayCastWeapon _newWeapon)

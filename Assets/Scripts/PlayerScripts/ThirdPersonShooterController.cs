@@ -75,23 +75,29 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     void StartAim()
     {
-        isAiming = true;
-        aimVirtualCamera.gameObject.SetActive(true);
-        aimVirtualCamera.Priority += priorityBoostAmount;
+        if (!playerController.IsSprinting)
+        {
+            isAiming = true;
+            aimVirtualCamera.gameObject.SetActive(true);
+            aimVirtualCamera.Priority += priorityBoostAmount;
 
-        playerController.SetSensitivity(aimSensitivity);
-        aimRigWeight = 1f;
+            playerController.SetSensitivity(aimSensitivity);
+            aimRigWeight = 1f;
+        }
+
 
     }
 
     void CancelAim()
     {
+
         isAiming = false;
         aimVirtualCamera.Priority -= priorityBoostAmount;
         aimVirtualCamera.gameObject.SetActive(false);
 
         playerController.SetSensitivity(normalSensitivity);
         aimRigWeight = 0f;
+
 
     }
     #endregion
@@ -203,8 +209,6 @@ public class ThirdPersonShooterController : MonoBehaviour
 
 
     }
-
-
 
 }
 

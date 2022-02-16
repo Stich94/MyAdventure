@@ -14,6 +14,7 @@ public class WeaponIK : MonoBehaviour
 
     [SerializeField] Transform targetTransform;
     [SerializeField] Transform aimTransform;
+    public Transform aimDir => aimTransform;
     [SerializeField] Transform bone; // not used
     [SerializeField] int iterations = 10;
     [SerializeField] float angleLimit = 90.0f;

@@ -19,7 +19,7 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected Transform bulletSpawnPoint;
     public Transform GetBulletOriginPosition { get { return bulletSpawnPoint; } }
 
-    [SerializeField] String environmentTag = "Environment";
+    [SerializeField] protected String environmentTag = "Environment";
     [SerializeField] protected LayerMask targetLayer;
     [SerializeField] protected LayerMask aimLayerMask;
     [SerializeField] protected bool isFiring = false;
@@ -27,9 +27,9 @@ public class RayCastWeapon : MonoBehaviour
 
 
     [Header("VFX")]
-    [SerializeField] ParticleSystem muzzleFlash;
-    [SerializeField] GameObject bulletHolePrefab;
-    [SerializeField] TrailRenderer tracerEffect;
+    [SerializeField] protected ParticleSystem muzzleFlash;
+    [SerializeField] protected GameObject bulletHolePrefab;
+    [SerializeField] protected TrailRenderer tracerEffect;
 
 
     // Animator for reload Animation
@@ -56,12 +56,14 @@ public class RayCastWeapon : MonoBehaviour
     protected Coroutine reloadRoutine;
 
     protected Vector3 aimDir;
+    protected ThirdPersonMovementController playerController;
 
     [SerializeField] protected UIManager playerHudManager;
 
 
     protected virtual void Awake()
     {
+        playerController = GetComponent<ThirdPersonMovementController>();
         animator = GetComponentInParent<Animator>();
         relaodAnimID = Animator.StringToHash("Reload");
         playerInput = GetComponentInParent<PlayerInput>();
@@ -79,28 +81,16 @@ public class RayCastWeapon : MonoBehaviour
     // Subscribe to this event
     protected virtual void OnEnable()
     {
-        // playerControlInstance.Player.Shoot.performed += Shoot;
-        // playerControlInstance.Player.Enable();
-        // shootAction.performed += _ => ShootGun();
-
-
         shootAction.performed += _ => StartFiring();
-
-
     }
 
     // unregister from this event
     protected virtual void OnDisable()
     {
-        // playerControlInstance.Player.Shoot.performed -= Shoot;
-        // playerControlInstance.Player.Disable();
-        // shootAction.performed -= _ => ShootGun();
-        // shootAction.canceled += _ => StopFiring();
-
 
         shootAction.performed -= _ => StartFiring();
     }
-    protected void Update()
+    protected virtual void Update()
     {
         aimDir = thirdPersonShootController.AimDirection;
         // Debug.Log(aimDir);
@@ -126,7 +116,6 @@ public class RayCastWeapon : MonoBehaviour
             if (CanShoot() && !isReloading)
             {
                 FireBullet(aimDir);
-
             }
             else
             {
