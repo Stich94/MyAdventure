@@ -10,6 +10,8 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected PlayerInput playerInput;
     [SerializeField] protected ThirdPersonShooterController thirdPersonShootController;
     [SerializeField] protected WeapnScriptable weapon;
+    float weaponDamage = 0f;
+    public float GetWeaponDamage => weaponDamage;
     public string WeaponTitle { get { return weapon.weaponName; } }
     public int WeaponId { get { return weapon.weaponId; } }
     [SerializeField] protected Transform raycastOrigin;
@@ -133,6 +135,7 @@ public class RayCastWeapon : MonoBehaviour
     }
     protected virtual void SetWeaponStats()
     {
+        weaponDamage = weapon.damage;
         fireRate = weapon.fireRate;
         maxMagazineAmmo = weapon.magazineSize;
         currentMagazineAmmo = weapon.magazineSize;
@@ -178,11 +181,25 @@ public class RayCastWeapon : MonoBehaviour
                 //TODO - hit gets damaged
                 // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
                 BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
-                otherStats.TakeDamage(10f);
+                otherStats.TakeDamage(10f, ray.direction);
                 // take Damage
             }
-
             tracer.transform.position = hitInfo.point;
+
+            // Add a Force to the Rigidbody
+            Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
+            if (rb)
+            {
+                rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+            }
+
+            // Adding the weapon to our hitbox
+            HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
+            if (hitbox)
+            {
+                hitbox.OnRaycastHit(this, ray.direction);
+            }
+
         }
         else
         {

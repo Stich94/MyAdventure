@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
-    [SerializeField] BaseStats stats;
+    [SerializeField] BaseStats health;
+
+    public BaseStats Health { get { return health; } set { health = value; } }
 
 
-    // public void OnHit(RayCastWeapon _weapon)
-    // {
-    //     stats.TakeDamage(_weapon.damage);
-    // }
+    public void OnRaycastHit(RayCastWeapon _weapon, Vector3 _direction)
+    {
+        health.TakeDamage(_weapon.GetWeaponDamage, _direction);
+    }
 }

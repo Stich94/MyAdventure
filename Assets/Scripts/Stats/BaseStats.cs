@@ -17,12 +17,20 @@ public class BaseStats : MonoBehaviour, IDamageAble
     float blinkTimer;
     NavMeshAgent agent;
 
+    RagDoll ragdoll;
+
     AiAgent modifiedAiAgent;
     void Awake()
     {
         SetStats();
+        ragdoll = GetComponent<RagDoll>();
         agent = GetComponent<NavMeshAgent>();
         modifiedAiAgent = GetComponent<AiAgent>();
+    }
+
+    private void Start()
+    {
+        AddHitBoxComponents();
     }
 
     protected virtual void Update()
@@ -48,7 +56,7 @@ public class BaseStats : MonoBehaviour, IDamageAble
         currentHealth = Mathf.Clamp(currentHealth, 0, currentHealth);
     }
 
-    public virtual void TakeDamage(float _damage)
+    public virtual void TakeDamage(float _damage, Vector3 _direction)
     {
         Debug.Log("takes damage");
         currentHealth -= _damage;
@@ -68,4 +76,18 @@ public class BaseStats : MonoBehaviour, IDamageAble
         Destroy(this.gameObject, 8f);
     }
 
+    public void TakeDamage(float _damage)
+    {
+
+    }
+
+    void AddHitBoxComponents()
+    {
+        Rigidbody[] rb = GetComponentsInChildren<Rigidbody>();
+        for (int i = 0; i < rb.Length; i++)
+        {
+            HitBox hitbox = rb[i].gameObject.AddComponent<HitBox>();
+            hitbox.Health = this;
+        }
+    }
 }

@@ -2599,11 +2599,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPos: {fileID: 0}
-  initialState: 2
+  initialState: 3
+  currentState: 0
   navMeshAgent: {fileID: 0}
   config: {fileID: 11400000, guid: 043707354a3b697428332ced954b649a, type: 2}
   aiEnemyWeapon: {fileID: 0}
-  currentAiState: 
 --- !u!114 &952706410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2637,6 +2637,7 @@ MonoBehaviour:
   angleLimit: 90
   distanceLimit: 1.5
   weight: 1
+  targetAimOffset: {x: 0, y: 0.95, z: 0}
   humanBones:
   - bone: 7
     weight: 0.2
@@ -3596,10 +3597,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   thirdPersonShootController: {fileID: 0}
-  weapon: {fileID: 11400000, guid: fe1ea52bcd4e950459bc8bcc210d73a5, type: 2}
+  weapon: {fileID: 11400000, guid: f2275ae82a8ae08419b3bac67f788240, type: 2}
   raycastOrigin: {fileID: 1334505325920385006}
   raycastDestination: {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 5775310740484374295, guid: 60da13bbf6722314aac9c3c2c58355da, type: 3}
   bulletSpawnPoint: {fileID: 1334505325920385006}
   environmentTag: Environment
   targetLayer:
@@ -3607,7 +3608,7 @@ MonoBehaviour:
     m_Bits: 256
   aimLayerMask:
     serializedVersion: 2
-    m_Bits: 1216
+    m_Bits: 1472
   isFiring: 0
   isReloading: 0
   muzzleFlash: {fileID: 8660327178766817682, guid: b7ff86e97772e6943b760edffcd2c77f, type: 3}
@@ -3618,6 +3619,7 @@ MonoBehaviour:
   fireRate: 5
   accuracy: 0
   weaponIK: {fileID: 0}
+  targetPos: {x: 0, y: 0, z: 0}
 --- !u!1001 &4134117006257655920
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,4 +5,6 @@ using UnityEngine;
 public interface IDamageAble
 {
     void TakeDamage(float _damage);
+
+    void TakeDamage(float _damage, Vector3 _direction);
 }
