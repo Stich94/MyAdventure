@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: abf6b0c0e0664654eab743bedd6086ed, type: 3}
-  m_Name: SingleFireGun
+  m_Name: EnemySingleFireGun
   m_EditorClassIdentifier: 
-  weaponName: Bruzzler
-  weaponId: 3
+  weaponName: EnemyGun
+  weaponId: 2
   isActive: 0
-  damage: 15
-  magazineSize: 15
-  currentMagazineSize: 15
-  fireRate: 10
+  damage: 10
+  magazineSize: 12
+  currentMagazineSize: 12
+  fireRate: 5
   reloadTime: 3
   fireEffect: {fileID: 0}
   muzzleFlash: {fileID: 0}

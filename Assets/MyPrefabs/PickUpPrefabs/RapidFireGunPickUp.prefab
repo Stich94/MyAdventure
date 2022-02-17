@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3042141850443527695}
   - component: {fileID: 3042141850443527694}
   - component: {fileID: 3042141850443527690}
-  - component: {fileID: 3042141850443527691}
+  - component: {fileID: 2835431326256865011}
   m_Layer: 11
   m_Name: RapidFireGunPickUp
   m_TagString: Health
@@ -114,7 +114,7 @@ MonoBehaviour:
   bounceSpeed: 8
   bounceAmplitude: 0.05
   rotationSpeed: 90
---- !u!114 &3042141850443527691
+--- !u!114 &2835431326256865011
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,9 +123,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3042141850443527693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92b3a41e57d33ae4faef10a3b751a8ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d75dbab46a077b40bbec2fd3f22570d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 3821845701105020807, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
 --- !u!1001 &967889235161847296
 PrefabInstance:
   m_ObjectHideFlags: 0

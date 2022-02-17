@@ -17,7 +17,7 @@ public class RayCastWeapon : MonoBehaviour
     public Transform RayCastDestination { get { return raycastDestination; } set { raycastDestination = value; } }
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] protected Transform bulletSpawnPoint;
-    public Transform GetBulletOriginPosition { get { return bulletSpawnPoint; } }
+    public Transform GetBulletOriginPosition { get { return raycastOrigin; } }
 
     [SerializeField] protected String environmentTag = "Environment";
     [SerializeField] protected LayerMask targetLayer;
@@ -58,7 +58,7 @@ public class RayCastWeapon : MonoBehaviour
     protected Vector3 aimDir;
     protected ThirdPersonMovementController playerController;
 
-    [SerializeField] protected UIManager playerHudManager;
+    protected UIManager playerHudManager;
 
 
     protected virtual void Awake()
@@ -124,7 +124,7 @@ public class RayCastWeapon : MonoBehaviour
         }
 
     }
-    protected virtual void StopFiring()
+    public virtual void StopFiring()
     {
         if (fireRoutine != null)
         {

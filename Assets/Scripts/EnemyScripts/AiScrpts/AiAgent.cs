@@ -20,9 +20,10 @@ public class AiAgent : MonoBehaviour
     RagDoll ragdoll;
 
     AiWeapons aiWeapon;
-
     public AiWeapons AiWeapon => aiWeapon;
-
+    [Header("Current Weapon Equipped")]
+    [SerializeField] EnemyWeapon aiEnemyWeapon;
+    [SerializeField] string currentAiState;
     void Start()
     {
         if (playerPos == null)
@@ -30,21 +31,36 @@ public class AiAgent : MonoBehaviour
 
             playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         }
+        aiWeapon = GetComponent<AiWeapons>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         ragdoll = GetComponent<RagDoll>();
-        stateMachine = new AiStateMachine(this);
-        stateMachine.RegisterState(new AiChasePlayerState()); // create a new instance of our enemy state
-        stateMachine.RegisterState(new AiDeathState());
-        stateMachine.RegisterState(new AiIdleState());
-        stateMachine.RegisterState(new AiAttackPlayerState());
-        stateMachine.ChangeState(initialState);
+        RegisterAiStates();
 
+        SetCurrentWeapon();
         // ragdoll.DisableRigidbody();
     }
 
     void Update()
     {
         stateMachine.Update();
+        stateMachine.GetCurrentState();
+    }
+
+    void RegisterAiStates()
+    {
+        stateMachine = new AiStateMachine(this);
+        stateMachine.RegisterState(new AiChasePlayerState()); // create a new instance of our enemy state
+        stateMachine.RegisterState(new AiDeathState());
+        stateMachine.RegisterState(new AiIdleState());
+        stateMachine.RegisterState(new AiAttackPlayerState());
+        stateMachine.ChangeState(initialState);
+    }
+
+    void SetCurrentWeapon()
+    {
+        aiEnemyWeapon = GetComponentInChildren<EnemyWeapon>();
+        aiWeapon.Equip(aiEnemyWeapon);
+        aiWeapon.WeaponIsAcive = true;
     }
 
 }

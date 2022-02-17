@@ -38,8 +38,12 @@ public class UIManager : MonoBehaviour
 
     public void SetActiveWeapon(WeapnScriptable _newWeapon)
     {
-        activeWeapon = _newWeapon;
-        weaponNameText.text = _newWeapon.weaponName ?? "None";
+        if (_newWeapon != null)
+        {
+            activeWeapon = _newWeapon;
+            weaponNameText.text = activeWeapon.weaponName;
+        }
+
     }
 
 

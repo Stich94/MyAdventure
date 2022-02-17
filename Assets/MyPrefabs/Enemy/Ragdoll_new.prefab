@@ -2487,8 +2487,9 @@ GameObject:
   - component: {fileID: 4134117006439896613}
   - component: {fileID: 4134117006439896614}
   - component: {fileID: 4134117006439896615}
-  - component: {fileID: 4134117006439896616}
+  - component: {fileID: 952706410}
   - component: {fileID: 4134117006439896617}
+  - component: {fileID: 4134117006439896616}
   - component: {fileID: 4134117006439896618}
   - component: {fileID: 4134117006439896620}
   - component: {fileID: 4134117006439896619}
@@ -2528,7 +2529,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 0
+  m_Speed: 2
   m_Acceleration: 40
   avoidancePriority: 50
   m_AngularSpeed: 720
@@ -2601,7 +2602,9 @@ MonoBehaviour:
   initialState: 2
   navMeshAgent: {fileID: 0}
   config: {fileID: 11400000, guid: 043707354a3b697428332ced954b649a, type: 2}
---- !u!114 &4134117006439896616
+  aiEnemyWeapon: {fileID: 0}
+  currentAiState: 
+--- !u!114 &952706410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2610,13 +2613,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4134117006439896621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498f8f440f54e8b4492c958f0c634b21, type: 3}
+  m_Script: {fileID: 11500000, guid: 30a6ae0a34bc23444a3f126ac5ea6ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCam: {fileID: 0}
-  slider: {fileID: 4134117007768302066}
-  healthBarUI: {fileID: 4134117007159204174}
-  showCurrentHealth: 0
+  inaccuracy: 0.4
+  currentWeapon: {fileID: 0}
 --- !u!114 &4134117006439896617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2643,6 +2644,22 @@ MonoBehaviour:
     weight: 0.5
   - bone: 54
     weight: 1
+--- !u!114 &4134117006439896616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4134117006439896621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498f8f440f54e8b4492c958f0c634b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCam: {fileID: 0}
+  slider: {fileID: 4134117007768302066}
+  healthBarUI: {fileID: 4134117007159204174}
+  showCurrentHealth: 0
 --- !u!95 &4134117006439896618
 Animator:
   serializedVersion: 3
@@ -3565,6 +3582,42 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4134117006958477537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325438292433447123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc9d1a6388e4f542945695a53e031b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 0}
+  thirdPersonShootController: {fileID: 0}
+  weapon: {fileID: 11400000, guid: fe1ea52bcd4e950459bc8bcc210d73a5, type: 2}
+  raycastOrigin: {fileID: 1334505325920385006}
+  raycastDestination: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  bulletSpawnPoint: {fileID: 1334505325920385006}
+  environmentTag: Environment
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  aimLayerMask:
+    serializedVersion: 2
+    m_Bits: 1216
+  isFiring: 0
+  isReloading: 0
+  muzzleFlash: {fileID: 8660327178766817682, guid: b7ff86e97772e6943b760edffcd2c77f, type: 3}
+  bulletHolePrefab: {fileID: 5716098352442624468, guid: 09b07e0f1e9183743a66c638c0803373, type: 3}
+  tracerEffect: {fileID: 4926410638284918326, guid: 2e7d75b3aa37f084194175bdae860874, type: 3}
+  animator: {fileID: 0}
+  currentMagazineAmmo: 0
+  fireRate: 5
+  accuracy: 0
+  weaponIK: {fileID: 0}
 --- !u!1001 &4134117006257655920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3678,5 +3731,15 @@ PrefabInstance:
 --- !u!4 &5327299975547808275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8120283258586593891, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+  m_PrefabInstance: {fileID: 4134117006257655920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5325438292433447123 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8122405114643331235, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+  m_PrefabInstance: {fileID: 4134117006257655920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1334505325920385006 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3159917281303750558, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
   m_PrefabInstance: {fileID: 4134117006257655920}
   m_PrefabAsset: {fileID: 0}

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+// calling the Weapon Shoot Event in here, cause a weird lag, Player shoot must be handled in the Weapon itself
 public class ActiveWeapon : MonoBehaviour
 {
     [SerializeField] Transform crosshairTarget;
@@ -20,7 +22,6 @@ public class ActiveWeapon : MonoBehaviour
     [SerializeField] UIManager playerHud;
 
     InputAction shootAction;
-
 
 
     private void Start()
@@ -53,7 +54,7 @@ public class ActiveWeapon : MonoBehaviour
         bulletSpawnPoint = _newWeapon.GetBulletOriginPosition;
         currentEquippedWeapon = weapon;
         WeapnScriptable weaponData = weapon.GetWeaponData();
-        playerHud.SetActiveWeapon(weaponData);
+        playerHud?.SetActiveWeapon(weaponData);
 
     }
 

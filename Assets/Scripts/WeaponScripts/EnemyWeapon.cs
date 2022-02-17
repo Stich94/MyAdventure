@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class EnemyWeapon : RayCastWeapon
 {
-
     WaitForSeconds reloadWait;
     WaitForSeconds nextShotWaitTime;
-    WeaponIK weaponIK;
 
     [Header("Enemy - Specific")]
     [SerializeField] float accuracy;
+    [SerializeField] WeaponIK weaponIK;
+    [SerializeField] Vector3 targetPos; // for Debug show where the aim Target is
 
 
     protected override void Awake()
     {
         animator = GetComponentInParent<Animator>();
-        weaponIK = GetComponent<WeaponIK>();
+        weaponIK = GetComponentInParent<WeaponIK>();
         relaodAnimID = Animator.StringToHash("Reload");
 
         SetWeaponStats(); // weaponstats must be in Awake, otherwise the firerate will not update
@@ -40,6 +40,8 @@ public class EnemyWeapon : RayCastWeapon
     protected override void Update()
     {
         // aimDir = thirdPersonShootController.AimDirection;
+        aimDir = weaponIK.AimDir.transform.position;
+        targetPos = aimDir; // for debug
         // Debug.Log(aimDir);
     }
 
@@ -47,17 +49,27 @@ public class EnemyWeapon : RayCastWeapon
     {
         if (CanShoot() && !isReloading)
         {
-            FireBullet(weaponIK.aimDir.transform.position);
+            Debug.Log("Enemy is shooting");
+            FireBullet(aimDir);
         }
         else
         {
             StartCoroutine(Reload());
+            Debug.Log("Enemy is reloading");
         }
 
     }
 
-
     // using the StopFiring from Base class
+    public override void StopFiring()
+    {
+        if (fireRoutine != null)
+        {
+            StopCoroutine(fireRoutine);
+        }
+    }
+
+
 
     protected override void SetWeaponStats()
     {
@@ -75,13 +87,14 @@ public class EnemyWeapon : RayCastWeapon
 
         isFiring = true;
         currentMagazineAmmo--;
-        weapon.currentMagazineSize -= 1;
+        // weapon.currentMagazineSize -= 1;
         // muzzleFlash.Emit(1);
 
 
 
         ray.origin = raycastOrigin.position;
-        ray.direction = raycastDestination.position - raycastOrigin.position;
+        // ray.direction = raycastDestination.position - raycastOrigin.position;
+        ray.direction = weaponIK.AimDir.transform.position - raycastOrigin.position;
 
         // pew pew effect
         TrailRenderer tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
@@ -103,7 +116,7 @@ public class EnemyWeapon : RayCastWeapon
                 //TODO - hit gets damaged
                 // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
                 BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
-                otherStats.TakeDamage(10f);
+                otherStats.TakeDamage(0f);
                 // take Damage
             }
 
@@ -119,5 +132,6 @@ public class EnemyWeapon : RayCastWeapon
     // Relaod from base class used
     // Shoot from base class
     // HitDelay from base class
+
 
 }

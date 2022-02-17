@@ -14,7 +14,7 @@ public class WeaponIK : MonoBehaviour
 
     [SerializeField] Transform targetTransform;
     [SerializeField] Transform aimTransform;
-    public Transform aimDir => aimTransform;
+    public Transform AimDir => aimTransform;
     [SerializeField] Transform bone; // not used
     [SerializeField] int iterations = 10;
     [SerializeField] float angleLimit = 90.0f;
@@ -57,8 +57,11 @@ public class WeaponIK : MonoBehaviour
             }
 
         }
+        // HandleRigBones(targetPosition);
+
     }
 
+    // handle bones to aim at target
     void AimAtTarget(Transform bone, Vector3 _targetPosition)
     {
         Vector3 aimDirection = aimTransform.forward;
@@ -100,5 +103,19 @@ public class WeaponIK : MonoBehaviour
     public void SetAimTransform(Transform _aim)
     {
         aimTransform = _aim;
+    }
+
+    void HandleRigBones(Vector3 _targetPos)
+    {
+        for (int i = 0; i < iterations; i++)
+        {
+            for (int j = 0; j < boneTransforms.Length; j++)
+            {
+                Transform bone = boneTransforms[j];
+                float boneWeight = humanBones[j].weight * weight;
+                AimAtTarget(bone, _targetPos);
+            }
+
+        }
     }
 }
