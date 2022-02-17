@@ -12,6 +12,10 @@ public class EnemyWeapon : RayCastWeapon
     [SerializeField] WeaponIK weaponIK;
     [SerializeField] Vector3 targetPos; // for Debug show where the aim Target is
 
+    float distanceToTarget;
+    float accumulatedTime;
+    bool canShoot = true;
+
 
     protected override void Awake()
     {
@@ -47,26 +51,76 @@ public class EnemyWeapon : RayCastWeapon
 
     public override void StartFiring()
     {
-        if (CanShoot() && !isReloading)
+        isFiring = true;
+        if (accumulatedTime > 0.0f)
         {
-            Debug.Log("Enemy is shooting");
-            FireBullet(aimDir);
+            accumulatedTime = 0.0f;
         }
-        else
-        {
-            StartCoroutine(Reload());
-            Debug.Log("Enemy is reloading");
-        }
+        // recoil.Reset();
 
     }
 
     // using the StopFiring from Base class
     public override void StopFiring()
     {
+        isFiring = false;
         if (fireRoutine != null)
         {
             StopCoroutine(fireRoutine);
         }
+    }
+
+    public void UpdateWeapon(float _deltaTime, Vector3 _target)
+    {
+        if (isFiring && !isReloading && CanShoot())
+        {
+            if (canShoot)
+            {
+                UpdateFiring(_deltaTime, _target);
+
+            }
+            else
+            {
+                return;
+            }
+        }
+        else if (!CanShoot())
+        {
+            StartCoroutine(Reload());
+            // isFiring = false;
+        }
+
+        accumulatedTime += _deltaTime;
+    }
+
+    public void UpdateFiring(float _deltatime, Vector3 _target)
+    {
+        float fireInterval = 1.0f / fireRate;
+        while (accumulatedTime >= 0.0f)
+        {
+            FireBullet(aimDir);
+            accumulatedTime -= fireInterval;
+
+        }
+    }
+
+    protected override IEnumerator Reload()
+    {
+        if (currentMagazineAmmo == maxMagazineAmmo)
+        {
+            // has full ammo in magazine
+            yield return null;
+        }
+        isReloading = true;
+        canShoot = false;
+        Debug.Log("Is reloading");
+        yield return reloadWait;
+        currentMagazineAmmo = maxMagazineAmmo;
+        isReloading = false;
+        canShoot = true;
+        Debug.Log("Finished reloading");
+
+
     }
 
 
@@ -84,17 +138,18 @@ public class EnemyWeapon : RayCastWeapon
 
     protected override void FireBullet(Vector3 _aimDirection)
     {
-
+        Debug.Log("Enemy is shooting");
         isFiring = true;
         currentMagazineAmmo--;
         // weapon.currentMagazineSize -= 1;
         // muzzleFlash.Emit(1);
 
-
-
+        Instantiate(bulletPrefab, raycastOrigin.position, transform.rotation);
+        /*
         ray.origin = raycastOrigin.position;
         // ray.direction = raycastDestination.position - raycastOrigin.position;
         ray.direction = weaponIK.AimDir.transform.position - raycastOrigin.position;
+        distanceToTarget = ray.direction.magnitude;
 
         // pew pew effect
         TrailRenderer tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
@@ -126,12 +181,14 @@ public class EnemyWeapon : RayCastWeapon
         {
             Debug.Log("Nothing hit");
         }
+        */
     }
 
     // CanShoot func used from base class
     // Relaod from base class used
     // Shoot from base class
     // HitDelay from base class
+
 
 
 }

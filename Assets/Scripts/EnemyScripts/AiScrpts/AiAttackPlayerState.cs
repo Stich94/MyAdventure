@@ -8,7 +8,7 @@ public class AiAttackPlayerState : AiStateI
     {
         _agent.AiWeapon.SetTarget(_agent.PlayerPos);
         _agent.GetNavAgent.stoppingDistance = 5.0f;
-        // _agent.AiWeapon.SetFiring(true);
+        _agent.AiWeapon.SetFiring(true);
     }
     public void Exit(AiAgent _agent)
     {

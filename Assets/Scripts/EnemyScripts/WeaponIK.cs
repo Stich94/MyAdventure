@@ -22,6 +22,8 @@ public class WeaponIK : MonoBehaviour
 
     [Range(0, 1)]
     [SerializeField] float weight = 1f;
+    [SerializeField] Vector3 targetAimOffset;
+    public Vector3 GetAimIKoffset => targetAimOffset;
 
     [SerializeField] HumanBone[] humanBones;
     Transform[] boneTransforms;
@@ -47,17 +49,8 @@ public class WeaponIK : MonoBehaviour
 
 
         Vector3 targetPosition = GetTargetPosition();
-        for (int i = 0; i < iterations; i++)
-        {
-            for (int j = 0; j < boneTransforms.Length; j++)
-            {
-                Transform bone = boneTransforms[j];
-                float boneWeight = humanBones[j].weight * weight;
-                AimAtTarget(bone, targetPosition);
-            }
 
-        }
-        // HandleRigBones(targetPosition);
+        HandleRigBones(targetPosition);
 
     }
 
@@ -73,7 +66,7 @@ public class WeaponIK : MonoBehaviour
 
     Vector3 GetTargetPosition()
     {
-        Vector3 targetDirection = targetTransform.position - aimTransform.position;
+        Vector3 targetDirection = (targetTransform.position + targetAimOffset) - aimTransform.position;
         Vector3 aimDirection = aimTransform.forward;
         float blendOut = 0.0f;
 

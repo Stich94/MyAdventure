@@ -51,6 +51,7 @@ public class AiChasePlayerState : AiStateI
 
 
                 }
+                _agent.GetAiStateMachine.ChangeState(AiStateId.AttackPlayer);
             }
             timer = _agent.GetConfig.maxTime;
         }

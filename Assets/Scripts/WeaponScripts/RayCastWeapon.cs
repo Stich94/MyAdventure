@@ -205,7 +205,7 @@ public class RayCastWeapon : MonoBehaviour
     }
 
 
-    protected IEnumerator Reload()
+    protected virtual IEnumerator Reload()
     {
         if (currentMagazineAmmo == maxMagazineAmmo)
         {

@@ -44,8 +44,9 @@ public class AiStateMachine
         GetState(currentState)?.Enter(agent);
     }
 
-    public string GetCurrentState()
+    public AiStateId GetCurrentState()
     {
-        return this.currentState.ToString();
+        return currentState;
     }
+
 }

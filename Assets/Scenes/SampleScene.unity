@@ -5690,7 +5690,7 @@ PrefabInstance:
       objectReference: {fileID: 1235230732}
     - target: {fileID: 4134117006439896615, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
       propertyPath: initialState
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4134117006439896616, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
       propertyPath: mainCam
@@ -5700,6 +5700,10 @@ PrefabInstance:
       propertyPath: targetTransform
       value: 
       objectReference: {fileID: 1863915022}
+    - target: {fileID: 4134117006439896617, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
+      propertyPath: targetAimOffset.y
+      value: 0.95
+      objectReference: {fileID: 0}
     - target: {fileID: 4134117006439896621, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
       propertyPath: m_Name
       value: Ragdoll_new
@@ -5712,6 +5716,10 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: f2275ae82a8ae08419b3bac67f788240, type: 2}
+    - target: {fileID: 4134117006958477537, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 5775310740484374295, guid: 60da13bbf6722314aac9c3c2c58355da, type: 3}
     - target: {fileID: 4134117006958477537, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
       propertyPath: aimLayerMask.m_Bits
       value: 1472

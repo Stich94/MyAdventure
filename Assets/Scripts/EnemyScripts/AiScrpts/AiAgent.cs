@@ -9,6 +9,7 @@ public class AiAgent : MonoBehaviour
     public Transform PlayerPos { get { return playerPos; } set { playerPos = value; } }
     [SerializeField] AiStateMachine stateMachine;
     [SerializeField] AiStateId initialState;
+    [SerializeField] AiStateId currentState;
     [SerializeField] NavMeshAgent navMeshAgent;
     [SerializeField] AiAgentConfig config;
     public AiStateMachine GetAiStateMachine { get { return stateMachine; } set { stateMachine = value; } }
@@ -23,7 +24,8 @@ public class AiAgent : MonoBehaviour
     public AiWeapons AiWeapon => aiWeapon;
     [Header("Current Weapon Equipped")]
     [SerializeField] EnemyWeapon aiEnemyWeapon;
-    [SerializeField] string currentAiState;
+
+
     void Start()
     {
         if (playerPos == null)
@@ -43,7 +45,7 @@ public class AiAgent : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
-        stateMachine.GetCurrentState();
+        currentState = stateMachine.GetCurrentState();
     }
 
     void RegisterAiStates()
