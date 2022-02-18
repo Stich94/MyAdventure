@@ -2484,9 +2484,9 @@ GameObject:
   - component: {fileID: 4134117006439896610}
   - component: {fileID: 4134117006439896611}
   - component: {fileID: 4134117006439896612}
-  - component: {fileID: 4134117006439896613}
   - component: {fileID: 4134117006439896614}
   - component: {fileID: 4134117006439896615}
+  - component: {fileID: 3402208017430931391}
   - component: {fileID: 952706410}
   - component: {fileID: 4134117006439896617}
   - component: {fileID: 4134117006439896616}
@@ -2554,24 +2554,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidodies: []
---- !u!114 &4134117006439896613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4134117006439896621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7305c32f8bdcd3a4bb1f6b9f1a5de748, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: 455e0acfd9cbe58419696bd4c6567dbc, type: 2}
-  maxHealth: 0
-  currentHealth: 0
-  damage: 0
-  attackSpeed: 0
-  movementSpeed: 0
 --- !u!114 &4134117006439896614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2604,6 +2586,24 @@ MonoBehaviour:
   navMeshAgent: {fileID: 0}
   config: {fileID: 11400000, guid: 043707354a3b697428332ced954b649a, type: 2}
   aiEnemyWeapon: {fileID: 0}
+--- !u!114 &3402208017430931391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4134117006439896621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e7124ed13ef35f4b9118c74f711092a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 455e0acfd9cbe58419696bd4c6567dbc, type: 2}
+  maxHealth: 0
+  currentHealth: 0
+  damage: 0
+  attackSpeed: 0
+  movementSpeed: 0
 --- !u!114 &952706410
 MonoBehaviour:
   m_ObjectHideFlags: 0

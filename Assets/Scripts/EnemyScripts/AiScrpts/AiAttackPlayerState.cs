@@ -7,12 +7,13 @@ public class AiAttackPlayerState : AiStateI
     public void Enter(AiAgent _agent)
     {
         _agent.AiWeapon.SetTarget(_agent.PlayerPos);
-        _agent.GetNavAgent.stoppingDistance = 5.0f;
+        _agent.GetNavAgent.stoppingDistance = 10.0f;
         _agent.AiWeapon.SetFiring(true);
     }
     public void Exit(AiAgent _agent)
     {
         _agent.GetNavAgent.stoppingDistance = 0.0f;
+        _agent.AiWeapon.SetFiring(false);
     }
 
     public AiStateId GetId()

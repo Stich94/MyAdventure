@@ -115,7 +115,7 @@ public class RayCastWeapon : MonoBehaviour
         // Debug.Log(shootAction.ReadValue<float>());
         if (thirdPersonShootController.IsAiming)
         {
-            if (CanShoot() && !isReloading)
+            if (CanShoot() && !isReloading && weapon.currentMagazineSize > 0)
             {
                 FireBullet(aimDir);
             }

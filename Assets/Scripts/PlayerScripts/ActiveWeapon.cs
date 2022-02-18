@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
 // calling the Weapon Shoot Event in here, cause a weird lag, Player shoot must be handled in the Weapon itself
@@ -21,7 +20,6 @@ public class ActiveWeapon : MonoBehaviour
 
     [SerializeField] UIManager playerHud;
 
-    InputAction shootAction;
 
 
     private void Start()
@@ -29,7 +27,7 @@ public class ActiveWeapon : MonoBehaviour
 
         shootAimController = GetComponentInParent<ThirdPersonShooterController>();
         RayCastWeapon existingWeapon = GetComponentInChildren<RayCastWeapon>();
-        if (existingWeapon)
+        if (existingWeapon) // if the player has a weapon - active it
         {
             Equip(existingWeapon);
         }

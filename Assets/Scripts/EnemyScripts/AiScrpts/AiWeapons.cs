@@ -32,7 +32,7 @@ public class AiWeapons : MonoBehaviour
             // calculate the inaccuracy for the enemy
             Vector3 target = currentTarget.position + weaponIK.GetAimIKoffset;
             target += Random.insideUnitSphere * inaccuracy;
-            currentWeapon.UpdateWeapon(Time.deltaTime, target);
+            currentWeapon.UpdateWeapon(Time.deltaTime, target); // Update Enemy Firing
         }
     }
 
@@ -44,6 +44,7 @@ public class AiWeapons : MonoBehaviour
 
     public void SetFiring(bool _canFire)
     {
+        // in case the weapon isn't assigned at the start
         if (currentWeapon == null)
         {
             currentWeapon = GetComponentInChildren<EnemyWeapon>();

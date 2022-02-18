@@ -30,14 +30,24 @@ public class WeaponIK : MonoBehaviour
 
     Animator animator;
 
+    AiAgent customAiAgent;
+    AiStateId currentState;
+
     private void Start()
     {
+        customAiAgent = GetComponent<AiAgent>();
         animator = GetComponent<Animator>();
         boneTransforms = new Transform[humanBones.Length];
         for (int i = 0; i < boneTransforms.Length; i++)
         {
             boneTransforms[i] = animator.GetBoneTransform(humanBones[i].bone);
         }
+
+    }
+
+    private void Update()
+    {
+        currentState = customAiAgent.GetCurrentAiState;
     }
 
 
@@ -49,6 +59,7 @@ public class WeaponIK : MonoBehaviour
 
 
         Vector3 targetPosition = GetTargetPosition();
+
 
         HandleRigBones(targetPosition);
 
@@ -98,17 +109,24 @@ public class WeaponIK : MonoBehaviour
         aimTransform = _aim;
     }
 
+    /// <summary>
+    /// Handle RigBones only when player is in Attack State
+    /// </summary>
+    /// <param name="_targetPos"></param>
     void HandleRigBones(Vector3 _targetPos)
     {
-        for (int i = 0; i < iterations; i++)
+        if (currentState == AiStateId.AttackPlayer)
         {
-            for (int j = 0; j < boneTransforms.Length; j++)
+            for (int i = 0; i < iterations; i++)
             {
-                Transform bone = boneTransforms[j];
-                float boneWeight = humanBones[j].weight * weight;
-                AimAtTarget(bone, _targetPos);
+                for (int j = 0; j < boneTransforms.Length; j++)
+                {
+                    Transform bone = boneTransforms[j];
+                    float boneWeight = humanBones[j].weight * weight;
+                    AimAtTarget(bone, _targetPos);
+                }
             }
-
         }
+
     }
 }

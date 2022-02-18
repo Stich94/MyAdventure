@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
 
 public class AiAgent : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class AiAgent : MonoBehaviour
     [SerializeField] AiStateMachine stateMachine;
     [SerializeField] AiStateId initialState;
     [SerializeField] AiStateId currentState;
+    public AiStateId GetCurrentAiState => currentState;
     [SerializeField] NavMeshAgent navMeshAgent;
     [SerializeField] AiAgentConfig config;
     public AiStateMachine GetAiStateMachine { get { return stateMachine; } set { stateMachine = value; } }
@@ -18,12 +20,19 @@ public class AiAgent : MonoBehaviour
     public AiAgentConfig GetConfig { get { return config; } }
 
     public NavMeshAgent GetNavAgent { get { return navMeshAgent; } }
-    RagDoll ragdoll;
 
-    AiWeapons aiWeapon;
-    public AiWeapons AiWeapon => aiWeapon;
+
+
     [Header("Current Weapon Equipped")]
     [SerializeField] EnemyWeapon aiEnemyWeapon;
+    RagDoll ragdoll;
+    AiWeapons aiWeapon;
+    public AiWeapons AiWeapon => aiWeapon;
+
+    [Header("Aim Rig")]
+    [SerializeField] Rig aimRig;
+    float aimRigWeigth = 0f;
+
 
 
     void Start()
@@ -40,12 +49,17 @@ public class AiAgent : MonoBehaviour
 
         SetCurrentWeapon();
         // ragdoll.DisableRigidbody();
+
+        // disable AimRig at beginning
+        aimRig.weight = 0f;
+
     }
 
     void Update()
     {
         stateMachine.Update();
         currentState = stateMachine.GetCurrentState();
+        CheckIfAIAgentisInAttackMode();
     }
 
     void RegisterAiStates()
@@ -63,6 +77,15 @@ public class AiAgent : MonoBehaviour
         aiEnemyWeapon = GetComponentInChildren<EnemyWeapon>();
         aiWeapon.Equip(aiEnemyWeapon);
         aiWeapon.WeaponIsAcive = true;
+    }
+
+    void CheckIfAIAgentisInAttackMode()
+    {
+        if (currentState == AiStateId.AttackPlayer)
+        {
+            aimRig.weight = 1f;
+            aimRig.weight = Mathf.Lerp(aimRig.weight, aimRigWeigth, Time.deltaTime * 20f);
+        }
     }
 
 }

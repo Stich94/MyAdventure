@@ -20,17 +20,21 @@ public class BaseStats : MonoBehaviour, IDamageAble
     RagDoll ragdoll;
 
     AiAgent modifiedAiAgent;
+
+    ThirdPersonMovementController playerController;
+    ThirdPersonShooterController shootController;
     void Awake()
     {
-        SetStats();
         ragdoll = GetComponent<RagDoll>();
         agent = GetComponent<NavMeshAgent>();
         modifiedAiAgent = GetComponent<AiAgent>();
+        SetStats();
     }
 
     private void Start()
     {
         AddHitBoxComponents();
+        OnStart();
     }
 
     protected virtual void Update()
@@ -49,6 +53,9 @@ public class BaseStats : MonoBehaviour, IDamageAble
         damage = stats.damage;
         attackSpeed = stats.attackSpeed;
         movementSpeed = stats.movementSpeed;
+
+        // apply the stats to our NavMesh Agent
+        agent.speed = movementSpeed;
     }
 
     void ClampHealth()
@@ -58,36 +65,63 @@ public class BaseStats : MonoBehaviour, IDamageAble
 
     public virtual void TakeDamage(float _damage, Vector3 _direction)
     {
+        OnDamage(_direction);
         Debug.Log("takes damage");
         currentHealth -= _damage;
         if (currentHealth <= 0.0f)
         {
-            Die();
+            Die(_direction);
         }
         // blinkTimer = blinkDuration;
 
         // ShowHitEffect();
     }
 
-    public virtual void Die()
+    public virtual void Die(Vector3 _direction)
     {
-        AiDeathState deathState = modifiedAiAgent.GetAiStateMachine.GetState(AiStateId.Death) as AiDeathState;
-        modifiedAiAgent.GetAiStateMachine.ChangeState(AiStateId.Death);
-        Destroy(this.gameObject, 8f);
+        OnDeath(_direction);
+        //     AiDeathState deathState = modifiedAiAgent.GetAiStateMachine.GetState(AiStateId.Death) as AiDeathState;
+        //     modifiedAiAgent.GetAiStateMachine.ChangeState(AiStateId.Death);
+        //     Destroy(this.gameObject, 8f);
+        // }
     }
-
     public void TakeDamage(float _damage)
     {
 
     }
 
+    // add hitbox and point to our basestats script
     void AddHitBoxComponents()
     {
         Rigidbody[] rb = GetComponentsInChildren<Rigidbody>();
         for (int i = 0; i < rb.Length; i++)
         {
             HitBox hitbox = rb[i].gameObject.AddComponent<HitBox>();
-            hitbox.Health = this;
+            hitbox.Health = this; // we assign our basestats to the hixbox
+                                  // if (hitbox.gameObject != gameObject)
+                                  // {
+                                  //     hitbox.gameObject.layer = LayerMask.NameToLayer("Hitbox");
+                                  // }
         }
     }
+
+    protected virtual void OnStart()
+    {
+
+
+    }
+
+    protected virtual void OnDeath(Vector3 _direction)
+    {
+        ragdoll.ActivateRagdoll();
+        playerController.enabled = false;
+        shootController.enabled = false;
+
+    }
+
+    protected virtual void OnDamage(Vector3 _direction)
+    {
+
+    }
 }
+
