@@ -31,7 +31,7 @@ public class RapidFireWeapon : RayCastWeapon
 
     private void StartRapidFiring()
     {
-        if (thirdPersonShootController.IsAiming && !isReloading)
+        if (thirdPersonShootController.IsAiming && !isReloading && weapon.currentMagazineSize > 0)
         {
             fireRoutine = StartCoroutine(RapidFire());
         }
@@ -58,12 +58,14 @@ public class RapidFireWeapon : RayCastWeapon
     {
         isFiring = true;
         currentMagazineAmmo--;
+        weapon.currentMagazineSize--;
         // muzzleFlash.Emit(1);
         Debug.Log("Pew Pew");
 
         Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
-        // playerHudManager?.UpdatePlayerAmmoUI(currentMagazineAmmo, maxMagazineAmmo);
+        playerHudManager?.UpdateWeaponAmmoUI();
+
     }
 
     protected IEnumerator RapidFire()

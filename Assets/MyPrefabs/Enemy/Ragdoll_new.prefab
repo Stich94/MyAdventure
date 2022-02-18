@@ -2581,11 +2581,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPos: {fileID: 0}
-  initialState: 3
+  initialState: 2
   currentState: 0
   navMeshAgent: {fileID: 0}
   config: {fileID: 11400000, guid: 043707354a3b697428332ced954b649a, type: 2}
   aiEnemyWeapon: {fileID: 0}
+  aimRig: {fileID: 4134117006556842541}
 --- !u!114 &3402208017430931391
 MonoBehaviour:
   m_ObjectHideFlags: 0

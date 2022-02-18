@@ -62,9 +62,14 @@ public class RayCastWeapon : MonoBehaviour
 
     protected UIManager playerHudManager;
 
+    protected WeaponRecoil recoil;
+
+    public WeaponRecoil Recoil { get { return recoil; } set { recoil = value; } }
+
 
     protected virtual void Awake()
     {
+        recoil = GetComponent<WeaponRecoil>();
         playerController = GetComponent<ThirdPersonMovementController>();
         animator = GetComponentInParent<Animator>();
         relaodAnimID = Animator.StringToHash("Reload");
@@ -205,6 +210,8 @@ public class RayCastWeapon : MonoBehaviour
         {
             Debug.Log("Nothing hit");
         }
+
+        recoil.GenerateRecoil();
     }
 
     // protected void FireBullet()

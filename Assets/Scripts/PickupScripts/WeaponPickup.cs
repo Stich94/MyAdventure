@@ -6,17 +6,17 @@ public class WeaponPickup : MonoBehaviour
 {
     [SerializeField] RayCastWeapon weaponPrefab;
 
-
-
+    [SerializeField] WeapnScriptable weaponScriptable;
+    [SerializeField] string targetTag = "Player";
 
     private void OnTriggerEnter(Collider other)
     {
         ActiveWeapon activeWeapon = other.gameObject.GetComponent<ActiveWeapon>();
-        if (activeWeapon != null)
+        if (activeWeapon != null && other.gameObject.CompareTag(targetTag))
         {
             RayCastWeapon newWeapon = Instantiate(weaponPrefab);
-            // newWeapon = newWeapon as RapidFireWeapon;
-            newWeapon.GetComponent<RayCastWeapon>().enabled = true;
+
+            // newWeapon.GetComponent<RayCastWeapon>().enabled = true;
             activeWeapon.Equip(newWeapon);
         }
     }

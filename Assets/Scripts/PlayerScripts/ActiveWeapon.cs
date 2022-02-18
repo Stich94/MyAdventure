@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 
 // calling the Weapon Shoot Event in here, cause a weird lag, Player shoot must be handled in the Weapon itself
 public class ActiveWeapon : MonoBehaviour
 {
+    [SerializeField] CinemachineVirtualCamera playerCam;
     [SerializeField] Transform crosshairTarget;
     [SerializeField] Transform bulletSpawnPoint; // only for debug
     [SerializeField] Transform weaponParent;
@@ -13,14 +15,13 @@ public class ActiveWeapon : MonoBehaviour
     [Header("Current Equipped Weapon")]
     [SerializeField] RayCastWeapon currentEquippedWeapon;
 
-    [SerializeField] GameObject[] playerWeapons = new GameObject[3];
+    [SerializeField] List<RayCastWeapon> playerWeapons = new List<RayCastWeapon>();
 
     ThirdPersonShooterController shootAimController;
     RayCastWeapon weapon;
 
+    [Space]
     [SerializeField] UIManager playerHud;
-
-
 
     private void Start()
     {
@@ -30,6 +31,7 @@ public class ActiveWeapon : MonoBehaviour
         if (existingWeapon) // if the player has a weapon - active it
         {
             Equip(existingWeapon);
+            // playerWeapons.Add(existingWeapon);
         }
     }
 
@@ -44,6 +46,7 @@ public class ActiveWeapon : MonoBehaviour
         Debug.Log("Weapon Equipped");
         weapon = _newWeapon;
         weapon.RayCastDestination = crosshairTarget;
+        // weapon.Recoil.PlayerCamera = playerCam;
         weapon.transform.parent = weaponParent;
         weapon.transform.localPosition = Vector3.zero;
         // weapon.transform.localRotation = Quaternion.identity;
@@ -54,6 +57,13 @@ public class ActiveWeapon : MonoBehaviour
         WeapnScriptable weaponData = weapon.GetWeaponData();
         playerHud?.SetActiveWeapon(weaponData);
 
+
+        if (!playerWeapons.Contains(weapon))
+        {
+            playerWeapons.Add(weapon);
+        }
+
     }
+
 
 }

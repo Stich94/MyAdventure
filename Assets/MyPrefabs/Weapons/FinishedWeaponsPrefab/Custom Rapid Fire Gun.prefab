@@ -295,7 +295,7 @@ MonoBehaviour:
   playerInput: {fileID: 0}
   thirdPersonShootController: {fileID: 0}
   weapon: {fileID: 11400000, guid: 0f7473d07024ad64d936fa08a6890701, type: 2}
-  raycastOrigin: {fileID: 0}
+  raycastOrigin: {fileID: 3821845701736285363}
   raycastDestination: {fileID: 0}
   bulletPrefab: {fileID: 5775310740484374295, guid: 60da13bbf6722314aac9c3c2c58355da, type: 3}
   bulletSpawnPoint: {fileID: 3821845701736285363}
@@ -311,5 +311,6 @@ MonoBehaviour:
   muzzleFlash: {fileID: 0}
   bulletHolePrefab: {fileID: 0}
   tracerEffect: {fileID: 0}
+  animator: {fileID: 0}
   currentMagazineAmmo: 0
-  playerHudManager: {fileID: 0}
+  fireRate: 5

@@ -35,9 +35,6 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     [Header("Current Active Player Weapon")]
     [SerializeField] RayCastWeapon activeWeapon;
-    [SerializeField] bool toggleActiveWeapon = false; // only for Debug
-
-    [SerializeField] List<GameObject> allWeapons = new List<GameObject>();
 
     [SerializeField] Vector3 aimDir; // just for Debug
 
@@ -132,8 +129,6 @@ public class ThirdPersonShooterController : MonoBehaviour
 
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
 
-
-
             // // rotate the player towards aimDirection
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
@@ -184,31 +179,31 @@ public class ThirdPersonShooterController : MonoBehaviour
     }
 
     // only for debug check
-    void WeaponToggle()
-    {
-        if (toggleActiveWeapon)
-        {
-            if (allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled == true)
-            {
-                allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = false;
-                allWeapons[0].gameObject.SetActive(false);
-                allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = true;
-                allWeapons[1].gameObject.SetActive(true);
-                toggleActiveWeapon = false;
-            }
-            else
-            {
-                allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = true;
-                allWeapons[0].gameObject.SetActive(true);
-                allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = false;
-                allWeapons[1].gameObject.SetActive(false);
-                toggleActiveWeapon = false;
-            }
+    // void WeaponToggle()
+    // {
+    //     if (toggleActiveWeapon)
+    //     {
+    //         if (allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled == true)
+    //         {
+    //             allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = false;
+    //             allWeapons[0].gameObject.SetActive(false);
+    //             allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = true;
+    //             allWeapons[1].gameObject.SetActive(true);
+    //             toggleActiveWeapon = false;
+    //         }
+    //         else
+    //         {
+    //             allWeapons[0].gameObject.GetComponent<RayCastWeapon>().enabled = true;
+    //             allWeapons[0].gameObject.SetActive(true);
+    //             allWeapons[1].gameObject.GetComponent<RayCastWeapon>().enabled = false;
+    //             allWeapons[1].gameObject.SetActive(false);
+    //             toggleActiveWeapon = false;
+    //         }
 
-        }
+    //     }
 
 
-    }
+    // }
 
 }
 
