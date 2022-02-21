@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7f59e54f2bfd184b9dd451a678d089b, type: 3}
-  m_Name: Custom Rapid Fire Gun Raw Signal
+  m_Name: recoil
   m_EditorClassIdentifier: 
   PositionNoise:
   - X:
@@ -19,7 +19,7 @@ MonoBehaviour:
       Constant: 0
     Y:
       Frequency: 0
-      Amplitude: 1
+      Amplitude: -1
       Constant: 0
     Z:
       Frequency: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
       Constant: 0
   OrientationNoise:
   - X:
-      Frequency: 1
-      Amplitude: 5
+      Frequency: 0
+      Amplitude: -20
       Constant: 0
     Y:
       Frequency: 0
