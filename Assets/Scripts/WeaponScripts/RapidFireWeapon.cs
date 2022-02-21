@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class RapidFireWeapon : RayCastWeapon
 {
-    [Header("Rapid Fire Weapon - Specific")]
+    [Header("Rapid Fire Weapon - Speific")]
+
+    [SerializeField] float cameraShakeAmount = 0.5f;
+    CinemachineImpulseSource source;
     // Coroutine fireCoroutine;
     WaitForSeconds rapidFireWait;
     protected override void Awake()
     {
         base.Awake();
+        source = GetComponent<CinemachineImpulseSource>();
         rapidFireWait = new WaitForSeconds(1 / fireRate);
         // shootAction.started += _ => StartRapidFiring();
         // shootAction.canceled += _ => StopRapidFiring();
@@ -66,6 +71,10 @@ public class RapidFireWeapon : RayCastWeapon
 
         playerHudManager?.UpdateWeaponAmmoUI();
 
+        // source.GenerateImpulse(cameraShakeAmount);
+        recoil.GenerateRecoil();
+
+
     }
 
     protected IEnumerator RapidFire()
@@ -78,7 +87,7 @@ public class RapidFireWeapon : RayCastWeapon
 
         if (CanShoot() && thirdPersonShootController.IsAiming)
         {
-            FireBullet(aimDir);
+            // FireBullet(aimDir);
             while (CanShoot())
             {
                 yield return rapidFireWait;

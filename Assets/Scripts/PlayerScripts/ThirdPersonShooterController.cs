@@ -41,6 +41,8 @@ public class ThirdPersonShooterController : MonoBehaviour
     public Vector3 AimDirection { get { return aimDir; } }
 
 
+    Vector2 aimInput;
+    public Vector2 AimInput { get { return aimInput; } set { aimInput = value; } }
 
 
     void Awake()
@@ -133,11 +135,16 @@ public class ThirdPersonShooterController : MonoBehaviour
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
             aimDir = (mouseWorldPosition - bulletSpawnPoint.position).normalized;
+
+            // this is for the weaponRecoil
+
         }
         else
         {
             playerController.SetRotateOnMove(true);
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+
+
 
 
         }

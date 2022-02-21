@@ -2915,6 +2915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bc6473b1b9c00f4f908a317fba71599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCam: {fileID: 0}
   crosshairTarget: {fileID: 0}
   bulletSpawnPoint: {fileID: 0}
   weaponParent: {fileID: 2924494655117330977}

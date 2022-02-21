@@ -3,36 +3,30 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
+
 public class WeaponRecoil : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera playerCam;
-    [SerializeField] Transform target;
-    [SerializeField] float verticalRecoil = 0.01f;
-
     public CinemachineVirtualCamera PlayerCamera { get { return playerCam; } set { playerCam = value; } }
 
-    // Get Cinemachine Aim Camera Component
-    CinemachineComposer composerAim;
+    [SerializeField] float verticalRecoil = 0.01f;
+    [SerializeField] float duration;
+    float time;
+    Vector2 aimDir;
 
-    private void Start()
+
+    private void Update()
     {
-        composerAim = playerCam.GetCinemachineComponent<CinemachineComposer>();
-        target = composerAim.LookAtTarget;
+        if (time > 0)
+        {
+            playerCam.gameObject.transform.rotation = Quaternion.Euler(playerCam.transform.position.x - (verticalRecoil * Time.deltaTime) / duration, 0f, 0f);
+            time -= Time.deltaTime;
+        }
     }
-
-
     public void GenerateRecoil()
     {
-        // playerCam.m_Lens
-
-
-        Vector3 offset = playerCam.transform.position;
-        offset.y += verticalRecoil;
-        composerAim.m_TrackedObjectOffset = new Vector3(playerCam.transform.position.x, offset.y, playerCam.transform.position.z);
-
+        time = duration;
     }
 
 }
-
-
 

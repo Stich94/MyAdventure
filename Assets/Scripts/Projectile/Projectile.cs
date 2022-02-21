@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Projectile : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class Projectile : MonoBehaviour
 
     RagDoll ragdoll;
 
+    CinemachineImpulseSource source;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        source = GetComponent<CinemachineImpulseSource>();
     }
 
     void Start()
@@ -44,6 +48,8 @@ public class Projectile : MonoBehaviour
         float speed = 100f;
         // rb.useGravity = false;
         rb.velocity = transform.forward * speed;
+
+        // source.GenerateImpulse(Camera.main.transform.forward);
     }
     #endregion
 

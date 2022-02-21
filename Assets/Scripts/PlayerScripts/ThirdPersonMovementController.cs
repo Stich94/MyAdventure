@@ -244,6 +244,7 @@ public class ThirdPersonMovementController : MonoBehaviour
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, playerRotationSmoothTime);
 
             // rotate to face input direction relative to camera position
+            // if it is false - player is not aiming
             if (rotateOnMove)
             {
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);

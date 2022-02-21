@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.785D90A9" = "base"
+	"last_search.785D90A9" = "weapnre"
 	"InspectorPreview.785D90A9" = "0"
 	"currentGroup.785D90A9" = "all"
 }
@@ -74,6 +74,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"weapnre"
 	"base"
 	"ragdoll"
 	"ast"
