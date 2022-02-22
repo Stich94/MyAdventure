@@ -136,16 +136,58 @@ public class EnemyWeapon : RayCastWeapon
 
     }
 
+    // protected override void FireBullet(Vector3 _aimDirection)
+    // {
+    //     Debug.Log("Enemy is shooting");
+    //     isFiring = true;
+    //     currentMagazineAmmo--;
+
+
+    //     Instantiate(bulletPrefab, raycastOrigin.position, transform.rotation);
+    // }
     protected override void FireBullet(Vector3 _aimDirection)
     {
-        Debug.Log("Enemy is shooting");
+
         isFiring = true;
         currentMagazineAmmo--;
+        shootingParcticleSystem.Play();
 
 
-        Instantiate(bulletPrefab, raycastOrigin.position, transform.rotation);
 
+        ray.origin = raycastOrigin.position;
+        // ray.direction = raycastDestination.position - raycastOrigin.position;
 
+        Vector3 targetDirection = (_aimDirection - raycastOrigin.position).normalized;
+        Vector3 direction = GetDirection();
+        Debug.DrawLine(raycastOrigin.position, targetDirection, Color.red);
+
+        // }
+        if (Physics.Raycast(bulletSpawnPoint.position, direction, out hitInfo, 50f, aimLayerMask))
+        {
+            // Debug.DrawLine(bulletSpawnPoint.position, hitInfo.point, Color.red);
+            // TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+            // StartCoroutine(SpawnTrail(trail, hitInfo));
+
+            // lastShootTime = Time.time;
+
+            // Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
+            // if (rb)
+            // {
+            //     rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+            //     // }
+
+            //     // // Adding the weapon to our hitbox
+            //     HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
+            //     if (hitbox)
+            //     {
+            //         hitbox.OnRaycastHit(this, ray.direction);
+            //     }
+            // }
+            // else
+            // {
+            //     Debug.Log("Nothing hit");
+            // }
+        }
     }
 
     // CanShoot func used from base class

@@ -2599,12 +2599,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e7124ed13ef35f4b9118c74f711092a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: 455e0acfd9cbe58419696bd4c6567dbc, type: 2}
+  stats: {fileID: 0}
   maxHealth: 0
   currentHealth: 0
   damage: 0
   attackSpeed: 0
   movementSpeed: 0
+  sprintSpeed: 0
+  enemyStats: {fileID: 11400000, guid: 455e0acfd9cbe58419696bd4c6567dbc, type: 2}
 --- !u!114 &952706410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3599,12 +3601,13 @@ MonoBehaviour:
   playerInput: {fileID: 0}
   thirdPersonShootController: {fileID: 0}
   weapon: {fileID: 11400000, guid: f2275ae82a8ae08419b3bac67f788240, type: 2}
-  bulletSpreadVariance: {x: 0.1, y: 0.1, z: 0.1}
+  bulletSpreadVariance: {x: 0.01, y: 0.015, z: 0.1}
   shootDelay: 0.5
   raycastOrigin: {fileID: 1334505325920385006}
   raycastDestination: {fileID: 0}
   bulletPrefab: {fileID: 5775310740484374295, guid: 60da13bbf6722314aac9c3c2c58355da, type: 3}
   bulletSpawnPoint: {fileID: 1334505325920385006}
+  enemyTag: Enemy
   environmentTag: Environment
   targetLayer:
     serializedVersion: 2
@@ -3614,11 +3617,11 @@ MonoBehaviour:
     m_Bits: 1472
   isFiring: 0
   isReloading: 0
-  muzzleFlash: {fileID: 8660327178766817682, guid: b7ff86e97772e6943b760edffcd2c77f, type: 3}
+  muzzleFlash: {fileID: 198000012944515248, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
   bulletHolePrefab: {fileID: 5716098352442624468, guid: 09b07e0f1e9183743a66c638c0803373, type: 3}
-  shootingParcticleSystem: {fileID: 0}
-  impactParticleSystem: {fileID: 0}
-  tracerEffect: {fileID: 4926410638284918326, guid: 2e7d75b3aa37f084194175bdae860874, type: 3}
+  shootingParcticleSystem: {fileID: 198000012944515248, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
+  impactParticleSystem: {fileID: 5615790123328465986, guid: 09b07e0f1e9183743a66c638c0803373, type: 3}
+  tracerEffect: {fileID: 5368625377472082345, guid: 9e5aa09a2a681b54a85081ec791192bd, type: 3}
   animator: {fileID: 0}
   currentMagazineAmmo: 0
   fireRate: 5
