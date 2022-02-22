@@ -59,23 +59,23 @@ public class RapidFireWeapon : RayCastWeapon
         // }
     }
 
-    protected override void FireBullet(Vector3 _aimDirection)
-    {
-        isFiring = true;
-        currentMagazineAmmo--;
-        weapon.currentMagazineSize--;
-        // muzzleFlash.Emit(1);
-        Debug.Log("Pew Pew");
+    // protected override void FireBullet(Vector3 _aimDirection)
+    // {
+    //     isFiring = true;
+    //     currentMagazineAmmo--;
+    //     weapon.currentMagazineSize--;
+    //     // muzzleFlash.Emit(1);
+    //     Debug.Log("Pew Pew");
 
-        Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
+    //     Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
-        playerHudManager?.UpdateWeaponAmmoUI();
+    //     playerHudManager?.UpdateWeaponAmmoUI();
 
-        // source.GenerateImpulse(cameraShakeAmount);
-        recoil.GenerateRecoil();
+    //     // source.GenerateImpulse(cameraShakeAmount);
+    //     recoil.GenerateRecoil();
 
 
-    }
+    // }
 
     protected IEnumerator RapidFire()
     {

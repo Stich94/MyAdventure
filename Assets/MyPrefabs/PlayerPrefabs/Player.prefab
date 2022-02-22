@@ -2587,6 +2587,99 @@ Transform:
   m_Father: {fileID: 989736175386280906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &997280190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132731720853527001}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3089135581ce56499cacd5a5b2df749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCam: {fileID: 0}
+  verticalRecoilAmount: 1
+  duration: 0
+--- !u!114 &997280194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132731720853527001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: d823a2012d440404eb087ac45b65b407, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 0
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -0.14743343
+          outSlope: -0.14743343
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -1.6170441
+          outSlope: -1.6170441
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.3
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 1
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
+    m_PropagationSpeed: 343
 --- !u!1 &2924494653605435564
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,6 +3437,63 @@ MonoBehaviour:
       z: 1
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 0
+--- !u!114 &2097948702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6353857855335304031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3089135581ce56499cacd5a5b2df749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCam: {fileID: 0}
+  verticalRecoilAmount: 0.01
+  duration: 0
+--- !u!114 &2097948703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6353857855335304031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: d823a2012d440404eb087ac45b65b407, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
+    m_PropagationSpeed: 343
 --- !u!1001 &2924494654538486087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3351,9 +3501,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2924494655117330977}
     m_Modifications:
+    - target: {fileID: 3821845701105020807, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3821845701105020807, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+      propertyPath: cameraShakeAmount
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3822738422962129054, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
       propertyPath: m_Name
       value: Custom Rapid Fire Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822738422962129054, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3825991865571132682, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
       propertyPath: m_RootOrder
@@ -3401,6 +3563,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+--- !u!1 &2132731720853527001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3822738422962129054, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+  m_PrefabInstance: {fileID: 2924494654538486087}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2129432074060125261 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3825991865571132682, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
@@ -3411,8 +3578,8 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3821845701105020807, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
   m_PrefabInstance: {fileID: 2924494654538486087}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_GameObject: {fileID: 2132731720853527001}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aca020abac12ca443accd50d57c52b62, type: 3}
   m_Name: 
@@ -3490,8 +3657,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+      propertyPath: tracerEffect
+      value: 
+      objectReference: {fileID: 5368625377472082345, guid: 633b0d5768142354787b60973b7fde0b, type: 3}
     - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
       propertyPath: playerHudManager
       value: 
@@ -3500,6 +3671,22 @@ PrefabInstance:
       propertyPath: getAmmoUpdateEvent
       value: 
       objectReference: {fileID: 11400000, guid: 202aa25131cd45a4d9382733eb12b618, type: 2}
+    - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+      propertyPath: impactParticleSystem
+      value: 
+      objectReference: {fileID: 5615790123328465986, guid: 09b07e0f1e9183743a66c638c0803373, type: 3}
+    - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+      propertyPath: bulletSpreadVariance.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+      propertyPath: bulletSpreadVariance.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+      propertyPath: shootingParcticleSystem
+      value: 
+      objectReference: {fileID: 6844802156430178362}
     - target: {fileID: 8122405114643331235, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
       propertyPath: m_Name
       value: Custom Laser Gun
@@ -3510,7 +3697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8122405114643331235, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8123081128771202201, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
       propertyPath: m_Layer
@@ -3526,9 +3713,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+--- !u!1 &6353857855335304031 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8122405114643331235, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+  m_PrefabInstance: {fileID: 2924494655367656444}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6351464146087528863 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8120283258586593891, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+  m_PrefabInstance: {fileID: 2924494655367656444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6844802156430178362 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8532204936844184518, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
   m_PrefabInstance: {fileID: 2924494655367656444}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &6353857855335304029 stripped
@@ -3536,8 +3733,8 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
   m_PrefabInstance: {fileID: 2924494655367656444}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_GameObject: {fileID: 6353857855335304031}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eeecf8ab0e5129b44a2aba1763a2c162, type: 3}
   m_Name: 

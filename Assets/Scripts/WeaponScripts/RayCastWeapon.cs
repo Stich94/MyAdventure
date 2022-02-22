@@ -10,6 +10,8 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected PlayerInput playerInput;
     [SerializeField] protected ThirdPersonShooterController thirdPersonShootController;
     [SerializeField] protected WeapnScriptable weapon;
+    [SerializeField] protected Vector3 bulletSpreadVariance = new Vector3(0.5f, 0.3f, 0.1f);
+    [SerializeField] protected float shootDelay = 0.5f;
     float weaponDamage = 0f;
     public float GetWeaponDamage => weaponDamage;
     public string WeaponTitle { get { return weapon.weaponName; } }
@@ -31,6 +33,8 @@ public class RayCastWeapon : MonoBehaviour
     [Header("VFX")]
     [SerializeField] protected ParticleSystem muzzleFlash;
     [SerializeField] protected GameObject bulletHolePrefab;
+    [SerializeField] protected ParticleSystem shootingParcticleSystem;
+    [SerializeField] protected ParticleSystem impactParticleSystem;
     [SerializeField] protected TrailRenderer tracerEffect;
 
 
@@ -65,6 +69,10 @@ public class RayCastWeapon : MonoBehaviour
     protected WeaponRecoil recoil;
 
     public WeaponRecoil Recoil { get { return recoil; } set { recoil = value; } }
+
+    protected float lastShootTime;
+
+    protected bool addBulletSpread = true;
 
 
     protected virtual void Awake()
@@ -122,7 +130,10 @@ public class RayCastWeapon : MonoBehaviour
         {
             if (CanShoot() && !isReloading && weapon.currentMagazineSize > 0)
             {
-                FireBullet(aimDir);
+                if (lastShootTime + shootDelay < Time.time)
+                {
+                    FireBullet(aimDir);
+                }
             }
             else
             {
@@ -156,7 +167,9 @@ public class RayCastWeapon : MonoBehaviour
         currentMagazineAmmo--;
         weapon.currentMagazineSize -= 1;
         // muzzleFlash.Emit(1);
-        Debug.Log("Pew Pew");
+        shootingParcticleSystem.Play();
+
+        // Debug.Log("Pew Pew");
 
         // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
@@ -166,44 +179,85 @@ public class RayCastWeapon : MonoBehaviour
         ray.origin = raycastOrigin.position;
         ray.direction = raycastDestination.position - raycastOrigin.position;
 
+        Vector3 direction = GetDirection();
         // pew pew effect
-        TrailRenderer tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
-        tracer.AddPosition(ray.origin);
+        // TrailRenderer tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+        // tracer.AddPosition(ray.origin);
 
-        if (Physics.Raycast(ray, out hitInfo, 50f, aimLayerMask))
+        // if (Physics.Raycast(ray, out hitInfo, 50f, aimLayerMask))
+        // {
+
+        //     TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+        //     StartCoroutine(SpawnTrail(trail, hitInfo));
+
+        //     lastShootTime = Time.time;
+
+        //     if (hitInfo.collider.CompareTag(environmentTag))
+        //     {
+        //         // impact effect
+        //         // Instantiate(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+        //     }
+        //     if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
+        //     {
+        //         //TODO - hit gets damaged
+        //         // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
+        //         BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
+        //         otherStats.TakeDamage(10f, ray.direction);
+        //         // take Damage
+        //     }
+        //     // tracer.transform.position = hitInfo.point;
+
+        //     // Add a Force to the Rigidbody
+        //     Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
+        //     if (rb)
+        //     {
+        //         rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+        //     }
+
+        //     // Adding the weapon to our hitbox
+        //     HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
+        //     if (hitbox)
+        //     {
+        //         hitbox.OnRaycastHit(this, ray.direction);
+        //     }
+
+        // }
+        if (Physics.Raycast(bulletSpawnPoint.position, direction, out hitInfo, 50f, aimLayerMask))
         {
-            // Debug.Log("Ray hit: " + hitInfo.collider.tag);
 
-            // Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1.0f);
-            if (hitInfo.collider.CompareTag(environmentTag))
-            {
-                // impact effect
-                Instantiate(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-                // StartCoroutine(ImpactDelay(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal)));
-            }
-            if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
-            {
-                //TODO - hit gets damaged
-                // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
-                BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
-                otherStats.TakeDamage(10f, ray.direction);
-                // take Damage
-            }
-            tracer.transform.position = hitInfo.point;
+            TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, hitInfo));
 
-            // Add a Force to the Rigidbody
-            Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
-            if (rb)
-            {
-                rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
-            }
+            lastShootTime = Time.time;
 
-            // Adding the weapon to our hitbox
-            HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
-            if (hitbox)
-            {
-                hitbox.OnRaycastHit(this, ray.direction);
-            }
+            // if (hitInfo.collider.CompareTag(environmentTag))
+            // {
+            //     // impact effect
+            //     // Instantiate(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            // }
+            // if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
+            // {
+            //     //TODO - hit gets damaged
+            //     // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
+            //     BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
+            //     otherStats.TakeDamage(10f, ray.direction);
+            //     // take Damage
+            // }
+            // // tracer.transform.position = hitInfo.point;
+
+            // // Add a Force to the Rigidbody
+            // Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
+            // if (rb)
+            // {
+            //     rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+            // }
+
+            // // Adding the weapon to our hitbox
+            // HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
+            // if (hitbox)
+            // {
+            //     hitbox.OnRaycastHit(this, ray.direction);
+            // }
 
         }
         else
@@ -298,5 +352,46 @@ public class RayCastWeapon : MonoBehaviour
     public WeapnScriptable GetWeaponData()
     {
         return this.weapon;
+    }
+
+    protected Vector3 GetDirection()
+    {
+        Vector3 direction = transform.forward;
+
+        if (addBulletSpread)
+        {
+            float randomX = UnityEngine.Random.Range(-bulletSpreadVariance.x, bulletSpreadVariance.x);
+            float randomY = UnityEngine.Random.Range(-bulletSpreadVariance.y, bulletSpreadVariance.y);
+            float randomZ = UnityEngine.Random.Range(-bulletSpreadVariance.z, bulletSpreadVariance.z);
+
+            direction += new Vector3(randomX, randomY, randomZ);
+
+            direction.Normalize();
+        }
+
+        return direction;
+    }
+
+    protected IEnumerator SpawnTrail(TrailRenderer _trail, RaycastHit _hit)
+    {
+        float time = 0;
+        Vector3 startPosition = _trail.transform.position;
+
+        while (time < 1)
+        {
+            _trail.transform.position = Vector3.Lerp(startPosition, _hit.point, time);
+
+            time += Time.deltaTime / _trail.time;
+
+            yield return null;
+        }
+        _trail.transform.position = _hit.point;
+        if (_hit.collider.gameObject.CompareTag(environmentTag))
+        {
+
+            Instantiate(impactParticleSystem, _hit.point, Quaternion.LookRotation(_hit.normal));
+        }
+
+        Destroy(_trail.gameObject, _trail.time);
     }
 }
