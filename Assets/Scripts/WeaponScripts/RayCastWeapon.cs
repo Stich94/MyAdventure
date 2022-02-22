@@ -22,7 +22,7 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] protected Transform bulletSpawnPoint;
     public Transform GetBulletOriginPosition { get { return raycastOrigin; } }
-
+    [SerializeField] protected string enemyTag = "Enemy";
     [SerializeField] protected String environmentTag = "Environment";
     [SerializeField] protected LayerMask targetLayer;
     [SerializeField] protected LayerMask aimLayerMask;
@@ -246,28 +246,26 @@ public class RayCastWeapon : MonoBehaviour
             // // tracer.transform.position = hitInfo.point;
 
             // // Add a Force to the Rigidbody
-            // Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
-            // if (rb)
-            // {
-            //     rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
-            // }
+            Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
+            if (rb)
+            {
+                rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+                // }
 
-            // // Adding the weapon to our hitbox
-            // HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
-            // if (hitbox)
-            // {
-            //     hitbox.OnRaycastHit(this, ray.direction);
-            // }
-
+                // // Adding the weapon to our hitbox
+                HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
+                if (hitbox)
+                {
+                    hitbox.OnRaycastHit(this, ray.direction);
+                }
+            }
+            else
+            {
+                Debug.Log("Nothing hit");
+            }
+            recoil.GenerateRecoil();
         }
-        else
-        {
-            Debug.Log("Nothing hit");
-        }
-
-        recoil.GenerateRecoil();
     }
-
     // protected void FireBullet()
     // {
     //     Vector3 velocity = (raycastDestination.position - raycastOrigin.position).normalized; // bullet speed required
@@ -390,6 +388,12 @@ public class RayCastWeapon : MonoBehaviour
         {
 
             Instantiate(impactParticleSystem, _hit.point, Quaternion.LookRotation(_hit.normal));
+        }
+        if (_hit.collider.gameObject.GetComponent<IDamageAble>() != null)
+        {
+            //TODO - hit gets damaged
+            BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
+            otherStats.TakeDamage(10f, ray.direction);
         }
 
         Destroy(_trail.gameObject, _trail.time);

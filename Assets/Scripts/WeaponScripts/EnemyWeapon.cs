@@ -141,47 +141,11 @@ public class EnemyWeapon : RayCastWeapon
         Debug.Log("Enemy is shooting");
         isFiring = true;
         currentMagazineAmmo--;
-        // weapon.currentMagazineSize -= 1;
-        // muzzleFlash.Emit(1);
+
 
         Instantiate(bulletPrefab, raycastOrigin.position, transform.rotation);
-        /*
-        ray.origin = raycastOrigin.position;
-        // ray.direction = raycastDestination.position - raycastOrigin.position;
-        ray.direction = weaponIK.AimDir.transform.position - raycastOrigin.position;
-        distanceToTarget = ray.direction.magnitude;
 
-        // pew pew effect
-        TrailRenderer tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
-        tracer.AddPosition(ray.origin);
 
-        if (Physics.Raycast(ray, out hitInfo, 50f, aimLayerMask))
-        {
-            // Debug.Log("Ray hit: " + hitInfo.collider.tag);
-
-            // Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1.0f);
-            if (hitInfo.collider.CompareTag(environmentTag))
-            {
-                // impact effect
-                Instantiate(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-                // StartCoroutine(ImpactDelay(bulletHolePrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal)));
-            }
-            if (hitInfo.collider.gameObject.GetComponent<IDamageAble>() != null)
-            {
-                //TODO - hit gets damaged
-                // StartCoroutine(HitDelay(hitInfo.collider.gameObject.GetComponent<IDamageAble>()));
-                BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
-                otherStats.TakeDamage(0f);
-                // take Damage
-            }
-
-            tracer.transform.position = hitInfo.point;
-        }
-        else
-        {
-            Debug.Log("Nothing hit");
-        }
-        */
     }
 
     // CanShoot func used from base class

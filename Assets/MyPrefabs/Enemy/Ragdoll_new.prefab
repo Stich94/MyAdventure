@@ -3599,6 +3599,8 @@ MonoBehaviour:
   playerInput: {fileID: 0}
   thirdPersonShootController: {fileID: 0}
   weapon: {fileID: 11400000, guid: f2275ae82a8ae08419b3bac67f788240, type: 2}
+  bulletSpreadVariance: {x: 0.1, y: 0.1, z: 0.1}
+  shootDelay: 0.5
   raycastOrigin: {fileID: 1334505325920385006}
   raycastDestination: {fileID: 0}
   bulletPrefab: {fileID: 5775310740484374295, guid: 60da13bbf6722314aac9c3c2c58355da, type: 3}
@@ -3614,6 +3616,8 @@ MonoBehaviour:
   isReloading: 0
   muzzleFlash: {fileID: 8660327178766817682, guid: b7ff86e97772e6943b760edffcd2c77f, type: 3}
   bulletHolePrefab: {fileID: 5716098352442624468, guid: 09b07e0f1e9183743a66c638c0803373, type: 3}
+  shootingParcticleSystem: {fileID: 0}
+  impactParticleSystem: {fileID: 0}
   tracerEffect: {fileID: 4926410638284918326, guid: 2e7d75b3aa37f084194175bdae860874, type: 3}
   animator: {fileID: 0}
   currentMagazineAmmo: 0

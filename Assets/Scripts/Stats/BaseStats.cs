@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class BaseStats : MonoBehaviour, IDamageAble
 {
-    [SerializeField] StatsScrptableObject stats;
+    [SerializeField] playerStatsSO stats;
     [SerializeField] protected float maxHealth;
     public float MaxHealth { get { return maxHealth; } }
     [SerializeField] protected float currentHealth;
@@ -14,20 +14,14 @@ public class BaseStats : MonoBehaviour, IDamageAble
     public float Damage { get { return damage; } }
     [SerializeField] protected float attackSpeed;
     [SerializeField] protected float movementSpeed;
-    float blinkTimer;
-    NavMeshAgent agent;
+    [SerializeField] private float sprintSpeed;
 
     RagDoll ragdoll;
-
-    AiAgent modifiedAiAgent;
-
     ThirdPersonMovementController playerController;
     ThirdPersonShooterController shootController;
-    void Awake()
+    protected virtual void Awake()
     {
         ragdoll = GetComponent<RagDoll>();
-        agent = GetComponent<NavMeshAgent>();
-        modifiedAiAgent = GetComponent<AiAgent>();
         SetStats();
     }
 
@@ -47,15 +41,16 @@ public class BaseStats : MonoBehaviour, IDamageAble
 
     protected virtual void SetStats()
     {
-        maxHealth = stats.maxHp;
-        currentHealth = stats.maxHp;
-        stats.currentHp = currentHealth;
-        damage = stats.damage;
-        attackSpeed = stats.attackSpeed;
-        movementSpeed = stats.movementSpeed;
+        if (stats != null)
+        {
+            maxHealth = stats.MaxHP;
+            currentHealth = stats.MaxHP;
+            stats.CurrentHP = currentHealth;
+            movementSpeed = stats.movementSpeed;
+            sprintSpeed = stats.SprintSpeed;
+        }
 
-        // apply the stats to our NavMesh Agent
-        agent.speed = movementSpeed;
+
     }
 
     void ClampHealth()
@@ -87,7 +82,12 @@ public class BaseStats : MonoBehaviour, IDamageAble
     }
     public void TakeDamage(float _damage)
     {
-
+        currentHealth -= _damage;
+        stats.CurrentHP = currentHealth;
+        if (currentHealth <= 0.0f)
+        {
+            Debug.Log("Player is ded.");
+        }
     }
 
     // add hitbox and point to our basestats script

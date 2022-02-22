@@ -10,16 +10,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI currentAmmoText;
     [SerializeField] TextMeshProUGUI weaponNameText;
     [SerializeField] WeapnScriptable activeWeapon;
+    [SerializeField] Slider slider;
+    [SerializeField] playerStatsSO playerStats;
+
+    float showCurrentHealth;
 
     // public void UpdatePlayerAmmoUI(int _currentAmmo, int _maxMagazineSize)
     // {
     //     currentAmmoText.text = _currentAmmo + " / " + _maxMagazineSize;
     // }
-
+    private void Start()
+    {
+        // showCurrentHealth = playerStats.CurrentHP;
+    }
 
     private void Update()
     {
         UpdateWeaponAmmoUI();
+        UpdatePlayerHealthBar();
     }
 
     public void UpdateWeaponAmmoUI()
@@ -46,6 +54,24 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void UpdatePlayerHealthBar()
+    {
+        showCurrentHealth = playerStats.CurrentHP;
+        // if health is below max show Healthbar
+        if (playerStats.CurrentHP <= playerStats.MaxHP)
+        {
+            slider.value = CalculateHealth();
+        }
+        if (playerStats.CurrentHP <= 0f)
+        {
+            Debug.Log("Player is dead");
+        }
+    }
+
+    float CalculateHealth()
+    {
+        return playerStats.CurrentHP / playerStats.MaxHP;
+    }
 
 
 
