@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 [System.Serializable]
 public class HumanBone
@@ -23,6 +24,7 @@ public class WeaponIK : MonoBehaviour
     [Range(0, 1)]
     [SerializeField] float weight = 1f;
     [SerializeField] Vector3 targetAimOffset;
+    [SerializeField] Rig aimRig;
     public Vector3 GetAimIKoffset => targetAimOffset;
 
     [SerializeField] HumanBone[] humanBones;
@@ -33,8 +35,14 @@ public class WeaponIK : MonoBehaviour
     AiAgent customAiAgent;
     AiStateId currentState;
 
+    [SerializeField] EnemyWeapon currentWeapon;
+
+    Transform initailWeaponTransform;
+
     private void Start()
     {
+        currentWeapon = GetComponentInChildren<EnemyWeapon>();
+        initailWeaponTransform = currentWeapon.transform;
         customAiAgent = GetComponent<AiAgent>();
         animator = GetComponent<Animator>();
         boneTransforms = new Transform[humanBones.Length];
@@ -68,11 +76,15 @@ public class WeaponIK : MonoBehaviour
     // handle bones to aim at target
     void AimAtTarget(Transform bone, Vector3 _targetPosition)
     {
-        Vector3 aimDirection = aimTransform.forward;
-        Vector3 targetDirection = _targetPosition - aimTransform.position;
-        Quaternion aimTowards = Quaternion.FromToRotation(aimDirection, targetDirection);
-        Quaternion blendedRotation = Quaternion.Slerp(Quaternion.identity, aimTowards, weight);
-        bone.rotation = blendedRotation * bone.rotation;
+        if (!currentWeapon.IsReloading)
+        {
+            Vector3 aimDirection = aimTransform.forward;
+            Vector3 targetDirection = _targetPosition - aimTransform.position;
+            Quaternion aimTowards = Quaternion.FromToRotation(aimDirection, targetDirection);
+            Quaternion blendedRotation = Quaternion.Slerp(Quaternion.identity, aimTowards, weight);
+            bone.rotation = blendedRotation * bone.rotation;
+        }
+
     }
 
     Vector3 GetTargetPosition()
@@ -117,16 +129,27 @@ public class WeaponIK : MonoBehaviour
     {
         if (currentState == AiStateId.AttackPlayer)
         {
-            for (int i = 0; i < iterations; i++)
+            if (!currentWeapon.IsReloading)
             {
-                for (int j = 0; j < boneTransforms.Length; j++)
+                aimRig.weight = 1f;
+                for (int i = 0; i < iterations; i++)
                 {
-                    Transform bone = boneTransforms[j];
-                    float boneWeight = humanBones[j].weight * weight;
-                    AimAtTarget(bone, _targetPos);
+                    for (int j = 0; j < boneTransforms.Length; j++)
+                    {
+                        Transform bone = boneTransforms[j];
+                        float boneWeight = humanBones[j].weight * weight;
+                        AimAtTarget(bone, _targetPos);
+                    }
                 }
             }
+            else
+            {
+                aimRig.weight = 0f;
+                // return;
+            }
+
         }
+
 
     }
 }

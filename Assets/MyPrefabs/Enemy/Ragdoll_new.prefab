@@ -2641,6 +2641,7 @@ MonoBehaviour:
   distanceLimit: 1.5
   weight: 1
   targetAimOffset: {x: 0, y: 0.95, z: 0}
+  aimRig: {fileID: 4134117006556842541}
   humanBones:
   - bone: 7
     weight: 0.2
@@ -2648,6 +2649,7 @@ MonoBehaviour:
     weight: 0.5
   - bone: 54
     weight: 1
+  currentWeapon: {fileID: 0}
 --- !u!114 &4134117006439896616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3622,6 +3624,7 @@ MonoBehaviour:
   shootingParcticleSystem: {fileID: 198000012944515248, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
   impactParticleSystem: {fileID: 5615790123328465986, guid: 09b07e0f1e9183743a66c638c0803373, type: 3}
   tracerEffect: {fileID: 5368625377472082345, guid: 9e5aa09a2a681b54a85081ec791192bd, type: 3}
+  magazine: {fileID: 0}
   animator: {fileID: 0}
   currentMagazineAmmo: 0
   fireRate: 5
@@ -3653,6 +3656,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4004634357673076093, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
       propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5043572295006623849, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+      propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8120283258586593891, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}

@@ -12,6 +12,7 @@ public class AiWeapons : MonoBehaviour
 
     public bool WeaponIsAcive { get; set; } = false;
 
+
     // shooting is handled in the AiStateMachine
     private void Start()
     {

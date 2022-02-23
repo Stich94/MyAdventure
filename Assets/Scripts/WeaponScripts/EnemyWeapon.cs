@@ -112,13 +112,17 @@ public class EnemyWeapon : RayCastWeapon
             yield return null;
         }
         isReloading = true;
+        animator.SetLayerWeight(1, 1f);
+        animator.SetTrigger(relaodAnimID);
         canShoot = false;
-        Debug.Log("Is reloading");
+        Debug.Log("Enemy Is reloading");
         yield return reloadWait;
         currentMagazineAmmo = maxMagazineAmmo;
         isReloading = false;
+        animator.SetLayerWeight(1, 0f);
+        animator.SetTrigger(relaodAnimID);
         canShoot = true;
-        Debug.Log("Finished reloading");
+        Debug.Log("Enemy finished reloading");
 
 
     }
@@ -164,6 +168,8 @@ public class EnemyWeapon : RayCastWeapon
         // }
         if (Physics.Raycast(bulletSpawnPoint.position, direction, out hitInfo, 50f, aimLayerMask))
         {
+            Debug.DrawRay(bulletSpawnPoint.position, transform.TransformDirection(Vector3.forward) * hitInfo.distance, Color.red);
+
             // Debug.DrawLine(bulletSpawnPoint.position, hitInfo.point, Color.red);
             // TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
             // StartCoroutine(SpawnTrail(trail, hitInfo));

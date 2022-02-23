@@ -2871,6 +2871,7 @@ GameObject:
   - component: {fileID: 2924494654240601377}
   - component: {fileID: 2924494654240601404}
   - component: {fileID: 2924494654240601379}
+  - component: {fileID: 1923197460}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -2973,12 +2974,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7305c32f8bdcd3a4bb1f6b9f1a5de748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: a7709585bccb83a4e8d1671ff3a9c502, type: 2}
+  stats: {fileID: 11400000, guid: dd96ca3ac55279c44b6dcf9e42ebdb62, type: 2}
   maxHealth: 0
   currentHealth: 0
   damage: 0
   attackSpeed: 0
   movementSpeed: 0
+  sprintSpeed: 0
 --- !u!114 &2924494654240601405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3164,6 +3166,20 @@ MonoBehaviour:
   - m_Rig: {fileID: 2924494654572954124}
     m_Active: 1
   m_Effectors: []
+--- !u!136 &1923197460
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2924494654240601380}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.34
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &2924494654572954162
 GameObject:
   m_ObjectHideFlags: 0
@@ -3578,6 +3594,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+--- !u!4 &2129432074060125261 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3825991865571132682, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+  m_PrefabInstance: {fileID: 2924494654538486087}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2132731720853527001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3822738422962129054, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
+  m_PrefabInstance: {fileID: 2924494654538486087}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2133589181031284416 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3821845701105020807, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
@@ -3589,16 +3615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca020abac12ca443accd50d57c52b62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2132731720853527001 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3822738422962129054, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
-  m_PrefabInstance: {fileID: 2924494654538486087}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2129432074060125261 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3825991865571132682, guid: c2ac6e1240f257641b80fec01bce45bf, type: 3}
-  m_PrefabInstance: {fileID: 2924494654538486087}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2924494655367656444
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3699,6 +3715,10 @@ PrefabInstance:
       value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+      propertyPath: bulletSpreadVariance.z
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8122405114643331233, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
       propertyPath: shootingParcticleSystem
       value: 
       objectReference: {fileID: 6844802156430178362}
@@ -3739,14 +3759,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeecf8ab0e5129b44a2aba1763a2c162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6351464146087528863 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8120283258586593891, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
-  m_PrefabInstance: {fileID: 2924494655367656444}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &6844802156430178362 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8532204936844184518, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
+  m_PrefabInstance: {fileID: 2924494655367656444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6351464146087528863 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8120283258586593891, guid: cd7465024a8671c43b6641e9ca85fca9, type: 3}
   m_PrefabInstance: {fileID: 2924494655367656444}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6353857855335304031 stripped

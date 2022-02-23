@@ -28,6 +28,7 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected LayerMask aimLayerMask;
     [SerializeField] protected bool isFiring = false;
     [SerializeField] protected bool isReloading = false; // just for Debug
+    public bool IsReloading { get { return isReloading; } }
 
 
     [Header("VFX")]
@@ -36,6 +37,7 @@ public class RayCastWeapon : MonoBehaviour
     [SerializeField] protected ParticleSystem shootingParcticleSystem;
     [SerializeField] protected ParticleSystem impactParticleSystem;
     [SerializeField] protected TrailRenderer tracerEffect;
+    [SerializeField] protected GameObject magazine;
 
 
     // Animator for reload Animation
@@ -289,16 +291,18 @@ public class RayCastWeapon : MonoBehaviour
             yield return null;
         }
         isReloading = true;
-
+        animator.SetLayerWeight(2, 1f);
+        animator.SetTrigger(relaodAnimID);
 
         Debug.Log("Is reloading");
         yield return reloadWait;
         currentMagazineAmmo = maxMagazineAmmo;
         weapon.currentMagazineSize = weapon.magazineSize;
         isReloading = false;
+
         Debug.Log("Finished reloading");
         playerHudManager?.UpdateWeaponAmmoUI();
-
+        animator.SetLayerWeight(2, 0f);
     }
 
 
