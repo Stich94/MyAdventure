@@ -43,16 +43,22 @@ public class EnemyAI : MonoBehaviour
     protected bool alreadyAttacked;
     protected bool canAttack = true;
 
+    float cooldown = 4f;
+    float cooldownTimer;
+
     // States
     [Header("States")] [SerializeField] protected float sightRange;
     [SerializeField] protected bool playerIsInSightRange;
     [SerializeField] protected bool playerIsInAttackRange;
     public bool HasBeenAttacked { get { return alreadyAttacked; } set { alreadyAttacked = value; } }
 
+    EnemyMeleeCombat combat;
+
 
     protected void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        combat = GetComponent<EnemyMeleeCombat>();
 
     }
 
@@ -64,6 +70,8 @@ public class EnemyAI : MonoBehaviour
 
     protected void Update()
     {
+        cooldownTimer -= Time.deltaTime;
+        Debug.Log("timer: " + cooldownTimer);
         if (!alreadyAttacked)
         {
             CheckForWall();
@@ -122,10 +130,20 @@ public class EnemyAI : MonoBehaviour
         agent.SetDestination(transform.position);
 
         transform.LookAt(playerPos);
-        if (!alreadyAttacked)
+
+        // !alreadyAttacked
+
+        if (cooldownTimer <= 0)
         {
             //TODO - Attack code here
             Debug.Log("Enemy attacked Player");
+            BaseStats playerStats = playerPos.gameObject.GetComponent<BaseStats>();
+            if (playerStats != null)
+            {
+                combat.Attack(playerStats);
+                cooldownTimer = cooldown;
+            }
+
 
             alreadyAttacked = true;
             // Invoke(nameof(ResetAttack), timeBetweenAttacks); //TODO

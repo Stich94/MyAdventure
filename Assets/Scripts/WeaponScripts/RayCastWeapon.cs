@@ -324,26 +324,6 @@ public class RayCastWeapon : MonoBehaviour
         }
     }
 
-    private IEnumerator HitDelay(IDamageAble _target)
-    {
-        yield return new WaitForSeconds(0.5f);
-        _target.TakeDamage(2.5f);
-    }
-
-    private IEnumerator ImpactDelay(GameObject _bulletHolePrefab, Vector3 _hitPos, Quaternion _rotaion)
-    {
-        yield return new WaitForSeconds(0.5f);
-        Instantiate(_bulletHolePrefab, _hitPos, _rotaion);
-    }
-
-    public void GetReferences()
-    {
-        playerInput = GetComponentInParent<PlayerInput>();
-        thirdPersonShootController = gameObject.GetComponentInParent<ThirdPersonShooterController>();
-        shootAction = playerInput.actions["Shoot"];
-        reloadAction = playerInput.actions["Reload"];
-    }
-
 
     // void OnDestroy()
     // {

@@ -21,6 +21,8 @@ public class BaseStats : MonoBehaviour, IDamageAble
     ThirdPersonShooterController shootController;
     protected virtual void Awake()
     {
+        playerController = GetComponent<ThirdPersonMovementController>();
+        shootController = GetComponent<ThirdPersonShooterController>();
         ragdoll = GetComponent<RagDoll>();
         SetStats();
     }
@@ -63,6 +65,7 @@ public class BaseStats : MonoBehaviour, IDamageAble
         OnDamage(_direction);
         Debug.Log("takes damage");
         currentHealth -= _damage;
+        stats.CurrentHP = currentHealth;
         if (currentHealth <= 0.0f)
         {
             Die(_direction);
@@ -114,6 +117,7 @@ public class BaseStats : MonoBehaviour, IDamageAble
     protected virtual void OnDeath(Vector3 _direction)
     {
         ragdoll.ActivateRagdoll();
+        // disable Player Canvas
         playerController.enabled = false;
         shootController.enabled = false;
 

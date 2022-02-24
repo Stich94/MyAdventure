@@ -163,12 +163,18 @@ public class EnemyWeapon : RayCastWeapon
 
         Vector3 targetDirection = (_aimDirection - raycastOrigin.position).normalized;
         Vector3 direction = GetDirection();
-        Debug.DrawLine(raycastOrigin.position, targetDirection, Color.red);
+        // Debug.DrawLine(raycastOrigin.position, targetDirection, Color.red);
 
         // }
         if (Physics.Raycast(bulletSpawnPoint.position, direction, out hitInfo, 50f, aimLayerMask))
         {
-            Debug.DrawRay(bulletSpawnPoint.position, transform.TransformDirection(Vector3.forward) * hitInfo.distance, Color.red);
+            Debug.DrawRay(bulletSpawnPoint.position, transform.TransformDirection(_aimDirection) * hitInfo.distance, Color.red);
+            // Debug.DrawRay(bulletSpawnPoint.position, transform.TransformDirection(Vector3.forward) * hitInfo.distance, Color.red);
+
+            TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, hitInfo));
+
+            Debug.Log("enemy ray hit: " + hitInfo);
 
             // Debug.DrawLine(bulletSpawnPoint.position, hitInfo.point, Color.red);
             // TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);

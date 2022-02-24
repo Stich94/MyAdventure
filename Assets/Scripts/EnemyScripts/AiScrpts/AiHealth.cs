@@ -37,6 +37,21 @@ public class AiHealth : BaseStats
         agent.speed = movementSpeed;
     }
 
+    public override void TakeDamage(float _damage, Vector3 _direction)
+    {
+        OnDamage(_direction);
+        Debug.Log("takes damage");
+        currentHealth -= _damage;
+        if (currentHealth <= 0.0f)
+        {
+            Die(_direction);
+        }
+        // blinkTimer = blinkDuration;
+
+        // ShowHitEffect();
+    }
+
+
     protected override void OnDeath(Vector3 _direction)
     {
         AiDeathState deathState = modifiedAiAgent.GetAiStateMachine.GetState(AiStateId.Death) as AiDeathState;
