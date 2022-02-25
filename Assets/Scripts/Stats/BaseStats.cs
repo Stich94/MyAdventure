@@ -19,8 +19,12 @@ public class BaseStats : MonoBehaviour, IDamageAble
     RagDoll ragdoll;
     ThirdPersonMovementController playerController;
     ThirdPersonShooterController shootController;
+
+    public bool isDead => stats.IsDead;
+
     protected virtual void Awake()
     {
+
         playerController = GetComponent<ThirdPersonMovementController>();
         shootController = GetComponent<ThirdPersonShooterController>();
         ragdoll = GetComponent<RagDoll>();
@@ -62,28 +66,28 @@ public class BaseStats : MonoBehaviour, IDamageAble
 
     public virtual void TakeDamage(float _damage, Vector3 _direction)
     {
-        OnDamage(_direction);
+        OnDamage();
         Debug.Log("takes damage");
         currentHealth -= _damage;
         stats.CurrentHP = currentHealth;
         if (currentHealth <= 0.0f)
         {
-            Die(_direction);
+            Die();
         }
         // blinkTimer = blinkDuration;
 
         // ShowHitEffect();
     }
 
-    public virtual void Die(Vector3 _direction)
+    public virtual void Die()
     {
-        OnDeath(_direction);
+        OnDeath();
         //     AiDeathState deathState = modifiedAiAgent.GetAiStateMachine.GetState(AiStateId.Death) as AiDeathState;
         //     modifiedAiAgent.GetAiStateMachine.ChangeState(AiStateId.Death);
         //     Destroy(this.gameObject, 8f);
         // }
     }
-    public void TakeDamage(float _damage)
+    public virtual void TakeDamage(float _damage)
     {
         currentHealth -= _damage;
         stats.CurrentHP = currentHealth;
@@ -114,16 +118,17 @@ public class BaseStats : MonoBehaviour, IDamageAble
 
     }
 
-    protected virtual void OnDeath(Vector3 _direction)
+    protected virtual void OnDeath()
     {
         ragdoll.ActivateRagdoll();
         // disable Player Canvas
+        stats.IsDead = true;
         playerController.enabled = false;
         shootController.enabled = false;
 
     }
 
-    protected virtual void OnDamage(Vector3 _direction)
+    protected virtual void OnDamage()
     {
 
     }

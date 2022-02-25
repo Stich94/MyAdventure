@@ -10,6 +10,8 @@ public class AiWeapons : MonoBehaviour
     WeaponIK weaponIK;
     Transform currentTarget;
 
+    [SerializeField] playerStatsSO playerSO;
+
     public bool WeaponIsAcive { get; set; } = false;
 
 
@@ -49,7 +51,6 @@ public class AiWeapons : MonoBehaviour
         if (currentWeapon == null)
         {
             currentWeapon = GetComponentInChildren<EnemyWeapon>();
-
         }
 
         if (_canFire)

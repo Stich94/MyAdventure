@@ -34,6 +34,8 @@ public class AiAgent : MonoBehaviour
     float aimRigWeigth = 0f;
 
 
+    BaseStats playerStats;
+
 
     void Start()
     {
@@ -41,6 +43,7 @@ public class AiAgent : MonoBehaviour
         {
 
             playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+            playerStats = playerPos.gameObject.GetComponent<BaseStats>();
         }
         aiWeapon = GetComponent<AiWeapons>();
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -60,6 +63,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.Update();
         currentState = stateMachine.GetCurrentState();
         CheckIfAIAgentisInAttackMode();
+        CheckIfPlayerIsDead();
     }
 
     void RegisterAiStates()
@@ -85,6 +89,14 @@ public class AiAgent : MonoBehaviour
         {
             aimRig.weight = 1f;
             aimRig.weight = Mathf.Lerp(aimRig.weight, aimRigWeigth, Time.deltaTime * 20f);
+        }
+    }
+
+    void CheckIfPlayerIsDead()
+    {
+        if (playerStats.isDead)
+        {
+            stateMachine.ChangeState(initialState);
         }
     }
 

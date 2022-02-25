@@ -51,6 +51,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] protected bool playerIsInSightRange;
     [SerializeField] protected bool playerIsInAttackRange;
     public bool HasBeenAttacked { get { return alreadyAttacked; } set { alreadyAttacked = value; } }
+    public bool IsDead { get; set; } = false;
 
     EnemyMeleeCombat combat;
 
@@ -71,13 +72,16 @@ public class EnemyAI : MonoBehaviour
     protected void Update()
     {
         cooldownTimer -= Time.deltaTime;
-        Debug.Log("timer: " + cooldownTimer);
-        if (!alreadyAttacked)
+        if (!IsDead)
         {
-            CheckForWall();
+            if (!alreadyAttacked)
+            {
+                CheckForWall();
+            }
+            CheckIfPlayerIsInSightRange();
+            CheckIfPlayerIsInAttackRange();
         }
-        CheckIfPlayerIsInSightRange();
-        CheckIfPlayerIsInAttackRange();
+
     }
 
     protected void Patrouling()

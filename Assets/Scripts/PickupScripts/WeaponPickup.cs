@@ -14,10 +14,12 @@ public class WeaponPickup : MonoBehaviour
         ActiveWeapon activeWeapon = other.gameObject.GetComponent<ActiveWeapon>();
         if (activeWeapon != null && other.gameObject.CompareTag(targetTag))
         {
-            RayCastWeapon newWeapon = Instantiate(weaponPrefab);
 
-            // newWeapon.GetComponent<RayCastWeapon>().enabled = true;
-            activeWeapon.Equip(newWeapon);
+            // RayCastWeapon newWeapon = Instantiate(weaponPrefab);
+
+
+            // // newWeapon.GetComponent<RayCastWeapon>().enabled = true;
+            // activeWeapon.Equip(newWeapon);
         }
     }
 }

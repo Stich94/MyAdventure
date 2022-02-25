@@ -11,6 +11,8 @@ public class playerStatsSO : ScriptableObject
     public float movementSpeed = 0.0f;
     public float jumpHeight;
 
+    public bool IsDead = false;
+
 
     // void Awake()
     // {

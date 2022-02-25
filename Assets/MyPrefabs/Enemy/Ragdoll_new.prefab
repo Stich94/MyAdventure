@@ -2607,6 +2607,7 @@ MonoBehaviour:
   movementSpeed: 0
   sprintSpeed: 0
   enemyStats: {fileID: 11400000, guid: 455e0acfd9cbe58419696bd4c6567dbc, type: 2}
+  modifiedAiAgent: {fileID: 0}
 --- !u!114 &952706410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2621,6 +2622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inaccuracy: 0.4
   currentWeapon: {fileID: 0}
+  playerSO: {fileID: 0}
 --- !u!114 &4134117006439896617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2676,7 +2678,7 @@ Animator:
   m_GameObject: {fileID: 4134117006439896621}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4cf8e35218228c74e87ae151b5dc4516, type: 3}
-  m_Controller: {fileID: 9100000, guid: 950fdbe6a92307148a90c7c9eff94937, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7b46143eca9b42d43a5f66252fce9a99, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

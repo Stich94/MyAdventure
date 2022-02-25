@@ -6,10 +6,12 @@ using UnityEngine.AI;
 public class AiHealth : BaseStats
 {
     [SerializeField] StatsScrptableObject enemyStats;
-    AiAgent modifiedAiAgent;
+    [SerializeField] AiAgent modifiedAiAgent;
     NavMeshAgent agent;
 
     RagDoll ragdoll;
+
+    EnemyAI meleeEnemyAi;
 
     protected override void Awake()
     {
@@ -21,6 +23,7 @@ public class AiHealth : BaseStats
 
     protected override void OnStart()
     {
+        meleeEnemyAi = GetComponent<EnemyAI>();
         modifiedAiAgent = GetComponent<AiAgent>();
     }
 
@@ -39,28 +42,68 @@ public class AiHealth : BaseStats
 
     public override void TakeDamage(float _damage, Vector3 _direction)
     {
-        OnDamage(_direction);
+        // OnDamage(_direction);
         Debug.Log("takes damage");
         currentHealth -= _damage;
         if (currentHealth <= 0.0f)
         {
-            Die(_direction);
+            if (meleeEnemyAi != null)
+            {
+                meleeEnemyAi.IsDead = true;
+                Die();
+            }
+            else
+            {
+                Die();
+
+            }
         }
         // blinkTimer = blinkDuration;
 
         // ShowHitEffect();
     }
 
-
-    protected override void OnDeath(Vector3 _direction)
+    public override void TakeDamage(float _damage)
     {
-        AiDeathState deathState = modifiedAiAgent.GetAiStateMachine.GetState(AiStateId.Death) as AiDeathState;
-        modifiedAiAgent.GetAiStateMachine.ChangeState(AiStateId.Death);
-        modifiedAiAgent.AiWeapon.SetFiring(false);
+        Debug.Log("takes damage");
+        currentHealth -= _damage;
+        if (currentHealth <= 0.0f)
+        {
+            if (meleeEnemyAi != null)
+            {
+                meleeEnemyAi.IsDead = true;
+                Die();
+            }
+            else
+            {
+                Die();
+
+            }
+        }
+    }
+
+    public override void Die()
+    {
+        OnDeath();
+    }
+
+
+    protected override void OnDeath()
+    {
+        if (modifiedAiAgent != null)
+        {
+            AiDeathState deathState = modifiedAiAgent?.GetAiStateMachine.GetState(AiStateId.Death) as AiDeathState;
+            modifiedAiAgent?.GetAiStateMachine.ChangeState(AiStateId.Death);
+            modifiedAiAgent?.AiWeapon.SetFiring(false);
+        }
+
+        ragdoll.ActivateRagdoll();
         Destroy(this.gameObject, 8f);
     }
 
-    protected override void OnDamage(Vector3 _direction)
+
+
+    protected override void OnDamage()
     {
 
     }

@@ -15,13 +15,19 @@ public class ActiveWeapon : MonoBehaviour
     [Header("Current Equipped Weapon")]
     [SerializeField] RayCastWeapon currentEquippedWeapon;
 
-    [SerializeField] List<RayCastWeapon> playerWeapons = new List<RayCastWeapon>();
+    [SerializeField] List<RayCastWeapon> activePlayerWeapons = new List<RayCastWeapon>();
+    public Dictionary<int, RayCastWeapon> playerWeapons = new Dictionary<int, RayCastWeapon>();
 
     ThirdPersonShooterController shootAimController;
     RayCastWeapon weapon;
 
-    [Space]
     [SerializeField] UIManager playerHud;
+
+    [SerializeField] WeapnScriptable weaponData;
+
+    int currentWeaponId;
+
+    public int GetCurrentWeaponId { get { return currentWeaponId; } }
 
     private void Start()
     {
@@ -33,6 +39,7 @@ public class ActiveWeapon : MonoBehaviour
             Equip(existingWeapon);
             // playerWeapons.Add(existingWeapon);
         }
+        AddPlayerWeaponsToList();
     }
 
 
@@ -54,15 +61,20 @@ public class ActiveWeapon : MonoBehaviour
         shootAimController.BulletSpawnOrigin = _newWeapon.GetBulletOriginPosition;
         bulletSpawnPoint = _newWeapon.GetBulletOriginPosition;
         currentEquippedWeapon = weapon;
-        WeapnScriptable weaponData = weapon.GetWeaponData();
+        weaponData = weapon.GetWeaponData();
+        currentWeaponId = weaponData.weaponId;
         playerHud?.SetActiveWeapon(weaponData);
-
-
-        if (!playerWeapons.Contains(weapon))
+        if (!activePlayerWeapons.Contains(weapon))
         {
-            playerWeapons.Add(weapon);
+            activePlayerWeapons.Add(weapon);
         }
 
+    }
+
+    void AddPlayerWeaponsToList()
+    {
+        playerWeapons.Add(0, currentEquippedWeapon);
+        playerWeapons.Add(1, activePlayerWeapons[1]);
     }
 
 

@@ -377,7 +377,8 @@ public class RayCastWeapon : MonoBehaviour
         {
             //TODO - hit gets damaged
             BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
-            otherStats.TakeDamage(10f, ray.direction);
+            // otherStats.TakeDamage(10f, ray.direction);
+            otherStats.TakeDamage(10f);
         }
 
         Destroy(_trail.gameObject, _trail.time);
