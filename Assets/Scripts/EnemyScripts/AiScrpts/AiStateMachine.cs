@@ -28,6 +28,14 @@ public class AiStateMachine
         GetState(currentState)?.Update(agent);
     }
 
+    public void SetWayPoints(Transform[] _waypoints)
+    {
+        if (GetCurrentState() == AiStateId.Patrol)
+        {
+
+        }
+    }
+
 
     public AiStateI GetState(AiStateId _stateId)
     {

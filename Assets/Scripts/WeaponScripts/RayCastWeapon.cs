@@ -295,6 +295,7 @@ public class RayCastWeapon : MonoBehaviour
         animator.SetTrigger(relaodAnimID);
 
         Debug.Log("Is reloading");
+        Soundmanager.PlaySound(Soundmanager.Sound.WeaponReload);
         yield return reloadWait;
         currentMagazineAmmo = maxMagazineAmmo;
         weapon.currentMagazineSize = weapon.magazineSize;

@@ -7,7 +7,6 @@ public class AiChasePlayerState : AiStateI
 {
 
     ThirdPersonMovementController playerController;
-    AiLocomotion aiLocomotion;
 
 
     float timer = 0.0f;

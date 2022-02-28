@@ -50,6 +50,7 @@ public class AiAgent : MonoBehaviour
         ragdoll = GetComponent<RagDoll>();
         RegisterAiStates();
 
+
         SetCurrentWeapon();
         // ragdoll.DisableRigidbody();
 
@@ -64,6 +65,7 @@ public class AiAgent : MonoBehaviour
         currentState = stateMachine.GetCurrentState();
         CheckIfAIAgentisInAttackMode();
         CheckIfPlayerIsDead();
+        CheckIfPlayerIsPatrol();
     }
 
     void RegisterAiStates()
@@ -72,6 +74,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.RegisterState(new AiChasePlayerState()); // create a new instance of our enemy state
         stateMachine.RegisterState(new AiDeathState());
         stateMachine.RegisterState(new AiIdleState());
+        stateMachine.RegisterState(new AiPatrolState());
         stateMachine.RegisterState(new AiAttackPlayerState());
         stateMachine.ChangeState(initialState);
     }
@@ -98,6 +101,15 @@ public class AiAgent : MonoBehaviour
         {
             stateMachine.ChangeState(initialState);
         }
+    }
+
+    void CheckIfPlayerIsPatrol()
+    {
+        if (currentState == AiStateId.Patrol || currentState == AiStateId.Idle)
+        {
+            aimRig.weight = 0f;
+        }
+
     }
 
 }

@@ -92,6 +92,7 @@ public class RapidFireWeapon : RayCastWeapon
             {
                 yield return rapidFireWait;
                 FireBullet(aimDir);
+                Soundmanager.PlaySound(Soundmanager.Sound.PlayerRapidFireShoot);
             }
             StartCoroutine(Reload());
         }
