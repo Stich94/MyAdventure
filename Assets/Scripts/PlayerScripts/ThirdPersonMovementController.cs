@@ -107,6 +107,7 @@ public class ThirdPersonMovementController : MonoBehaviour
         // reset our timeouts on start
         jumpTimeoutDelta = jumptimeOut;
         fallTimeoutDelta = fallTimeOut;
+        Soundmanager.Initialize();
     }
 
     void Start()
@@ -260,6 +261,11 @@ public class ThirdPersonMovementController : MonoBehaviour
         // update animator if using character
         animator.SetFloat(animSpeedID, animationBlend);
         animator.SetFloat(animMotionSpeedID, inputMagnitude);
+        if (speed >= 0.05f)
+        {
+            // TODO - SoundManger disabled temp
+            // Soundmanager.PlaySound(Soundmanager.Sound.PlayerMove, this.transform.position);
+        }
 
         playerPos = this.transform;
     }
@@ -299,6 +305,11 @@ public class ThirdPersonMovementController : MonoBehaviour
     public void SetRotateOnMove(bool _newRotateOnMove)
     {
         rotateOnMove = _newRotateOnMove;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 
 

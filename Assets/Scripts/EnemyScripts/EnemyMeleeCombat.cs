@@ -22,6 +22,7 @@ public class EnemyMeleeCombat : MonoBehaviour
 
     }
 
+
     public void Attack(BaseStats _targetStats)
     {
         StartCoroutine(AttackAnimation(attackTime, _targetStats));
@@ -30,7 +31,8 @@ public class EnemyMeleeCombat : MonoBehaviour
     IEnumerator AttackAnimation(float _animTime, BaseStats _targetStats)
     {
         animator.SetTrigger(meleeAnimId);
-        yield return new WaitForSeconds(3f);
-        _targetStats.TakeDamage(10f);
+        Soundmanager.PlaySound(Soundmanager.Sound.MeleeWoosh, transform.position);
+        yield return new WaitForSeconds(2.2f);
+        _targetStats.TakeDamage(2f);
     }
 }

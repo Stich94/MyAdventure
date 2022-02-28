@@ -53,7 +53,7 @@ public class AiWeapons : MonoBehaviour
             currentWeapon = GetComponentInChildren<EnemyWeapon>();
         }
 
-        if (_canFire)
+        if (_canFire && !currentWeapon.IsReloading)
         {
             currentWeapon.StartFiring();
         }

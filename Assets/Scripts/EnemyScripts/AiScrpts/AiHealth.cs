@@ -13,6 +13,8 @@ public class AiHealth : BaseStats
 
     EnemyAI meleeEnemyAi;
 
+    bool inAttackStance = false;
+
     protected override void Awake()
     {
         ragdoll = GetComponent<RagDoll>();
@@ -45,6 +47,7 @@ public class AiHealth : BaseStats
         // OnDamage(_direction);
         Debug.Log("takes damage");
         currentHealth -= _damage;
+        OnDamage();
         if (currentHealth <= 0.0f)
         {
             if (meleeEnemyAi != null)
@@ -65,8 +68,10 @@ public class AiHealth : BaseStats
 
     public override void TakeDamage(float _damage)
     {
+
         Debug.Log("takes damage");
         currentHealth -= _damage;
+        OnDamage();
         if (currentHealth <= 0.0f)
         {
             if (meleeEnemyAi != null)
@@ -105,7 +110,12 @@ public class AiHealth : BaseStats
 
     protected override void OnDamage()
     {
-
+        if (currentHealth < maxHealth && !inAttackStance)
+        {
+            // change enemy state to attack
+            modifiedAiAgent?.ChangeToAttackState();
+            inAttackStance = true;
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public static class Soundmanager // we write static to not accidently instantiate it
 {
@@ -11,16 +12,85 @@ public static class Soundmanager // we write static to not accidently instantiat
         SingleShot,
         WeaponReload,
         EnemyHit,
-        EnemyDie
+        EnemyDie,
+        MeleeWoosh,
+
+    }
+
+    static Dictionary<Sound, float> soundTimerDictionary;
+    static GameObject oneShotGameObject;
+    static AudioSource oneShotAudioSource;
+
+
+    public static void Initialize()
+    {
+        soundTimerDictionary = new Dictionary<Sound, float>();
+        soundTimerDictionary[Sound.PlayerMove] = 0f;
+    }
+
+    public static void PlaySound(Sound _sound)
+    {
+        if (CanPlaySound(_sound))
+        {
+            if (oneShotGameObject == null)
+            {
+                oneShotGameObject = new GameObject("One Shot Sound");
+                oneShotAudioSource = oneShotGameObject.AddComponent<AudioSource>();
+            }
+            oneShotAudioSource.PlayOneShot(GetAudioClip(_sound));
+        }
+    }
+
+    // this is for 3D sound
+    public static void PlaySound(Sound _sound, Vector3 _position)
+    {
+        if (CanPlaySound(_sound))
+        {
+            GameObject soundGameObject = new GameObject("Sound");
+            soundGameObject.transform.position = _position;
+            AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
+            audioSource.clip = GetAudioClip(_sound);
+            audioSource.loop = false;
+            audioSource.maxDistance = 100f;
+            audioSource.spatialBlend = 1f;
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
+            audioSource.dopplerLevel = 0f;
+            audioSource.Play();
+
+            Object.Destroy(soundGameObject, audioSource.clip.length);
+        }
 
     }
 
 
-    public static void PlaySound(Sound _sound)
+    static bool CanPlaySound(Sound _sound)
     {
-        GameObject soundGameObject = new GameObject("Sound");
-        AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
-        audioSource.PlayOneShot(GetAudioClip(_sound));
+        switch (_sound)
+        {
+            default:
+                return true;
+            case Sound.PlayerMove:
+                if (soundTimerDictionary.ContainsKey(_sound))
+                {
+                    float lastTimePlayed = soundTimerDictionary[_sound];
+                    float playerMoveTimerMax = 0.4f;
+                    if (lastTimePlayed + playerMoveTimerMax < Time.time)
+                    {
+                        soundTimerDictionary[_sound] = Time.time;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+                // break;
+        }
+
     }
 
     static AudioClip GetAudioClip(Sound _sound)
@@ -35,4 +105,10 @@ public static class Soundmanager // we write static to not accidently instantiat
         Debug.LogError("Sound " + _sound + " not found");
         return null;
     }
+
+    // this is an extension method
+    // public static void AddButtonSounds(this Button_UI buttonUI)
+    // {
+
+    // }
 }
