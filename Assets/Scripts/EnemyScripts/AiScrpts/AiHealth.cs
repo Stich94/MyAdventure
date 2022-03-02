@@ -116,6 +116,7 @@ public class AiHealth : BaseStats
             modifiedAiAgent?.ChangeToAttackState();
             inAttackStance = true;
         }
+        Soundmanager.PlaySound(Soundmanager.Sound.EnemyHit, transform.position);
     }
 
 }

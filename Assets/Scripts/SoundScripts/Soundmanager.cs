@@ -14,6 +14,8 @@ public static class Soundmanager // we write static to not accidently instantiat
         EnemyHit,
         EnemyDie,
         MeleeWoosh,
+        Buttonclick,
+        StartGame,
 
     }
 
@@ -26,6 +28,7 @@ public static class Soundmanager // we write static to not accidently instantiat
     {
         soundTimerDictionary = new Dictionary<Sound, float>();
         soundTimerDictionary[Sound.PlayerMove] = 0f;
+        soundTimerDictionary[Sound.EnemyHit] = 0f;
     }
 
     public static void PlaySound(Sound _sound)
@@ -67,13 +70,12 @@ public static class Soundmanager // we write static to not accidently instantiat
     {
         switch (_sound)
         {
-            default:
-                return true;
+
             case Sound.PlayerMove:
                 if (soundTimerDictionary.ContainsKey(_sound))
                 {
                     float lastTimePlayed = soundTimerDictionary[_sound];
-                    float playerMoveTimerMax = 0.4f;
+                    float playerMoveTimerMax = 0.4f; // we define a delay for the next playtime of the sound
                     if (lastTimePlayed + playerMoveTimerMax < Time.time)
                     {
                         soundTimerDictionary[_sound] = Time.time;
@@ -88,6 +90,27 @@ public static class Soundmanager // we write static to not accidently instantiat
                 {
                     return true;
                 }
+            case Sound.EnemyHit:
+                if (soundTimerDictionary.ContainsKey(_sound))
+                {
+                    float lastTimePlayed = soundTimerDictionary[_sound];
+                    float enemyHiTimerMax = 5f;
+                    if (lastTimePlayed + enemyHiTimerMax < Time.time)
+                    {
+                        soundTimerDictionary[_sound] = Time.time;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            default:
+                return true;
                 // break;
         }
 
@@ -111,4 +134,5 @@ public static class Soundmanager // we write static to not accidently instantiat
     // {
 
     // }
+
 }
