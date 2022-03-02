@@ -65,7 +65,7 @@ public class ThirdPersonMovementController : MonoBehaviour
     PlayerInput playerInput;
 
 
-    [Header("Animations")] [SerializeField] Animator animator;
+    [Header("Animations")][SerializeField] Animator animator;
     [SerializeField] float animationSmoothTime = 0.1f; // the lower the value, the faster is the transition
     [SerializeField] float animationPlayTransition = 0.15f;
     [SerializeField] Transform aimTarget;
@@ -108,11 +108,17 @@ public class ThirdPersonMovementController : MonoBehaviour
         jumpTimeoutDelta = jumptimeOut;
         fallTimeoutDelta = fallTimeOut;
         Soundmanager.Initialize();
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
     void Start()
     {
         SetAnimationIDs();
+    }
+
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 
 
@@ -310,6 +316,11 @@ public class ThirdPersonMovementController : MonoBehaviour
     public Vector3 GetPosition()
     {
         return transform.position;
+    }
+
+    private void OnGameStateChanged(GameState _newGamestate)
+    {
+        enabled = _newGamestate == GameState.Gameplay;
     }
 
 

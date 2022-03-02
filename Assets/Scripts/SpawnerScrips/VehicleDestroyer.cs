@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VehicleDestroyer : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         Destroy(other.gameObject);
     }
