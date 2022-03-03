@@ -2819,6 +2819,10 @@ PrefabInstance:
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 838769834}
+    - target: {fileID: 4134117006958477537, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
+      propertyPath: aimLayerMask.m_Bits
+      value: 5568
+      objectReference: {fileID: 0}
     - target: {fileID: 4134117008031855646, guid: bfab44c609a37ad449c8fa65fb9b686d, type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
@@ -22107,6 +22111,10 @@ PrefabInstance:
       propertyPath: playerCam
       value: 
       objectReference: {fileID: 181402782}
+    - target: {fileID: 1923197460, guid: c2b0983c5f5077040930070dde1d93b5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 238598844446528637, guid: c2b0983c5f5077040930070dde1d93b5, type: 3}
       propertyPath: m_Layer
       value: 12

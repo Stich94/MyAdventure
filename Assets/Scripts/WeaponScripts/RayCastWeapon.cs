@@ -355,7 +355,7 @@ public class RayCastWeapon : MonoBehaviour
         return direction;
     }
 
-    protected IEnumerator SpawnTrail(TrailRenderer _trail, RaycastHit _hit)
+    protected virtual IEnumerator SpawnTrail(TrailRenderer _trail, RaycastHit _hit)
     {
         float time = 0;
         Vector3 startPosition = _trail.transform.position;

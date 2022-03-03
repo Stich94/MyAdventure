@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.785D90A9" = "playerPrefs"
+	"last_search.785D90A9" = "enemywe"
 	"InspectorPreview.785D90A9" = "0"
 	"currentGroup.785D90A9" = "menu"
 }
@@ -74,6 +74,8 @@ providers = {
 	}
 }
 recentSearches = [
+	"enemywe"
+	"playerPrefs"
 	"raycast"
 	"weapnre"
 	"base"

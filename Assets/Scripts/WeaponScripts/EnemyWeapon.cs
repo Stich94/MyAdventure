@@ -163,10 +163,6 @@ public class EnemyWeapon : RayCastWeapon
 
         Vector3 targetDirection = (_aimDirection - raycastOrigin.position).normalized;
         Vector3 direction = GetDirection();
-        // Debug.DrawLine(raycastOrigin.position, targetDirection, Color.red);
-
-        // }
-
 
         if (Physics.Raycast(bulletSpawnPoint.position, direction, out hitInfo, 50f, aimLayerMask))
         {
@@ -177,31 +173,47 @@ public class EnemyWeapon : RayCastWeapon
             StartCoroutine(SpawnTrail(trail, hitInfo));
 
             Debug.Log("enemy ray hit: " + hitInfo);
-
-            // Debug.DrawLine(bulletSpawnPoint.position, hitInfo.point, Color.red);
-            // TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
-            // StartCoroutine(SpawnTrail(trail, hitInfo));
-
-            // lastShootTime = Time.time;
-
-            // Rigidbody rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
-            // if (rb)
-            // {
-            //     rb.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
-            //     // }
-
-            //     // // Adding the weapon to our hitbox
-            //     HitBox hitbox = hitInfo.collider.gameObject.GetComponent<HitBox>();
-            //     if (hitbox)
-            //     {
-            //         hitbox.OnRaycastHit(this, ray.direction);
-            //     }
-            // }
-            // else
-            // {
-            //     Debug.Log("Nothing hit");
-            // }
         }
+        // if (Physics.Linecast(bulletSpawnPoint.position, transform.forward * 50f, out hitInfo, aimLayerMask))
+        // {
+        //     Debug.DrawLine(bulletSpawnPoint.position, transform.TransformDirection(_aimDirection) * hitInfo.distance, Color.red);
+
+        //     TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+        //     StartCoroutine(SpawnTrail(trail, hitInfo));
+        //     //     StartCoroutine(SpawnTrail(trail, hitInfo));
+
+        //     //     Debug.Log("enemy ray hit: " + hitInfo);
+        // }
+    }
+
+    protected override IEnumerator SpawnTrail(TrailRenderer _trail, RaycastHit _hit)
+    {
+        float time = 0;
+        Vector3 startPosition = _trail.transform.position;
+
+        while (time < 1)
+        {
+            _trail.transform.position = Vector3.Lerp(startPosition, _hit.point, time);
+
+            time += Time.deltaTime / _trail.time;
+
+            yield return null;
+        }
+        _trail.transform.position = _hit.point;
+        if (_hit.collider.gameObject.CompareTag(environmentTag))
+        {
+
+            Instantiate(impactParticleSystem, _hit.point, Quaternion.LookRotation(_hit.normal));
+        }
+        if (_hit.collider.gameObject.GetComponent<IDamageAble>() != null)
+        {
+            //TODO - hit gets damaged
+            BaseStats otherStats = hitInfo.collider.gameObject.GetComponent<BaseStats>();
+            // otherStats.TakeDamage(10f, ray.direction);
+            otherStats.TakeDamage(10f);
+        }
+
+        Destroy(_trail.gameObject, _trail.time);
     }
 
     // CanShoot func used from base class
