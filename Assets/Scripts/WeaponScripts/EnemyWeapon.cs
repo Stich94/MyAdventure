@@ -166,6 +166,8 @@ public class EnemyWeapon : RayCastWeapon
         // Debug.DrawLine(raycastOrigin.position, targetDirection, Color.red);
 
         // }
+
+
         if (Physics.Raycast(bulletSpawnPoint.position, direction, out hitInfo, 50f, aimLayerMask))
         {
             Debug.DrawRay(bulletSpawnPoint.position, transform.TransformDirection(_aimDirection) * hitInfo.distance, Color.red);

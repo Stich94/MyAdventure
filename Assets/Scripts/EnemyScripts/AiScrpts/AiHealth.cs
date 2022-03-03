@@ -116,6 +116,7 @@ public class AiHealth : BaseStats
     {
         if (currentHealth < maxHealth && !inAttackStance)
         {
+            Debug.Log("Enemy entereed onDamage");
             // change enemy state to attack
             modifiedAiAgent?.ChangeToAttackState();
             inAttackStance = true;

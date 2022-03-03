@@ -60,12 +60,14 @@ public class PauseController : MonoBehaviour
         Time.timeScale = 0;
         canvas.enabled = true;
         paused = true;
+        AudioListener.volume = 0f;
         Cursor.lockState = CursorLockMode.None;
 
     }
 
     public void ResumeGame()
     {
+        AudioListener.volume = 1f;
         Time.timeScale = 1;
         canvas.enabled = false;
         paused = false;
