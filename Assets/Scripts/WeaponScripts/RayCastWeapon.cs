@@ -175,7 +175,7 @@ public class RayCastWeapon : MonoBehaviour
 
         // Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(_aimDirection, Vector3.up));
 
-        playerHudManager?.UpdateWeaponAmmoUI();
+        // playerHudManager?.UpdateWeaponAmmoUI();
 
 
         ray.origin = raycastOrigin.position;
@@ -302,7 +302,7 @@ public class RayCastWeapon : MonoBehaviour
         isReloading = false;
 
         Debug.Log("Finished reloading");
-        playerHudManager?.UpdateWeaponAmmoUI();
+        // playerHudManager?.UpdateWeaponAmmoUI();
         animator.SetLayerWeight(2, 0f);
     }
 

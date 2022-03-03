@@ -817,6 +817,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4517893018949164, guid: 553d5ab60b93b904896a8af286bdbe32, type: 3}
   m_PrefabInstance: {fileID: 30668088}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &31262751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 31262752}
+  - component: {fileID: 31262753}
+  m_Layer: 7
+  m_Name: Invisble Collider for Aim
+  m_TagString: Environment
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &31262752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31262751}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40.93, y: 23.47, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1146357487}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &31262753
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31262751}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 142.25894, y: 21.781712, z: 163.0141}
+  m_Center: {x: -31.4174, y: 0, z: 35.255814}
 --- !u!1001 &31810418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29708,6 +29752,7 @@ Transform:
   - {fileID: 587824047}
   - {fileID: 577313796}
   - {fileID: 1385807420}
+  - {fileID: 31262752}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -40558,6 +40603,7 @@ GameObject:
   - component: {fileID: 1508593401}
   - component: {fileID: 1508593404}
   - component: {fileID: 1508593405}
+  - component: {fileID: 1508593406}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -40697,6 +40743,18 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1508593406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508593400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59068c9af7823394cb51c240a6c46fef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1511212762
 GameObject:
   m_ObjectHideFlags: 0
@@ -51553,11 +51611,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1646181804}
     m_Modifications:
-    - target: {fileID: 1655596107, guid: 5a91268f934e94346a6e07b4b3522690, type: 3}
+    - target: {fileID: 1832075876, guid: 5a91268f934e94346a6e07b4b3522690, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1655596107, guid: 5a91268f934e94346a6e07b4b3522690, type: 3}
+    - target: {fileID: 1832075876, guid: 5a91268f934e94346a6e07b4b3522690, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}

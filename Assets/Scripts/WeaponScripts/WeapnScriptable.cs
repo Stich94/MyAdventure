@@ -13,8 +13,8 @@ public class WeapnScriptable : ScriptableObject
     public bool isActive = false;
 
     public float damage;
-    public int magazineSize;
-    public int currentMagazineSize;
+    public int magazineSize = 20;
+    public int currentMagazineSize = 20;
     public float fireRate;
     public float reloadTime;
     WaitForSeconds reloadWait;

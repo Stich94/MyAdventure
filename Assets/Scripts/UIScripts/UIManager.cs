@@ -6,32 +6,38 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    // [SerializeField] RayCastWeapon activeWeapon;
-    [SerializeField] TextMeshProUGUI currentAmmoText;
+    // [SerializeField] WeapnScriptable currentWeapon;
+    [SerializeField] TMP_Text currentAmmoText;
     [SerializeField] TextMeshProUGUI weaponNameText;
-    [SerializeField] WeapnScriptable activeWeapon;
+    [SerializeField] static WeapnScriptable activeWeapon;
     [SerializeField] Slider slider;
     [SerializeField] playerStatsSO playerStats;
 
+    float currentMagazineSize;
+    float maxMagazineSize;
+
     float showCurrentHealth;
 
-    // public void UpdatePlayerAmmoUI(int _currentAmmo, int _maxMagazineSize)
-    // {
-    //     currentAmmoText.text = _currentAmmo + " / " + _maxMagazineSize;
-    // }
     private void Start()
     {
-        // showCurrentHealth = playerStats.CurrentHP;
+        // SetWeaponStats();
     }
-
     private void Update()
     {
         UpdateWeaponAmmoUI();
         UpdatePlayerHealthBar();
     }
 
+    // void SetWeaponStats()
+    // {
+    //     currentMagazineSize = currentWeapon.currentMagazineSize;
+    //     maxMagazineSize = currentWeapon.magazineSize;
+
+    // }
+
     public void UpdateWeaponAmmoUI()
     {
+        // SetWeaponStats();
         // getAmmoUpdateEvent.RaisEvent();
         if (activeWeapon?.currentMagazineSize <= 3)
         {
@@ -41,7 +47,9 @@ public class UIManager : MonoBehaviour
         {
             currentAmmoText.color = Color.white;
         }
-        currentAmmoText.text = activeWeapon?.currentMagazineSize + " / " + activeWeapon?.magazineSize;
+        // weird stuff is going on active Weapon is not empty but compiler is yelling - Null Reference
+        currentAmmoText.text = activeWeapon.currentMagazineSize.ToString() + " / " + activeWeapon.magazineSize.ToString();
+        // currentAmmoText.text = currentMagazineSize + " / " + maxMagazineSize;
     }
 
     public void SetActiveWeapon(WeapnScriptable _newWeapon)
@@ -50,6 +58,7 @@ public class UIManager : MonoBehaviour
         {
             activeWeapon = _newWeapon;
             weaponNameText.text = activeWeapon.weaponName;
+            // SetWeaponStats();
         }
 
     }
