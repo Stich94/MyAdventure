@@ -32,4 +32,10 @@ public class LevelLoader : MonoBehaviour
         SceneManager.LoadScene(_levelIndex);
 
     }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1;
+        StartCoroutine(LoadLevel(0));
+    }
 }

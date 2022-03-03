@@ -19,7 +19,7 @@ public class PauseController : MonoBehaviour
 
     private void OnDisable()
     {
-
+        pauseAction.canceled -= _ => DeterminePause();
     }
     void Awake()
     {
@@ -28,6 +28,7 @@ public class PauseController : MonoBehaviour
         // access the controls
         pauseAction = playerInput.actions["Pause"];
     }
+
 
     void PauseGame()
     {
@@ -40,7 +41,7 @@ public class PauseController : MonoBehaviour
         }
     }
 
-    void DeterminePause()
+    public void DeterminePause()
     {
         if (paused)
         {
@@ -48,6 +49,7 @@ public class PauseController : MonoBehaviour
         }
         else
         {
+
             PauseGameState();
         }
     }
@@ -58,6 +60,8 @@ public class PauseController : MonoBehaviour
         Time.timeScale = 0;
         canvas.enabled = true;
         paused = true;
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
     public void ResumeGame()
@@ -65,5 +69,7 @@ public class PauseController : MonoBehaviour
         Time.timeScale = 1;
         canvas.enabled = false;
         paused = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 }

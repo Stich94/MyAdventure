@@ -393,7 +393,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.04115746, y: -0.02692085, z: -0.09896853}
+  m_ConnectedAnchor: {x: 0.041157406, y: -0.026921218, z: -0.09896708}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: -1}
   m_TwistLimitSpring:
@@ -503,7 +503,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.39930934, y: 0.00000079348666, z: -0.00000024586913}
+  m_ConnectedAnchor: {x: 0.3993094, y: -0.0000001452863, z: -0.00000056624407}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -707,7 +707,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.04115762, y: -0.02692089, z: 0.09896851}
+  m_ConnectedAnchor: {x: 0.04115757, y: -0.02692123, z: 0.09896707}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1009,7 +1009,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.40415406, y: 0.061366886, z: -0.000000044116945}
+  m_ConnectedAnchor: {x: -0.40415415, y: 0.061366506, z: -0.000000043651255}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1366,7 +1366,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.39930925, y: -0.0000006258486, z: 0.0000002607703}
+  m_ConnectedAnchor: {x: -0.39930928, y: -0.00000016391273, z: 0.00000061839813}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
@@ -1814,7 +1814,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.23371528, y: -0.007856298, z: -0.19099048}
+  m_ConnectedAnchor: {x: -0.23371536, y: -0.007856671, z: -0.19098902}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: -1}
   m_TwistLimitSpring:
@@ -2049,7 +2049,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.3394746, y: 0.0014474363, z: 0.0014371722}
+  m_ConnectedAnchor: {x: 0.339475, y: 0.0014473804, z: 0.0014356876}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
@@ -2159,7 +2159,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.2337179, y: -0.007855948, z: 0.19099048}
+  m_ConnectedAnchor: {x: -0.23371798, y: -0.007856276, z: 0.1909895}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2268,7 +2268,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.28183702, y: 0.03600656, z: 0.000000042375177}
+  m_ConnectedAnchor: {x: -0.28183708, y: 0.0360062, z: 0.0000000433065}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -2378,7 +2378,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.33947417, y: -0.0014488687, z: -0.0014372673}
+  m_ConnectedAnchor: {x: -0.33947417, y: -0.0014488612, z: -0.0014356412}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -3350,6 +3350,7 @@ MonoBehaviour:
   sprintSpeed: 0
   enemyStats: {fileID: 11400000, guid: 455e0acfd9cbe58419696bd4c6567dbc, type: 2}
   modifiedAiAgent: {fileID: 0}
+  canvas: {fileID: 3163728926304512833}
 --- !u!114 &3163728927233565730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3522,6 +3523,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   canSeePlayer: 0
+  wallCheckRadius: 3
   walkpoint: {x: 0, y: 0, z: 0}
   walkPointRange: 5
   attackSpeed: 1

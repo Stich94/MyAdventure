@@ -7,6 +7,7 @@ public class AiHealth : BaseStats
 {
     [SerializeField] StatsScrptableObject enemyStats;
     [SerializeField] AiAgent modifiedAiAgent;
+    [SerializeField] Canvas canvas;
     NavMeshAgent agent;
 
     RagDoll ragdoll;
@@ -17,6 +18,8 @@ public class AiHealth : BaseStats
 
     protected override void Awake()
     {
+        canvas.enabled = false;
+
         ragdoll = GetComponent<RagDoll>();
         agent = GetComponent<NavMeshAgent>();
         modifiedAiAgent = GetComponent<AiAgent>();
@@ -44,6 +47,7 @@ public class AiHealth : BaseStats
 
     public override void TakeDamage(float _damage, Vector3 _direction)
     {
+        canvas.enabled = true;
         // OnDamage(_direction);
         Debug.Log("takes damage");
         currentHealth -= _damage;
@@ -68,7 +72,7 @@ public class AiHealth : BaseStats
 
     public override void TakeDamage(float _damage)
     {
-
+        canvas.enabled = true;
         Debug.Log("takes damage");
         currentHealth -= _damage;
         OnDamage();

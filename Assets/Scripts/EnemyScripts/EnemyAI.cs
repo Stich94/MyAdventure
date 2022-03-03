@@ -18,26 +18,26 @@ public class EnemyAI : MonoBehaviour
 
 
     // Field of View
-    [Header("Field of View")] [SerializeField] float radius;
+    [Header("Field of View")][SerializeField] float radius;
     public float Radius { get { return radius; } }
-    [SerializeField] [Range(0, 360)] float angle;
+    [SerializeField][Range(0, 360)] float angle;
     public float SightAngle { get { return angle; } }
     [SerializeField] float CheckDelay = .2f;
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstructedLayerMask;
-    [SerializeField]
-    bool canSeePlayer = false;
+    [SerializeField] bool canSeePlayer = false;
+    [SerializeField] float wallCheckRadius = 3f;
     public bool CanSeePlayer { get { return canSeePlayer; } }
 
     // patroling 
-    [Header("Patrouling")] [SerializeField] protected Vector3 walkpoint;
+    [Header("Patrouling")][SerializeField] protected Vector3 walkpoint;
     float randomZ;
     float randomX;
     protected bool walkPointSet;
     [SerializeField] protected float walkPointRange;
 
     // Attacking
-    [Header("Attack Variables")] [SerializeField] protected float attackSpeed;
+    [Header("Attack Variables")][SerializeField] protected float attackSpeed;
     [SerializeField] protected float attackRange;
     [SerializeField] protected float timeBetweenAttacks;
     protected bool alreadyAttacked;
@@ -47,7 +47,7 @@ public class EnemyAI : MonoBehaviour
     float cooldownTimer;
 
     // States
-    [Header("States")] [SerializeField] protected float sightRange;
+    [Header("States")][SerializeField] protected float sightRange;
     [SerializeField] protected bool playerIsInSightRange;
     [SerializeField] protected bool playerIsInAttackRange;
     public bool HasBeenAttacked { get { return alreadyAttacked; } set { alreadyAttacked = value; } }
@@ -192,7 +192,7 @@ public class EnemyAI : MonoBehaviour
 
     protected void CheckForWall()
     {
-        if (Physics.CheckSphere(transform.position, 3f, wallLayer))
+        if (Physics.CheckSphere(transform.position, wallCheckRadius, wallLayer))
         {
             SearchWalkPoint();
         }

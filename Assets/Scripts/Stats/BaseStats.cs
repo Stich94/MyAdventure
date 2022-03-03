@@ -94,6 +94,7 @@ public class BaseStats : MonoBehaviour, IDamageAble
         if (currentHealth <= 0.0f)
         {
             Debug.Log("Player is ded.");
+            Die();
         }
     }
 
