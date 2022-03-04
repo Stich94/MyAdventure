@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float sprintSpeed = 5.0f;
     [SerializeField] float jumpHeight = 1.0f;
     [SerializeField] float gravityValue = -9.81f;
-    [SerializeField] float rotationSpeed = 5f;
     [SerializeField] float targetRotation = 0.0f;
     [SerializeField] float RotationSmoothTime = 0.12f;
 
@@ -33,7 +32,6 @@ public class PlayerController : MonoBehaviour
     float lookTreshold = 0.01f;
     bool rotateOnMove = true;
     bool groundedPlayer;
-    bool sprint = false;
 
     Transform cameraTransform;
 
@@ -47,7 +45,7 @@ public class PlayerController : MonoBehaviour
     InputAction lookAction;
 
     // Animator
-    [Header("Animations")] [SerializeField] Animator animator;
+    [Header("Animations")][SerializeField] Animator animator;
     [SerializeField] float animationSmoothTime = 0.1f; // the lower the value, the faster is the transition
     [SerializeField] float animationPlayTransition = 0.15f;
     [SerializeField] Transform aimTarget;

@@ -9,7 +9,7 @@ public class ThirdPersonShooterController : MonoBehaviour
 {
     //TODO - when aiming reduce movementSpeed
     [SerializeField] PlayerInput playerInput;
-    [SerializeField] float aimMovementSpeed = 2f;
+
     [SerializeField] int priorityBoostAmount = 10;
     [SerializeField] float normalSensitivity = 5f;
     [SerializeField] float aimSensitivity = 0.5f;

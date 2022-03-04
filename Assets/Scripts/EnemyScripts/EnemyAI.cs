@@ -54,6 +54,7 @@ public class EnemyAI : MonoBehaviour
     public bool IsDead { get; set; } = false;
 
     EnemyMeleeCombat combat;
+    bool playerAttackedEnemy = false;
 
 
     protected void Awake()
@@ -80,6 +81,7 @@ public class EnemyAI : MonoBehaviour
             }
             CheckIfPlayerIsInSightRange();
             CheckIfPlayerIsInAttackRange();
+
         }
 
     }
@@ -150,29 +152,7 @@ public class EnemyAI : MonoBehaviour
 
 
             alreadyAttacked = true;
-            // Invoke(nameof(ResetAttack), timeBetweenAttacks); //TODO
         }
-    }
-
-    protected void ResetAttack()
-    {
-
-    }
-
-    IEnumerator AttackDelay(float _timebetweenAttacks)
-    {
-        agent.speed = 0;
-        canAttack = false;
-        yield return new WaitForSeconds(_timebetweenAttacks);
-
-        if (!playerIsInAttackRange)
-        {
-            //TODO - set animation
-            // move
-        }
-        // agent.speed = GetComponent<BaseStats>();
-        canAttack = true;
-
     }
 
     protected void CheckIfPlayerIsInSightRange()
@@ -180,7 +160,7 @@ public class EnemyAI : MonoBehaviour
         playerIsInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
 
         if (!canSeePlayer && !playerIsInSightRange) Patrouling();
-        if (playerIsInSightRange && !playerIsInAttackRange) ChasePlayer();
+        if (playerAttackedEnemy || playerIsInSightRange && !playerIsInAttackRange) ChasePlayer();
         if (playerIsInAttackRange && playerIsInSightRange) AttackPlayer();
 
     }
@@ -188,6 +168,7 @@ public class EnemyAI : MonoBehaviour
     protected void CheckIfPlayerIsInAttackRange()
     {
         playerIsInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+
     }
 
     protected void CheckForWall()
@@ -248,6 +229,11 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+
+    public void ChangeToChaseState()
+    {
+        playerAttackedEnemy = true;
     }
 
 

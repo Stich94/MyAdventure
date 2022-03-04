@@ -7,8 +7,6 @@ using Cinemachine;
 public class RapidFireWeapon : RayCastWeapon
 {
     [Header("Rapid Fire Weapon - Speific")]
-
-    [SerializeField] float cameraShakeAmount = 0.5f;
     CinemachineImpulseSource source;
     // Coroutine fireCoroutine;
     WaitForSeconds rapidFireWait;

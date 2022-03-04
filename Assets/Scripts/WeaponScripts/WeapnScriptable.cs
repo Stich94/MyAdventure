@@ -7,7 +7,6 @@ using UnityEngine.VFX;
 [CreateAssetMenu(menuName = "Weapon", fileName = "Weapon")]
 public class WeapnScriptable : ScriptableObject
 {
-    public event Action FireAction;
     public string weaponName;
     public int weaponId;
     public bool isActive = false;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyMeleeCombat : MonoBehaviour
 {
+    [SerializeField] float meleeDamage = 9f;
 
     Animator animator;
 
@@ -32,7 +33,7 @@ public class EnemyMeleeCombat : MonoBehaviour
     {
         animator.SetTrigger(meleeAnimId);
         Soundmanager.PlaySound(Soundmanager.Sound.MeleeWoosh, transform.position);
-        yield return new WaitForSeconds(2.2f);
-        _targetStats.TakeDamage(2f);
+        yield return new WaitForSeconds(2f);
+        _targetStats.TakeDamage(meleeDamage);
     }
 }

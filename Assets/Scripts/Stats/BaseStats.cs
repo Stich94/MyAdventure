@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BaseStats : MonoBehaviour, IDamageAble
+public class BaseStats : MonoBehaviour, IDamageAble, IOnItemPickup
 {
     [SerializeField] playerStatsSO stats;
     [SerializeField] protected float maxHealth;
     public float MaxHealth { get { return maxHealth; } }
     [SerializeField] protected float currentHealth;
-    public float CurrentHealth { get { return currentHealth; } }
+    public float CurrentHealth { get { return currentHealth; } set { currentHealth = value; } }
     [SerializeField] protected float damage;
     public float Damage { get { return damage; } }
     [SerializeField] protected float attackSpeed;
@@ -61,7 +61,8 @@ public class BaseStats : MonoBehaviour, IDamageAble
 
     void ClampHealth()
     {
-        currentHealth = Mathf.Clamp(currentHealth, 0, currentHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
     }
 
     public virtual void TakeDamage(float _damage, Vector3 _direction)
@@ -132,6 +133,18 @@ public class BaseStats : MonoBehaviour, IDamageAble
     protected virtual void OnDamage()
     {
 
+    }
+
+    public void OnItemEnter(float _amount)
+    {
+        currentHealth += _amount;
+        ClampHealth();
+        // stats.CurrentHP = Mathf.Clamp(_amount, 0, stats.MaxHP);
+        stats.CurrentHP += _amount;
+        if (stats.CurrentHP > stats.MaxHP)
+        {
+            stats.CurrentHP = stats.MaxHP;
+        }
     }
 }
 

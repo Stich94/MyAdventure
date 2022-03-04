@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] float healAmount = 15f;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        other.gameObject.GetComponent<IOnItemPickup>().OnItemEnter(healAmount);
+        Destroy(this.gameObject);
     }
 }

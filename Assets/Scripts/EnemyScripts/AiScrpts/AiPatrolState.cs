@@ -10,7 +10,6 @@ public class AiPatrolState : AiStateI
     float speedWalk = 2f;
 
     float startWaitTime = 6f;
-    float timeToRotate = 2f;
 
     public Transform[] waypoints;
     int currentWayPointIndex;
@@ -22,8 +21,6 @@ public class AiPatrolState : AiStateI
     Vector3 playerDirection;
     Vector3 agentDirection;
 
-
-    float timer = 0.0f;
 
     public void Enter(AiAgent _agent)
     {

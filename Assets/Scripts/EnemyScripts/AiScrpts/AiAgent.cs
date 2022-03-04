@@ -14,7 +14,7 @@ public class AiAgent : MonoBehaviour
     public AiStateId GetCurrentAiState => currentState;
     [SerializeField] NavMeshAgent navMeshAgent;
     [SerializeField] AiAgentConfig config;
-    [SerializeField] string playerTag = "Player";
+
     public AiStateMachine GetAiStateMachine { get { return stateMachine; } set { stateMachine = value; } }
 
     public RagDoll GetRagDoll { get { return ragdoll; } }
@@ -33,8 +33,6 @@ public class AiAgent : MonoBehaviour
     [Header("Aim Rig")]
     [SerializeField] Rig aimRig;
     float aimRigWeigth = 0f;
-
-    bool inAttackStance = false;
 
 
     BaseStats playerStats;

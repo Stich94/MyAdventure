@@ -23,7 +23,6 @@ public static class Soundmanager // we write static to not accidently instantiat
     static GameObject oneShotGameObject;
     static AudioSource oneShotAudioSource;
 
-
     public static void Initialize()
     {
         soundTimerDictionary = new Dictionary<Sound, float>();
@@ -90,7 +89,45 @@ public static class Soundmanager // we write static to not accidently instantiat
                 {
                     return true;
                 }
+            case Sound.PlayerRapidFireShoot:
+                if (soundTimerDictionary.ContainsKey(_sound))
+                {
+                    float lastTimePlayed = soundTimerDictionary[_sound];
+                    float playerMoveTimerMax = 1f; // we define a delay for the next playtime of the sound
+                    if (lastTimePlayed + playerMoveTimerMax < Time.time)
+                    {
+                        soundTimerDictionary[_sound] = Time.time;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
             case Sound.EnemyHit:
+                if (soundTimerDictionary.ContainsKey(_sound))
+                {
+                    float lastTimePlayed = soundTimerDictionary[_sound];
+                    float enemyHiTimerMax = 5f;
+                    if (lastTimePlayed + enemyHiTimerMax < Time.time)
+                    {
+                        soundTimerDictionary[_sound] = Time.time;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            case Sound.EnemyDie:
                 if (soundTimerDictionary.ContainsKey(_sound))
                 {
                     float lastTimePlayed = soundTimerDictionary[_sound];

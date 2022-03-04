@@ -10,12 +10,8 @@ public class VehicleSpawner : MonoBehaviour
     [SerializeField][Range(370, 550)] float speedRange;
     [SerializeField] float colliiderSize;
     float minSpeed = 370;
-    float randomSpawnTime = 7f;
     [SerializeField] float spawnDelay = 3f;
     float currentSpawnTime = 0f;
-    float randomSpeed;
-
-    int randomCarCounter = 0;
 
     private void Start()
     {

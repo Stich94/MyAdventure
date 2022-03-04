@@ -9,8 +9,6 @@ public class WeaponRecoil : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera playerCam;
     public CinemachineVirtualCamera PlayerCamera { get { return playerCam; } set { playerCam = value; } }
-
-    [SerializeField] float verticalRecoilAmount = 0.01f;
     [SerializeField] float duration;
 
     CinemachineImpulseSource source;

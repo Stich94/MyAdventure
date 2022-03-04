@@ -174,18 +174,9 @@ public class EnemyWeapon : RayCastWeapon
 
             Debug.Log("enemy ray hit: " + hitInfo);
         }
-        // if (Physics.Linecast(bulletSpawnPoint.position, transform.forward * 50f, out hitInfo, aimLayerMask))
-        // {
-        //     Debug.DrawLine(bulletSpawnPoint.position, transform.TransformDirection(_aimDirection) * hitInfo.distance, Color.red);
 
-        //     TrailRenderer trail = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
-        //     StartCoroutine(SpawnTrail(trail, hitInfo));
-        //     //     StartCoroutine(SpawnTrail(trail, hitInfo));
-
-        //     //     Debug.Log("enemy ray hit: " + hitInfo);
-        // }
+        Soundmanager.PlaySound(Soundmanager.Sound.PlayerRapidFireShoot, transform.position);
     }
-
     protected override IEnumerator SpawnTrail(TrailRenderer _trail, RaycastHit _hit)
     {
         float time = 0;

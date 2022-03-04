@@ -107,6 +107,7 @@ public class AiHealth : BaseStats
         }
 
         ragdoll.ActivateRagdoll();
+        Soundmanager.PlaySound(Soundmanager.Sound.EnemyDie, transform.position);
         Destroy(this.gameObject, 8f);
     }
 
@@ -116,6 +117,7 @@ public class AiHealth : BaseStats
     {
         if (currentHealth < maxHealth && !inAttackStance)
         {
+            meleeEnemyAi?.ChangeToChaseState();
             Debug.Log("Enemy entereed onDamage");
             // change enemy state to attack
             modifiedAiAgent?.ChangeToAttackState();

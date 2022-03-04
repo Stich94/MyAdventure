@@ -7,6 +7,7 @@ public class ThirdPersonMovementController : MonoBehaviour
 {
     [SerializeField] float playerSpeed;
     [SerializeField] float sprintSpeed;
+    [SerializeField] float aimMovementSpeed = 2f;
     [SerializeField] bool isSprinting = false;
     public bool IsSprinting => isSprinting;
     [SerializeField] float playerRotationSmoothTime;
@@ -21,8 +22,6 @@ public class ThirdPersonMovementController : MonoBehaviour
     [SerializeField] float groundedRadius = 0.28f;
     static Transform playerPos;
     public Transform GetPlayerPos { get; }
-
-    bool canJump = true;
     bool rotateOnMove = true;
 
 
@@ -60,16 +59,14 @@ public class ThirdPersonMovementController : MonoBehaviour
     InputAction sprintActon;
     InputAction lookAction;
     CharacterController controller;
-    // StarterAssetsInputs _input;
     Camera mainCamera;
     PlayerInput playerInput;
 
 
     [Header("Animations")][SerializeField] Animator animator;
-    [SerializeField] float animationSmoothTime = 0.1f; // the lower the value, the faster is the transition
-    [SerializeField] float animationPlayTransition = 0.15f;
+    // [SerializeField] float animationSmoothTime = 0.1f; // the lower the value, the faster is the transition
+    // [SerializeField] float animationPlayTransition = 0.15f;
     [SerializeField] Transform aimTarget;
-    [SerializeField] float aimDistance = 1f;
     int moveXAnimationParameterId;
     int moveZAnimationParameterId;
     int jumpAnimation;
@@ -83,11 +80,13 @@ public class ThirdPersonMovementController : MonoBehaviour
     int animFreeFallID;
     int animMotionSpeedID;
 
+    ThirdPersonShooterController aimController;
+
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        // aimController = GetComponent<ThirdPersonShooterController>();
+        aimController = GetComponent<ThirdPersonShooterController>();
         playerInput = GetComponent<PlayerInput>();
         mainCamera = Camera.main;
 
@@ -158,7 +157,7 @@ public class ThirdPersonMovementController : MonoBehaviour
     {
         if (grounded)
         {
-            canJump = true;
+
             fallTimeoutDelta = fallTimeOut;
 
             animator.SetBool(animJumpID, false);
@@ -199,7 +198,7 @@ public class ThirdPersonMovementController : MonoBehaviour
             }
 
             // if we are not grounded, do not jump
-            canJump = false;
+
         }
 
         // apply gravity
@@ -262,6 +261,10 @@ public class ThirdPersonMovementController : MonoBehaviour
         Vector3 targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
 
         // move the player
+        if (aimController.IsAiming && moveInput != Vector2.zero)
+        {
+            speed = aimMovementSpeed;
+        }
         controller.Move(targetDirection.normalized * (speed * Time.deltaTime) + new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime);
 
         // update animator if using character
