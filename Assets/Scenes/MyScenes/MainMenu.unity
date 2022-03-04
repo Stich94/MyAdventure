@@ -442,7 +442,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' @SirStich / v. 1.0.0'
+  m_text: ' @SirStich / v. 0.0.1'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 991ec2c14a828c14a98326e48f9b336a, type: 2}
   m_sharedMaterial: {fileID: 5338597088838702291, guid: 991ec2c14a828c14a98326e48f9b336a, type: 2}

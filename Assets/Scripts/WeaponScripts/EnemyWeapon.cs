@@ -86,6 +86,7 @@ public class EnemyWeapon : RayCastWeapon
         }
         else if (!CanShoot())
         {
+            StopCoroutine(fireRoutine);
             StartCoroutine(Reload());
             // isFiring = false;
         }

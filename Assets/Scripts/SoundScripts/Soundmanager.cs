@@ -16,6 +16,8 @@ public static class Soundmanager // we write static to not accidently instantiat
         MeleeWoosh,
         Buttonclick,
         StartGame,
+        ItemPickup,
+        WeaponPickup
 
     }
 

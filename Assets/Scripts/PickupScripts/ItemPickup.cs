@@ -9,6 +9,7 @@ public class ItemPickup : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         other.gameObject.GetComponent<IOnItemPickup>().OnItemEnter(healAmount);
+        Soundmanager.PlaySound(Soundmanager.Sound.ItemPickup);
         Destroy(this.gameObject);
     }
 }
